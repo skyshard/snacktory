@@ -2477,6 +2477,18 @@ public class ArticleTextExtractorTest {
     }
 
     @Test
+    public void testTelecompaper() throws Exception {
+        // https://www.telecompaper.com/achtergrond/intel-voelt-hete-adem-lte-in-de-nek-en-investeert-fors-in-wimax--73
+        JResult res = new JResult();
+        res.setUrl("https://www.telecompaper.com/achtergrond/intel-voelt-hete-adem-lte-in-de-nek-en-investeert-fors-in-wimax--73");
+        res = extractor.extractContent(res, c.streamToString(getClass().getResourceAsStream("telecompaper.html")));
+        assertEquals("Intel voelt hete adem LTE in de nek en investeert fors in WiMax", res.getTitle());
+        assertTrue(res.getText(), res.getText().startsWith("Chipfabrikant Intel investeert twee miljard dollar"));
+        assertTrue(res.getText(), res.getText().endsWith("in Europa en de VS."));
+        compareDates("2008-02-28", res.getDate());
+    }
+
+    @Test
     public void testDateWithTz() throws Exception {
         // http://women2.com/2014/06/18/woman-entrepreneur-misnomer/
         JResult res = new JResult();

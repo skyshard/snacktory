@@ -1512,6 +1512,23 @@ public class ArticleTextExtractor {
             }
         }
 
+        // https://www.telecompaper.com
+        elems = doc.select("div[class=article] span[class=source]");
+        if (elems.size() > 0) {
+            Element el = elems.get(0);
+            dateStr = el.text();
+            if (dateStr != null){
+                if(DEBUG_DATE_EXTRACTION){ System.out.println("RULE-article span[class=source]"); }
+                System.out.println("==>"+dateStr);
+                System.out.println("==>"+dateStr.split("\\|"));
+                dateStr = dateStr.split("\\|")[0];
+                dateStr = dateStr.replace("vrijdag", "");
+                Date d = parseDate(dateStr);
+                if(d!=null){
+                    return d;
+                }
+            }
+        }
 
         if(DEBUG_DATE_EXTRACTION) { System.out.println("No date found!"); }
         return null;
