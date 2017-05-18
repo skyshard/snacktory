@@ -30,7 +30,7 @@ public class OutputFormatter {
     protected final int minFirstParagraphText;
     protected final int minParagraphText;
     protected final List<String> nodesToReplace;
-    protected String nodesToKeepCssSelector = "p, ol, em, ul, li, small";
+    protected String nodesToKeepCssSelector = "p, ol, em, ul, li, small, blockquote";
 
     public OutputFormatter() {
         this(MIN_FIRST_PARAGRAPH_TEXT, MIN_PARAGRAPH_TEXT, NODES_TO_REPLACE);
