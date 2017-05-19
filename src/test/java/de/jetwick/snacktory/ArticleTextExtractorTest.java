@@ -2849,6 +2849,7 @@ public class ArticleTextExtractorTest {
         assertTrue(res.getText(), res.getText().endsWith("to successfully achieve our growth aspirations.”  "));
         assertEquals(StringUtils.EMPTY, res.getAuthorName());
         assertEquals(StringUtils.EMPTY, res.getAuthorDescription());
+        compareDates("2016-10-14", res.getDate());
     }
 
     @Test
@@ -2863,6 +2864,7 @@ public class ArticleTextExtractorTest {
         assertEquals("Crayon warns of 'black hole of risk' in software audits", res.getTitle());
         assertEquals("Adrian Bridgwater", res.getAuthorName());
         assertEquals("https://twitter.com/ABridgwater, https://www.linkedin.com/in/adrianbridgwater, mailto:adrianbridgwater@gmail.com", res.getAuthorDescription());
+        compareDates("2016-10-13 11:14:00", res.getDate());
     }
 
     @Test
