@@ -575,6 +575,21 @@ public class ArticleTextExtractorTest {
     }
 
     @Test
+    public void testPolitico1() throws Exception {
+        // http://www.politico.com/story/2017/05/12/senate-trump-russia-probe-comey-firing-238340
+        JResult res = new JResult();
+        res.setUrl("http://www.politico.com/story/2017/05/12/senate-trump-russia-probe-comey-firing-238340");
+        extractor.extractContent(res, c.streamToString(getClass().getResourceAsStream("politico1.html")));
+        assertEquals("http://www.politico.com/story/2017/05/12/senate-trump-russia-probe-comey-firing-238340", res.getCanonicalUrl());
+        assertEquals("Senate panel investigating Russia outraged by Comey firing - POLITICO", res.getTitle());
+        assertTrue(res.getText(), res.getText().startsWith("The Senate Intelligence Committee is starting to examine potential ties between President Donald Trump’s associates and the Russian government,"));
+        assertTrue(res.getText(), res.getText().endsWith("Austin Wright contributed to this report."));
+        assertEquals("Ali Watkins", res.getAuthorName());
+        assertEquals("http://www.politico.com/staff/ali-watkins", res.getAuthorDescription());
+        compareDates("2017-05-12 18:45:51", res.getDate());
+    }
+
+    @Test
     public void testNinjablog() throws Exception {
         //String url = "http://www.ninjatraderblog.com/im/2010/10/seo-marketing-facts-about-google-instant-and-ranking-your-website/";
         JResult article = extractor.extractContent(c.streamToString(getClass().getResourceAsStream("ninjatraderblog.html")));
@@ -2048,7 +2063,7 @@ public class ArticleTextExtractorTest {
         assertTrue(res.getText(), res.getText().startsWith("When marketing executives consider inbound marketing"));
         compareDates("2016-04-07 00:00:00", res.getDate());
         assertTrue(res.getText(), res.getText().startsWith("When marketing executives consider inbound marketing"));
-        assertEquals("Tom Goodmanson is president and CEO of Calabrio", res.getAuthorName());
+        assertEquals("Tom Goodmanson", res.getAuthorName());
         assertEquals("Tom Goodmanson is president and CEO of Calabrio, a provider of customer engagement and analytics technology. LinkedIn: Tom Goodmanson", res.getAuthorDescription());
     }
 
@@ -2655,7 +2670,7 @@ public class ArticleTextExtractorTest {
         JResult res = new JResult();
         res.setUrl("http://www.marketingprofs.com/articles/2015/28657/unlock-mobile-advertising-by-measuring-the-real-world");
         res = extractor.extractContent(res, c.streamToString(getClass().getResourceAsStream("author_name_ignore_pattern.html")));
-        assertEquals("John Busby is SVP of customer insights at Marchex", res.getAuthorName());
+        assertEquals("John Busby", res.getAuthorName());
         assertEquals("John Busby is SVP of customer insights at Marchex, a mobile advertising technology company. LinkedIn: John Busby Twitter: @JohnMBusby", res.getAuthorDescription());
     }
 
@@ -2952,6 +2967,21 @@ public class ArticleTextExtractorTest {
         assertEquals("Sienna Fantozzi", res.getAuthorName());
         assertEquals("Sienna Fantozzi", res.getAuthorDescription());
         compareDates("2017-05-08 04:08:00", res.getDate());
+    }
+
+    @Test
+    public void testAirpr() throws Exception {
+        // http://blog.airpr.com/media-monitoring/
+        JResult res = new JResult();
+        res.setUrl("http://blog.airpr.com/media-monitoring/");
+        res = extractor.extractContent(res, c.streamToString(getClass().getResourceAsStream("airpr.html")));
+        assertEquals("http://blog.airpr.com/media-monitoring/", res.getCanonicalUrl());
+        assertEquals("From Media Monitoring to Media Intelligence", res.getTitle());
+        assertTrue(res.getText(), res.getText().startsWith("For public relations professionals, media monitoring can be both tedious and exciting."));
+        assertTrue(res.getText(), res.getText().endsWith("Hungry for more? Read “How to prove PR value to your CEO” next…"));
+        assertEquals("Kelly Byrd May 3, 2017", res.getAuthorName());
+        assertEquals("Kelly Byrd May 3, 2017", res.getAuthorDescription());
+        compareDates("2017-05-03 06:12:16 -07:00", res.getDate());
     }
 
     public static void compareDates(String wanted, Date extracted) throws Exception {

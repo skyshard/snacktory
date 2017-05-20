@@ -274,7 +274,7 @@ public class ArticleTextExtractor {
                 + "foot|masthead|(me(dia|ta))|outbrain|promo|related|scroll|(sho(utbox|pping))|"
                 + "sidebar|sponsor|tags|tool|widget|player|disclaimer|toc|infobox|vcard|title|truncate|slider|^sectioncolumns$|ad-container");
         setHighlyNegative("policy-blk|followlinkedinsignin|^signupbox$");
-        setToRemove("feedback-prompt|story-footer|story-meta-footer|related-combined-coverage|visuallyhidden|ad_topjobs|slideshow-overlay__data|next-post-thumbnails|video-desc|related-links|^widget popular$|^widget marketplace$|^widget ad panel$|slideshowOverlay|^share-twitter$|^share-facebook$|^share-google-plus-1$|^inline-list tags$|^tag_title$|article_meta comments|^related-news$|^recomended$|^news_preview$|related--galleries|image-copyright--copyright|^credits$|^photocredit$|^morefromcategory$|^pag-photo-credit$|gallery-viewport-credit|^image-credit$|story-secondary$|carousel-body|slider_container|widget_stories|post-thumbs|^custom-share-links|socialTools|trendingStories|^metaArticleData$|jcarousel-container|module-video-slider|jcarousel-skin-tango|^most-read-content$|^commentBox$|^faqModal$|^widget-area|login-panel|^copyright$|relatedSidebar|shareFooterCntr|most-read-container|email-signup|outbrain|^wnStoryBodyGraphic|articleadditionalcontent|most-popular|shatner-box|form-errors|theme-summary");
+        setToRemove("feedback-prompt|story-footer|story-meta-footer|related-combined-coverage|visuallyhidden|ad_topjobs|slideshow-overlay__data|next-post-thumbnails|video-desc|related-links|^widget popular$|^widget marketplace$|^widget ad panel$|slideshowOverlay|^share-twitter$|^share-facebook$|^share-google-plus-1$|^inline-list tags$|^tag_title$|article_meta comments|^related-news$|^recomended$|^news_preview$|related--galleries|image-copyright--copyright|^credits$|^photocredit$|^morefromcategory$|^pag-photo-credit$|gallery-viewport-credit|^image-credit$|story-secondary$|carousel-body|slider_container|widget_stories|post-thumbs|^custom-share-links|socialTools|trendingStories|^metaArticleData$|jcarousel-container|module-video-slider|jcarousel-skin-tango|^most-read-content$|^commentBox$|^faqModal$|^widget-area|login-panel|^copyright$|relatedSidebar|shareFooterCntr|most-read-container|email-signup|outbrain|^wnStoryBodyGraphic|articleadditionalcontent|most-popular|shatner-box|form-errors|theme-summary|story-supplement|global-magazine-recent");
     }
 
     public ArticleTextExtractor setUnlikely(String unlikelyStr) {
@@ -1917,16 +1917,16 @@ public class ArticleTextExtractor {
             }
 
             if (authorName.isEmpty()) {  // for "schema.org creativework"
-                authorName = SHelper.innerTrim(doc.select("[itemtype=http://schema.org/Person]meta[itemprop=author]").attr("content"));
+                authorName = SHelper.innerTrim(doc.select("[itemtype$=schema.org/Person] meta[itemprop=author], [itemtype$=schema.org/Person] meta[itemprop=name]").attr("content"));
                 if(DEBUG_AUTHOR_EXTRACTION && !authorName.isEmpty()) System.out.println("AUTHOR: for \"schema.org creativework\" [itemtype=http://schema.org/Person]meta[itemprop=author]");
             }
 
             if (authorName.isEmpty()) {  // for "schema.org creativework"
-                result = doc.select("[itemtype=http://schema.org/Person]span[itemprop=author]").first();
+                result = doc.select("[itemtype$=schema.org/Person]span[itemprop=author], [itemtype$=schema.org/Person]span[itemprop=name]").first();
                 if (result != null) {
                     authorName = SHelper.innerTrim(result.text());
                 }
-                if(DEBUG_AUTHOR_EXTRACTION && !authorName.isEmpty()) System.out.println("AUTHOR: for \"schema.org creativework\" [itemtype=http://schema.org/Person]span[itemprop=author]");
+                if(DEBUG_AUTHOR_EXTRACTION && !authorName.isEmpty()) System.out.println("AUTHOR: for \"schema.org creativework\" [itemtype$=schema.org/Person] span[itemprop=author], [itemtype$=schema.org/Person] span[itemprop=name]");
             }
 
             // globalbankingandfinance.com
@@ -1976,6 +1976,14 @@ public class ArticleTextExtractor {
                 if (result != null) {
                     authorName = SHelper.innerTrim(result.text());
                     if(DEBUG_AUTHOR_EXTRACTION && !authorName.isEmpty()) System.out.println("AUTHOR: a hack for http://jdsupra.com/");
+                }
+            }
+
+            if (authorName.isEmpty()) { // hack for http://blog.airpr.com/media-monitoring/
+                result = doc.select("div[class=timedate]").first();
+                if (result != null) {
+                    authorName = SHelper.innerTrim(result.ownText());
+                    if(DEBUG_AUTHOR_EXTRACTION && !authorName.isEmpty()) System.out.println("AUTHOR: div[class=timedate]");
                 }
             }
 
@@ -2047,8 +2055,8 @@ public class ArticleTextExtractor {
 
                     // a hack for http://marketingprofs.com/
                     if(matches == null || matches.size() == 0){
-                        matches = doc.select("*[id*=contentbios]");
-                        if(DEBUG_AUTHOR_EXTRACTION && matches!=null && matches.size()>0) System.out.println("AUTHOR: *[id*=contentbios]");
+                        matches = doc.select("span[itemprop=author]");
+                        if(DEBUG_AUTHOR_EXTRACTION && matches!=null && matches.size()>0) System.out.println("AUTHOR: span[itemprop=author]");
                     }
 
                     // select the best element from them
@@ -2281,6 +2289,17 @@ public class ArticleTextExtractor {
             return SHelper.innerTrim(authorDesc);
         }
 
+        // http://blog.airpr.com/media-monitoring/
+        matches = doc.select("div[class=timedate]");
+        if (matches!= null && matches.size() > 0){
+            return SHelper.innerTrim(matches.first().ownText());
+        }
+
+        // http://www.politico.com/story/2017/05/12/senate-trump-russia-probe-comey-firing-238340
+        matches = doc.select("[class=vcard] a");
+        if (matches!= null && matches.size() > 0){
+            return SHelper.innerTrim(matches.first().attr("href"));
+        }
 
         try {
             // If not author desc found, try to found a section where the author name
