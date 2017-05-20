@@ -2864,7 +2864,7 @@ public class ArticleTextExtractorTest {
         assertTrue(res.getText(), res.getText().endsWith("to successfully achieve our growth aspirations.”  "));
         assertEquals(StringUtils.EMPTY, res.getAuthorName());
         assertEquals(StringUtils.EMPTY, res.getAuthorDescription());
-        compareDates("2016-10-14", res.getDate());
+        assertNull(res.getDate());
     }
 
     @Test

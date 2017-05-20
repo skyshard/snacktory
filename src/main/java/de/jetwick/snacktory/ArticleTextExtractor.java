@@ -950,22 +950,6 @@ public class ArticleTextExtractor {
             }
         }
 
-        // http://www.business-money.com/announcements/catalyst-achieves-300m-funding-milestone
-        // There is no metadata at all to identify the date other than complete css selector
-        // This might be really bad hack but we don't have other option
-        elems = doc.select("body > div:nth-child(7) > div > div.col-sm-9 > div > h1 > span > p > span");
-        if (elems.size() > 0) {
-            Element el = elems.get(0);
-            dateStr = el.ownText();
-            Date parsedDate = parseDate(dateStr);
-            if (DEBUG_DATE_EXTRACTION) {
-                System.out.println("RULE-name=body > div:nth-child(7) > div > div.col-sm-9 > div > h1 > span > p > span");
-            }
-            if (parsedDate != null) {
-                return parsedDate;
-            }
-        }
-
         // http://www.adweek.com
         elems = doc.select("[id=post-time]");
         if (elems.size() > 0) {
