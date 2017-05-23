@@ -1,7 +1,8 @@
 package de.jetwick.snacktory;
 
 import com.google.common.net.InternetDomainName;
-import org.apache.commons.lang.time.DateUtils;
+import de.jetwick.snacktory.utils.Configuration;
+import de.jetwick.snacktory.utils.DateUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.htmlcleaner.CleanerProperties;
 import org.htmlcleaner.HtmlCleaner;
@@ -1689,7 +1690,7 @@ public class ArticleTextExtractor {
 
 
     // TODO: Look for a library to parse dates formats.
-    private Date parseDate(String dateStr) {
+    private Date parseDate(String dateString) {
         String[] parsePatterns = {
             "dd MMM yyyy 'at' hh:mma",
             "dd MMM yyyy HH:mm",
@@ -1788,24 +1789,19 @@ public class ArticleTextExtractor {
             "dd-MMM-yyyy" // 14-Oct-2016
         };
 
+        Date date = null;
         try {
-            if(DEBUG_DATE_EXTRACTION){
-                System.out.println("BEFORE clean: dateStr="+dateStr+"|");
+            logger.debug("BEFORE clean: dateString="+dateString+"|");
+            dateString = cleanDate(dateString);
+            logger.debug("AFTER clean: dateString="+dateString+"|");
+            date = DateUtils.parseDate(dateString,
+                    Configuration.getInstance().getDefaultTimezone(), parsePatterns);
+            if (date == null || !SHelper.isValidDate(date)){
+                logger.debug("Invalid date found:" + date);
             }
-            dateStr = cleanDate(dateStr);
-            if(DEBUG_DATE_EXTRACTION){
-                System.out.println("AFTER clean: dateStr="+dateStr+"|");
-            }
-            Date d = DateUtils.parseDateStrictly(dateStr, parsePatterns);
-            if (SHelper.isValidDate(d)){
-                return d;
-            } else {
-                System.out.println("Invalid date found:" + d);
-            }
-        } catch (Exception ex) {
-            return null;
+        } finally {
+            return date;
         }
-        return null;
     }
 
     private static String toUnicode(char ch) {
