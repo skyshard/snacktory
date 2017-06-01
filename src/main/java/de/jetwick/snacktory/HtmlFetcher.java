@@ -26,12 +26,19 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.Proxy;
 import java.net.URL;
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.Inflater;
 import java.util.zip.InflaterInputStream;
+
+import org.apache.commons.lang3.StringUtils;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -53,30 +60,30 @@ public class HtmlFetcher {
     }
     private static final Logger logger = LoggerFactory.getLogger(HtmlFetcher.class);
 
-    public static void main(String[] args) throws Exception {
-        BufferedReader reader = new BufferedReader(new FileReader("urls.txt"));
-        String line = null;
-        Set<String> existing = new LinkedHashSet<String>();
-        while ((line = reader.readLine()) != null) {
-            int index1 = line.indexOf("\"");
-            int index2 = line.indexOf("\"", index1 + 1);
-            String url = line.substring(index1 + 1, index2);
-            String domainStr = SHelper.extractDomain(url, true);
-            String counterStr = "";
-            // TODO more similarities
-            if (existing.contains(domainStr))
-                counterStr = "2";
-            else
-                existing.add(domainStr);
-
-            String html = new HtmlFetcher().fetchAsString(url, 20000);
-            String outFile = domainStr + counterStr + ".html";
-            BufferedWriter writer = new BufferedWriter(new FileWriter(outFile));
-            writer.write(html);
-            writer.close();
-        }
-        reader.close();
-    }
+//    public static void main(String[] args) throws Exception {
+//        BufferedReader reader = new BufferedReader(new FileReader("urls.txt"));
+//        String line = null;
+//        Set<String> existing = new LinkedHashSet<String>();
+//        while ((line = reader.readLine()) != null) {
+//            int index1 = line.indexOf("\"");
+//            int index2 = line.indexOf("\"", index1 + 1);
+//            String url = line.substring(index1 + 1, index2);
+//            String domainStr = SHelper.extractDomain(url, true);
+//            String counterStr = "";
+//            // TODO more similarities
+//            if (existing.contains(domainStr))
+//                counterStr = "2";
+//            else
+//                existing.add(domainStr);
+//
+//            String html = new HtmlFetcher().fetchAsString(url, 20000);
+//            String outFile = domainStr + counterStr + ".html";
+//            BufferedWriter writer = new BufferedWriter(new FileWriter(outFile));
+//            writer.write(html);
+//            writer.close();
+//        }
+//        reader.close();
+//    }
     private static final boolean DISABLE_SSL_VERIFICATION = true;
     private String referrer = "http://jetsli.de/crawler";
     private String userAgent = "Mozilla/5.0 (compatible; Jetslide; +" + referrer + ")";
@@ -287,13 +294,9 @@ public class HtmlFetcher {
                 String urlToDownload = url;
                 if(forceReload){
                     urlToDownload = getURLtoBreakCache(url);
-                } 
-
-                if (!onlyExtractCanonical){
-                    extractor.extractContent(result, fetchAsString(urlToDownload, timeout), maxContentSize);
-                } else {
-                    extractor.extractCanonical(result, fetchAsString(urlToDownload, timeout), false);
                 }
+
+                pagination(timeout, maxContentSize, onlyExtractCanonical, result, urlToDownload);
             } catch (FileNotFoundException fe){
                 throw new SnacktoryNotFoundException();
             } catch (IOException io){
@@ -327,6 +330,117 @@ public class HtmlFetcher {
             result.notifyAll();
         }
         return result;
+    }
+
+    private void pagination(int timeout, int maxContentSize, boolean onlyExtractCanonical, JResult result, String urlToDownload) throws Exception {
+
+        List<String> articleTexts = new ArrayList();
+        String nextPage = "";
+        List<String> visitedUrls = new ArrayList<>();
+
+        do {
+            String htmlAsString = fetchAsString(urlToDownload, timeout);
+            Document document = Jsoup.parse(htmlAsString, result.getUrl());
+
+            if (!onlyExtractCanonical){
+                extractor.extractContent(result, htmlAsString, maxContentSize);
+            } else {
+                extractor.extractCanonical(result, htmlAsString, false);
+            }
+            visitedUrls.add(urlToDownload);
+            nextPage = getNextPageLink(document, urlToDownload, visitedUrls);
+
+
+
+            articleTexts.add(result.getText());
+            result.setText(StringUtils.EMPTY);
+
+            System.out.println("Original URL: " + urlToDownload);
+            System.out.println("Next page is detected: " + nextPage);
+
+            urlToDownload = nextPage;
+        } while (StringUtils.isNotBlank(urlToDownload));
+
+        result.setText(StringUtils.join(articleTexts, " "));
+    }
+
+    public String getNextPageLink(Document document, String originalUrl, List<String> visited) {
+
+        String nextPageUrl = "";
+
+        final String PAGINATION_LINK_CLASS_REGEX = "(next.*?link|link.*?next)";
+        final Pattern PAGINATION_CLASS_PATTERN = Pattern.compile(PAGINATION_LINK_CLASS_REGEX, Pattern.CASE_INSENSITIVE);
+        Elements anchorTags = document.select("a");
+
+        for (Element anchorTag : anchorTags) {
+//            Matcher matcher = PAGINATION_CLASS_PATTERN.matcher(anchorTag.className());
+//            if (matcher.find()) {
+                nextPageUrl = anchorTag.attr("href");
+
+                if (StringUtils.isNotBlank(nextPageUrl)) {
+                    if (nextPageUrl.trim().startsWith("/")) {
+                        nextPageUrl = SHelper.useDomainOfFirstArg4Second(originalUrl, nextPageUrl);
+                    }
+                    if (isValidPaginationUrl(originalUrl, nextPageUrl, visited)){
+                        break;
+                    }
+                    nextPageUrl = StringUtils.EMPTY;
+                }
+//            }
+        }
+        return nextPageUrl;
+    }
+
+    public boolean isValidPaginationUrl(String originalUrl, String nextPageUrl, List<String> visited) {
+
+        // Same domain
+        if (!SHelper.extractDomain(originalUrl, true).equals(SHelper.extractDomain(nextPageUrl, true))){
+            return false;
+        }
+
+        // If the same url
+        if (originalUrl.equals(nextPageUrl)) {
+            return false;
+        }
+
+        if(visited.contains(nextPageUrl)) {
+            return false;
+        }
+        // Compare URLs
+        Set<String> originalUrlSeg = new LinkedHashSet(Arrays.asList(originalUrl.split("/")));
+        Set<String> nextPageUrlSeg = new LinkedHashSet(Arrays.asList(nextPageUrl.split("/")));
+
+        Set<String> intersection = new LinkedHashSet<String>();
+        intersection.addAll(originalUrlSeg);
+        intersection.retainAll(nextPageUrlSeg);
+
+        if (intersection.size() > 0) {
+            originalUrlSeg.removeAll(intersection);
+            nextPageUrlSeg.retainAll(intersection);
+            if (originalUrlSeg.size() <= 1 || nextPageUrlSeg.size() <= 1) {
+                return true;
+            }
+        }
+
+//        Set<String> union = new LinkedHashSet<String>();
+//        union.addAll(originalUrlSeg);
+//        union.addAll(nextPageUrlSeg);
+//
+//        nextPageUrlSeg.retainAll(originalUrlSeg);
+//        union.removeAll(nextPageUrlSeg);
+
+        return false;
+    }
+
+    public static void main(String[] args) throws Exception {
+
+        HtmlFetcher fetcher = new HtmlFetcher();
+        String url = "https://www.thestreet.com/story/13640860/1/the-market-is-smiling-on-colgate-palmolive-but-should-you.html";
+        //String url = "http://www.delish.com/food/g4067/best-brewery-every-state/?slide=1";
+        JResult result = new JResult();
+        result.setUrl(url);
+        fetcher.pagination(0, 1000000, false, result, url);
+        System.out.println("Done !");
     }
 
     // Ugly hack to break free from any cached versions, a few URLs required this.
