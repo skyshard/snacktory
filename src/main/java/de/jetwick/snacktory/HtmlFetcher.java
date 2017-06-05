@@ -350,8 +350,6 @@ public class HtmlFetcher {
             visitedUrls.add(urlToDownload);
             nextPage = getNextPageLink(document, urlToDownload, visitedUrls);
 
-
-
             articleTexts.add(result.getText());
             result.setText(StringUtils.EMPTY);
 
@@ -368,11 +366,37 @@ public class HtmlFetcher {
 
         String nextPageUrl = "";
 
+        // Most ideal scenario of pagination https://support.google.com/webmasters/answer/1663744?hl=en
+        // e.g. <link rel="next" href="http://www.example.com/article?story=abc&page=3&sessionid=123" />
+//        Elements paginationLinks = document.select("link[rel=next], a[class=link]");
+//        for (Element link : paginationLinks) {
+//            if (isValidPaginationUrl(originalUrl, link.attr("href"), visited)) {
+//                nextPageUrl = link.attr("href");
+//                break;
+//            }
+//        }
+
         final String PAGINATION_LINK_CLASS_REGEX = "(next.*?link|link.*?next)";
         final Pattern PAGINATION_CLASS_PATTERN = Pattern.compile(PAGINATION_LINK_CLASS_REGEX, Pattern.CASE_INSENSITIVE);
         Elements anchorTags = document.select("a");
 
+        Comparator<Element> ldComparator = new Comparator<Element>() {
+            @Override
+            public int compare(Element element1, Element element2) {
+                int d1 = Integer.parseInt(element1.attr("levenshteinDistance"));
+                int d2 = Integer.parseInt(element2.attr("levenshteinDistance"));
+
+                if (d1 == d2) {
+                    return 0;
+                }
+                return d1 > d2 ? 1 : -1;
+            }
+        };
+
+        Queue<Element> probableNextLinks = new PriorityQueue(ldComparator);
+
         for (Element anchorTag : anchorTags) {
+
 //            Matcher matcher = PAGINATION_CLASS_PATTERN.matcher(anchorTag.className());
 //            if (matcher.find()) {
                 nextPageUrl = anchorTag.attr("href");
@@ -381,9 +405,14 @@ public class HtmlFetcher {
                     if (nextPageUrl.trim().startsWith("/")) {
                         nextPageUrl = SHelper.useDomainOfFirstArg4Second(originalUrl, nextPageUrl);
                     }
-                    if (isValidPaginationUrl(originalUrl, nextPageUrl, visited)){
-                        break;
-                    }
+
+                    anchorTag.attr("levenshteinDistance", Integer.toString(StringUtils.getLevenshteinDistance(originalUrl, nextPageUrl)));
+                    probableNextLinks.add(anchorTag);
+
+//                    System.out.println("NextPage: " + nextPageUrl + ", distance: " );
+//                    if (isValidPaginationUrl(originalUrl, nextPageUrl, visited)){
+//                        break;
+//                    }
                     nextPageUrl = StringUtils.EMPTY;
                 }
 //            }
@@ -393,19 +422,16 @@ public class HtmlFetcher {
 
     public boolean isValidPaginationUrl(String originalUrl, String nextPageUrl, List<String> visited) {
 
-        // Same domain
+        // Check if both the links are of the same domain
         if (!SHelper.extractDomain(originalUrl, true).equals(SHelper.extractDomain(nextPageUrl, true))){
             return false;
         }
 
-        // If the same url
-        if (originalUrl.equals(nextPageUrl)) {
-            return false;
-        }
-
+        // Check if link is not already been visited
         if(visited.contains(nextPageUrl)) {
             return false;
         }
+
         // Compare URLs
         Set<String> originalUrlSeg = new LinkedHashSet(Arrays.asList(originalUrl.split("/")));
         Set<String> nextPageUrlSeg = new LinkedHashSet(Arrays.asList(nextPageUrl.split("/")));
@@ -436,7 +462,7 @@ public class HtmlFetcher {
 
         HtmlFetcher fetcher = new HtmlFetcher();
         String url = "https://www.thestreet.com/story/13640860/1/the-market-is-smiling-on-colgate-palmolive-but-should-you.html";
-        //String url = "http://www.delish.com/food/g4067/best-brewery-every-state/?slide=1";
+        //String url = "http://www.delish.com/food/g4067/best-brewery-every-state/";
         JResult result = new JResult();
         result.setUrl(url);
         fetcher.pagination(0, 1000000, false, result, url);
