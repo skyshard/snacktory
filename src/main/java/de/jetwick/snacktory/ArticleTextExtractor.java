@@ -898,9 +898,9 @@ public class ArticleTextExtractor {
     /**
      * Removes `www.` and tld section from top level domain name
      *
-     * www.airpr.com -> airpr
-     * airpr.com -> airpr
-     * www.test.airpr.com -> Won't work, always expect a topLevelPrivateDomain
+     * www.airpr.com = airpr
+     * airpr.com = airpr
+     * www.test.airpr.com = Won't work, always expect a topLevelPrivateDomain
      *
      * @param domain {@link String}: Top Level domain name
      * @return: Domain name without tld and `www.`
