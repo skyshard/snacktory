@@ -8,6 +8,9 @@ val Guava = "com.google.guava" % "guava" % "18.0"
 val HtmlCleaner = "net.sourceforge.htmlcleaner" % "htmlcleaner" % "2.16"
 // https://mvnrepository.com/artifact/org.yaml/snakeyaml
 val SnakeYaml = "org.yaml" % "snakeyaml" % "1.18"
+val CommonText = "org.apache.commons" % "commons-text" % "1.1"
+val CommonCollections = "commons-collections" % "commons-collections" % "3.2.1"
+
 
 lazy val commonSettings = Seq(
   name := "snacktory-fork",
@@ -19,7 +22,7 @@ lazy val snacktory = (project in file(".")).
   settings(commonSettings: _*).
   settings(
     libraryDependencies += "com.novocode" % "junit-interface" % "0.10-M4" % "test",
-    libraryDependencies ++= Seq(Jsoup, Slf4jApi, Slf4jLog4j12, CommonsLang, CommonsLang3, Log4j, Guava, HtmlCleaner, SnakeYaml),
+    libraryDependencies ++= Seq(Jsoup, Slf4jApi, Slf4jLog4j12, CommonsLang, CommonsLang3, Log4j, Guava, HtmlCleaner, SnakeYaml, CommonText, CommonCollections),
     resolvers += "Sonatype Release" at "http://oss.sonatype.org/content/repositories/releases"
   )
 

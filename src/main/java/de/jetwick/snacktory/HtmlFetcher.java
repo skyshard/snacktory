@@ -30,6 +30,7 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.Inflater;
 import java.util.zip.InflaterInputStream;
@@ -45,6 +46,9 @@ import org.slf4j.LoggerFactory;
 import javax.net.ssl.*;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
+
+import org.apache.commons.text.similarity.LongestCommonSubsequence;
+import org.apache.commons.collections.ComparatorUtils;
 
 /**
  * Class to fetch articles. This class is thread safe.
@@ -348,6 +352,10 @@ public class HtmlFetcher {
                 extractor.extractCanonical(result, htmlAsString, false);
             }
             visitedUrls.add(urlToDownload);
+
+//            if (visitedUrls.size() == 25) {
+//                break;
+//            }
             nextPage = getNextPageLink(document, urlToDownload, visitedUrls);
 
             articleTexts.add(result.getText());
@@ -362,9 +370,11 @@ public class HtmlFetcher {
         result.setText(StringUtils.join(articleTexts, " "));
     }
 
-    public String getNextPageLink(Document document, String originalUrl, List<String> visited) {
+    public String getNextPageLink(Document document, String originalUrl, List<String> visited) throws MalformedURLException {
 
         String nextPageUrl = "";
+
+        String canonical = document.select("link[rel=canonical]").attr("href");
 
         // Most ideal scenario of pagination https://support.google.com/webmasters/answer/1663744?hl=en
         // e.g. <link rel="next" href="http://www.example.com/article?story=abc&page=3&sessionid=123" />
@@ -378,7 +388,7 @@ public class HtmlFetcher {
 
         final String PAGINATION_LINK_CLASS_REGEX = "(next.*?link|link.*?next)";
         final Pattern PAGINATION_CLASS_PATTERN = Pattern.compile(PAGINATION_LINK_CLASS_REGEX, Pattern.CASE_INSENSITIVE);
-        Elements anchorTags = document.select("a");
+        Elements anchorTags = document.select("body a");
 
         Comparator<Element> ldComparator = new Comparator<Element>() {
             @Override
@@ -386,38 +396,107 @@ public class HtmlFetcher {
                 int d1 = Integer.parseInt(element1.attr("levenshteinDistance"));
                 int d2 = Integer.parseInt(element2.attr("levenshteinDistance"));
 
-                if (d1 == d2) {
-                    return 0;
-                }
                 return d1 > d2 ? 1 : -1;
             }
         };
 
-        Queue<Element> probableNextLinks = new PriorityQueue(ldComparator);
 
+        Comparator<Element> lcsComparator = new Comparator<Element>() {
+            @Override
+            public int compare(Element element1, Element element2) {
+                double d1 = Double.parseDouble(element1.attr("lscLength"));
+                double d2 = Double.parseDouble(element2.attr("lscLength"));
+
+                if (d1 == d2) {
+                    return 0;
+                }
+                return d1 < d2 ? 1 : -1;
+            }
+        };
+
+        Comparator<Element> anComparatorWrapper = new Comparator<Element>() {
+            @Override
+            public int compare(Element element1, Element element2) {
+                return new AlphanumComparator().compare(element1.attr("finalUrl"), element2.attr("finalUrl"));
+            }
+        };
+
+        List<String> list = new ArrayList<>();
+
+        Set<String> duplicateChecker = new HashSet<>();
+
+        int originalUrlLen = originalUrl.length();
+        List<Element> basedOnLcs = new LinkedList<>();
         for (Element anchorTag : anchorTags) {
+            nextPageUrl = anchorTag.attr("href");
+            if (StringUtils.isNotBlank(nextPageUrl)) {
+
+                if (nextPageUrl.trim().startsWith("#") && nextPageUrl.length() > 1) {
+
+                    if (nextPageUrl.matches(".*\\d+.*")) {
+                        nextPageUrl = canonical + nextPageUrl;
+                    }
+                } else if (nextPageUrl.trim().startsWith("/")) {
+                    nextPageUrl = SHelper.useDomainOfFirstArg4Second(originalUrl, nextPageUrl);
+                }
+
+                if (originalUrl.equals("http://www.networkworld.com/article/3112727/virtualization/hot-products-from-vmworld-2016.html#slide52") &&
+                        nextPageUrl.equals("http://www.networkworld.com/blogs")) {
+                    System.out.println("Matches");
+                }
+
+                if (isValidPaginationUrl(originalUrl, nextPageUrl, visited)) {
+
+                    double matchPercent =  new LongestCommonSubsequence().logestCommonSubsequence(originalUrl, nextPageUrl).length() * 100.0 / originalUrl.length();
+
+                    if (matchPercent > 85.00) {
+                        anchorTag.attr("lscLength", Double.toString(matchPercent));
+                        anchorTag.attr("finalUrl", nextPageUrl);
+
+                        if (duplicateChecker.add(nextPageUrl)) {
+                            basedOnLcs.add(anchorTag);
+                        }
+                    }
+                }
+            }
+        }
+
+        Queue<Element> probableNextLinks = new PriorityQueue(anComparatorWrapper);
+
+        Iterator<Element> elementIterator = basedOnLcs.iterator();
+
+
+        while (elementIterator.hasNext()) {
 
 //            Matcher matcher = PAGINATION_CLASS_PATTERN.matcher(anchorTag.className());
 //            if (matcher.find()) {
-                nextPageUrl = anchorTag.attr("href");
+                Element anchorTag =  elementIterator.next();
+                nextPageUrl = anchorTag.attr("finalUrl");
 
-                if (StringUtils.isNotBlank(nextPageUrl)) {
-                    if (nextPageUrl.trim().startsWith("/")) {
-                        nextPageUrl = SHelper.useDomainOfFirstArg4Second(originalUrl, nextPageUrl);
-                    }
 
                     anchorTag.attr("levenshteinDistance", Integer.toString(StringUtils.getLevenshteinDistance(originalUrl, nextPageUrl)));
                     probableNextLinks.add(anchorTag);
 
-//                    System.out.println("NextPage: " + nextPageUrl + ", distance: " );
+                    //System.out.println("NextPage: " + nextPageUrl + ", distance: " );
 //                    if (isValidPaginationUrl(originalUrl, nextPageUrl, visited)){
 //                        break;
 //                    }
-                    nextPageUrl = StringUtils.EMPTY;
-                }
-//            }
+//                    nextPageUrl = StringUtils.EMPTY;
+
+
         }
-        return nextPageUrl;
+
+//        Map<Integer, List<Element>> groupByLD =  probableNextLinks.stream().collect(Collectors.groupingBy(e -> Integer.parseInt(e.attr("levenshteinDistance"))));
+//
+//        Map<Integer, List<Element>> sortedByLD = new TreeMap<>();
+//        sortedByLD.putAll(groupByLD);
+//
+//        List<Element> topLdScorers =  sortedByLD.entrySet().iterator().next().getValue();
+//
+//        PriorityQueue<Element> finalList = new PriorityQueue<>(anComparatorWrapper);
+//        finalList.addAll(topLdScorers);
+        return probableNextLinks.remove().attr("finalUrl");
+
     }
 
     public boolean isValidPaginationUrl(String originalUrl, String nextPageUrl, List<String> visited) {
@@ -432,21 +511,23 @@ public class HtmlFetcher {
             return false;
         }
 
-        // Compare URLs
-        Set<String> originalUrlSeg = new LinkedHashSet(Arrays.asList(originalUrl.split("/")));
-        Set<String> nextPageUrlSeg = new LinkedHashSet(Arrays.asList(nextPageUrl.split("/")));
+        return new AlphanumComparator().compare(originalUrl, nextPageUrl) < 0 ? true : false;
 
-        Set<String> intersection = new LinkedHashSet<String>();
-        intersection.addAll(originalUrlSeg);
-        intersection.retainAll(nextPageUrlSeg);
-
-        if (intersection.size() > 0) {
-            originalUrlSeg.removeAll(intersection);
-            nextPageUrlSeg.retainAll(intersection);
-            if (originalUrlSeg.size() <= 1 || nextPageUrlSeg.size() <= 1) {
-                return true;
-            }
-        }
+//        // Compare URLs
+//        Set<String> originalUrlSeg = new LinkedHashSet(Arrays.asList(originalUrl.split("/")));
+//        Set<String> nextPageUrlSeg = new LinkedHashSet(Arrays.asList(nextPageUrl.split("/")));
+//
+//        Set<String> intersection = new LinkedHashSet<String>();
+//        intersection.addAll(originalUrlSeg);
+//        intersection.retainAll(nextPageUrlSeg);
+//
+//        if (intersection.size() > 0) {
+//            originalUrlSeg.removeAll(intersection);
+//            nextPageUrlSeg.retainAll(intersection);
+//            if (originalUrlSeg.size() <= 1 || nextPageUrlSeg.size() <= 1) {
+//                return true;
+//            }
+//        }
 
 //        Set<String> union = new LinkedHashSet<String>();
 //        union.addAll(originalUrlSeg);
@@ -455,14 +536,26 @@ public class HtmlFetcher {
 //        nextPageUrlSeg.retainAll(originalUrlSeg);
 //        union.removeAll(nextPageUrlSeg);
 
-        return false;
+     //   return false;
     }
 
     public static void main(String[] args) throws Exception {
 
         HtmlFetcher fetcher = new HtmlFetcher();
+
+
         String url = "https://www.thestreet.com/story/13640860/1/the-market-is-smiling-on-colgate-palmolive-but-should-you.html";
-        //String url = "http://www.delish.com/food/g4067/best-brewery-every-state/";
+        url = "http://www.delish.com/food/g4067/best-brewery-every-state/";
+        url = "http://www.networkworld.com/article/3112727/virtualization/hot-products-from-vmworld-2016.html";
+//        url = "http://www.cnbc.com/2017/06/08/euro-traders-await-draghi-comments.html";
+//        // Should load html from local - url = "http://thevarguy.com/var-guy/products-are-good-channel-week-july-18-2016#slide-0-field_images-96851";
+//        url = "http://sdtimes.com/getting-more-from-enterprise-data/";
+//        //url = "http://www.sunset.com/home/architecture-design/victorian-house";
+//        url = "https://www.usatoday.com/story/sports/nba/playoffs/2017/06/08/warriors-3-0-cavs-lebron-james-kyrie-irving-nba-finals/102619042/";
+//        url = "http://www.delish.com/food/g4067/best-brewery-every-state/?slide=52";
+        //url = "http://www.networkworld.com/article/3112727/virtualization/hot-products-from-vmworld-2016.html#slide10";
+
+
         JResult result = new JResult();
         result.setUrl(url);
         fetcher.pagination(0, 1000000, false, result, url);
@@ -682,4 +775,98 @@ public class HtmlFetcher {
             return true;
         }
     }
+
+    public class AlphanumComparator implements Comparator
+    {
+        private final boolean isDigit(char ch)
+        {
+            return ch >= 48 && ch <= 57;
+        }
+
+        /** Length of string is passed in for improved efficiency (only need to calculate it once) **/
+        private final String getChunk(String s, int slength, int marker)
+        {
+            StringBuilder chunk = new StringBuilder();
+            char c = s.charAt(marker);
+            chunk.append(c);
+            marker++;
+            if (isDigit(c))
+            {
+                while (marker < slength)
+                {
+                    c = s.charAt(marker);
+                    if (!isDigit(c))
+                        break;
+                    chunk.append(c);
+                    marker++;
+                }
+            } else
+            {
+                while (marker < slength)
+                {
+                    c = s.charAt(marker);
+                    if (isDigit(c))
+                        break;
+                    chunk.append(c);
+                    marker++;
+                }
+            }
+            return chunk.toString();
+        }
+
+        public int compare(Object o1, Object o2)
+        {
+            if (!(o1 instanceof String) || !(o2 instanceof String))
+            {
+                return 0;
+            }
+            String s1 = (String)o1;
+            String s2 = (String)o2;
+
+            int thisMarker = 0;
+            int thatMarker = 0;
+            int s1Length = s1.length();
+            int s2Length = s2.length();
+
+            while (thisMarker < s1Length && thatMarker < s2Length)
+            {
+                String thisChunk = getChunk(s1, s1Length, thisMarker);
+                thisMarker += thisChunk.length();
+
+                String thatChunk = getChunk(s2, s2Length, thatMarker);
+                thatMarker += thatChunk.length();
+
+                // If both chunks contain numeric characters, sort them numerically
+                int result = 0;
+                if (isDigit(thisChunk.charAt(0)) && isDigit(thatChunk.charAt(0)))
+                {
+                    // Simple chunk comparison by length.
+                    int thisChunkLength = thisChunk.length();
+                    result = thisChunkLength - thatChunk.length();
+                    // If equal, the first different number counts
+                    if (result == 0)
+                    {
+                        for (int i = 0; i < thisChunkLength; i++)
+                        {
+                            result = thisChunk.charAt(i) - thatChunk.charAt(i);
+                            if (result != 0)
+                            {
+                                return result;
+                            }
+                        }
+                    }
+                } else
+                {
+                    result = thisChunk.compareTo(thatChunk);
+                }
+
+                if (result != 0)
+                    return result;
+            }
+
+            return s1Length - s2Length;
+        }
+    }
 }
+
+
