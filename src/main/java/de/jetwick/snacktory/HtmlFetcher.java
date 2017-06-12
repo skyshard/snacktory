@@ -433,6 +433,13 @@ public class HtmlFetcher {
 
                 if (nextPageUrl.trim().startsWith("#") && nextPageUrl.length() > 1) {
 
+                    Pattern pattern = Pattern.compile("(slide|page)", Pattern.CASE_INSENSITIVE);
+                    Matcher matcher = pattern.matcher(nextPageUrl);
+
+                    if (! matcher.find()) {
+                        continue;
+                    }
+
                     if (nextPageUrl.matches(".*\\d+.*")) {
                         nextPageUrl = canonical + nextPageUrl;
                     }
@@ -449,7 +456,7 @@ public class HtmlFetcher {
 
                     double matchPercent =  new LongestCommonSubsequence().logestCommonSubsequence(originalUrl, nextPageUrl).length() * 100.0 / originalUrl.length();
 
-                    if (matchPercent > 85.00) {
+                    if (matchPercent > 95.00) {
                         anchorTag.attr("lscLength", Double.toString(matchPercent));
                         anchorTag.attr("finalUrl", nextPageUrl);
 
@@ -474,8 +481,8 @@ public class HtmlFetcher {
                 nextPageUrl = anchorTag.attr("finalUrl");
 
 
-                    anchorTag.attr("levenshteinDistance", Integer.toString(StringUtils.getLevenshteinDistance(originalUrl, nextPageUrl)));
-                    probableNextLinks.add(anchorTag);
+                anchorTag.attr("levenshteinDistance", Integer.toString(StringUtils.getLevenshteinDistance(originalUrl, nextPageUrl)));
+                probableNextLinks.add(anchorTag);
 
                     //System.out.println("NextPage: " + nextPageUrl + ", distance: " );
 //                    if (isValidPaginationUrl(originalUrl, nextPageUrl, visited)){
@@ -486,17 +493,17 @@ public class HtmlFetcher {
 
         }
 
-//        Map<Integer, List<Element>> groupByLD =  probableNextLinks.stream().collect(Collectors.groupingBy(e -> Integer.parseInt(e.attr("levenshteinDistance"))));
-//
-//        Map<Integer, List<Element>> sortedByLD = new TreeMap<>();
-//        sortedByLD.putAll(groupByLD);
-//
-//        List<Element> topLdScorers =  sortedByLD.entrySet().iterator().next().getValue();
-//
-//        PriorityQueue<Element> finalList = new PriorityQueue<>(anComparatorWrapper);
-//        finalList.addAll(topLdScorers);
-        return probableNextLinks.remove().attr("finalUrl");
+        Map<Integer, List<Element>> groupByLD =  probableNextLinks.stream().collect(Collectors.groupingBy(e -> Integer.parseInt(e.attr("levenshteinDistance"))));
 
+        Map<Integer, List<Element>> sortedByLD = new TreeMap<>();
+        sortedByLD.putAll(groupByLD);
+
+        List<Element> topLdScorers =  sortedByLD.entrySet().iterator().next().getValue();
+
+        PriorityQueue<Element> finalList = new PriorityQueue<>(anComparatorWrapper);
+        finalList.addAll(topLdScorers);
+
+        return finalList.isEmpty() ? StringUtils.EMPTY : finalList.remove().attr("finalUrl");
     }
 
     public boolean isValidPaginationUrl(String originalUrl, String nextPageUrl, List<String> visited) {
@@ -545,11 +552,12 @@ public class HtmlFetcher {
 
 
         String url = "https://www.thestreet.com/story/13640860/1/the-market-is-smiling-on-colgate-palmolive-but-should-you.html";
+         //url = "https://forums.oneplus.net/threads/the-oneplus-5-details-matter.547340/";
         url = "http://www.delish.com/food/g4067/best-brewery-every-state/";
-        url = "http://www.networkworld.com/article/3112727/virtualization/hot-products-from-vmworld-2016.html";
-//        url = "http://www.cnbc.com/2017/06/08/euro-traders-await-draghi-comments.html";
+        url = "http://www.networkworld.com/article/3112727/virtualization/hot-products-from-vmworld-2016.html#slide9";
+        //url = "http://www.cnbc.com/2017/06/08/euro-traders-await-draghi-comments.html";
 //        // Should load html from local - url = "http://thevarguy.com/var-guy/products-are-good-channel-week-july-18-2016#slide-0-field_images-96851";
-//        url = "http://sdtimes.com/getting-more-from-enterprise-data/";
+//       url = "http://sdtimes.com/getting-more-from-enterprise-data/";
 //        //url = "http://www.sunset.com/home/architecture-design/victorian-house";
 //        url = "https://www.usatoday.com/story/sports/nba/playoffs/2017/06/08/warriors-3-0-cavs-lebron-james-kyrie-irving-nba-finals/102619042/";
 //        url = "http://www.delish.com/food/g4067/best-brewery-every-state/?slide=52";
