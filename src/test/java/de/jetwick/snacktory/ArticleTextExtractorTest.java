@@ -3048,7 +3048,7 @@ public class ArticleTextExtractorTest {
         assertTrue(res.getText(), res.getText().startsWith("As the countdown began on Aug. 5, 2011 at the Kennedy Space Center in Florida,"));
         assertTrue(res.getText(), res.getText().endsWith("Artistic depiction of Juno. Photo courtesy of NASA."));
         assertEquals("Cherise Rohr-Allegrini", res.getAuthorName());
-        assertEquals("Cherise Rohr-Allegrini, PhD, MPH, is the San Antonio Program Director for The Immunization Partnership. She is a scientist and epidemiologist with extensive experience in tropical diseases abroad and public health in Texas. She writes on health and science topics. She can be contacted at cjrohr31@hotmail.com.", res.getAuthorDescription());
+        assertEquals("https://therivardreport.com/author/cherise-rohr-allegrini/", res.getAuthorDescription());
         compareDates("2016-07-02 05:01:58", res.getDate());
     }
 
