@@ -12,7 +12,11 @@ val SnakeYaml = "org.yaml" % "snakeyaml" % "1.18"
 lazy val commonSettings = Seq(
   name := "snacktory-fork",
   version := "1.2.1-SNAPSHOT",
-  scalaVersion in ThisBuild := "2.11.8"
+  scalaVersion in ThisBuild := "2.11.8",
+  // Do not append Scala versions to the generated artifacts
+  crossPaths := false,
+  // This forbids including Scala related libraries into the dependency
+  autoScalaLibrary := false
 )
 
 lazy val snacktory = (project in file(".")).
