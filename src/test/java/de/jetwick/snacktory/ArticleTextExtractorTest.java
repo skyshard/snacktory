@@ -11,7 +11,6 @@ import org.junit.Test;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.text.DateFormat;
-import java.text.DateFormatSymbols;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
@@ -3320,6 +3319,216 @@ public class ArticleTextExtractorTest {
         assertEquals("The Hive Asia", res.getAuthorName());
         assertEquals("http://www.thehive.asia/", res.getAuthorDescription());
         compareDates("2017-06-14 03:38:00", res.getDate());
+    }
+
+    @Test
+    public void testNyDailyNews() throws Exception {
+        // http://www.nydailynews.com/newswires/sports/kershaw-wins-bellinger-hits-2-homers-dodgers-top-indians-article-1.3245615
+        JResult res = new JResult();
+        res.setUrl("http://www.nydailynews.com/newswires/sports/kershaw-wins-bellinger-hits-2-homers-dodgers-top-indians-article-1.3245615");
+        res = extractor.extractContent(res, c.streamToString(getClass().getResourceAsStream("nydailynews.html")));
+        assertEquals("http://www.nydailynews.com/newswires/sports/kershaw-wins-bellinger-hits-2-homers-dodgers-top-indians-article-1.3245615", res.getCanonicalUrl());
+        assertEquals("Kershaw wins, Bellinger hits 2 homers as Dodgers top Indians", res.getTitle());
+        assertTrue(res.getText(), res.getText().startsWith("CLEVELAND (AP) — Clayton Kershaw extended his unbeaten string and rookie Cody Bellinger hit two home runs,"));
+        assertTrue(res.getText(), res.getText().endsWith("This material may not be published, broadcast, rewritten or redistributed."));
+        assertEquals("The Associated Press", res.getAuthorName());
+        assertEquals("THE ASSOCIATED PRESS", res.getAuthorDescription());
+        compareDates("2017-06-13 22:00:07", res.getDate());
+    }
+
+    @Test
+    public void testFt() throws Exception {
+        // https://www.ft.com/content/d0a5c460-5044-11e7-a1f2-db19572361bb
+        JResult res = new JResult();
+        res.setUrl("https://www.ft.com/content/d0a5c460-5044-11e7-a1f2-db19572361bb");
+        res = extractor.extractContent(res, c.streamToString(getClass().getResourceAsStream("ft.html")));
+        assertEquals("https://www.ft.com/content/d0a5c460-5044-11e7-a1f2-db19572361bb", res.getCanonicalUrl());
+        assertEquals("Has Western-style democracy become too expensive for capitalism?", res.getTitle());
+        assertTrue(res.getText(), res.getText().startsWith("Much ink has been spilled on the significance of 2016’s one-two populist punches as thrown by Brexit then Trump."));
+        assertTrue(res.getText(), res.getText().endsWith("Michael Power, Strategist, Investec Asset Management Michael Power, Strategist, Investec Asset Management"));
+        assertEquals("Michael Power", res.getAuthorName());
+        assertEquals("by: Michael Power, Investec", res.getAuthorDescription());
+        compareDates("2017-06-14 03:00:32", res.getDate());
+    }
+
+    @Test
+    public void testSdnCioReview() throws Exception {
+        // http://sdn.cioreview.com/cxoinsight/sdn-do-you-really-need-it-nid-24422-cid-147.html
+        JResult res = new JResult();
+        res.setUrl("http://sdn.cioreview.com/cxoinsight/sdn-do-you-really-need-it-nid-24422-cid-147.html");
+        res = extractor.extractContent(res, c.streamToString(getClass().getResourceAsStream("sdn.cioreview.html")));
+        assertEquals("http://sdn.cioreview.com/cxoinsight/sdn-do-you-really-need-it-nid-24422-cid-147.html", res.getCanonicalUrl());
+        assertEquals("SDN: Do You Really Need It?", res.getTitle());
+        assertTrue(res.getText(), res.getText().startsWith("Until recently, Software-defined networking SDN was both a buzzword and the subject of some discord in the IT community."));
+        assertTrue(res.getText(), res.getText().endsWith("and cloud technology increase in usage and demand network software actuation for success."));
+        assertEquals("Patrick Hubbard", res.getAuthorName());
+        assertEquals("Patrick Hubbard, Head Geek, SolarWinds", res.getAuthorDescription());
+        compareDates("2017-05-10 00:00:00", res.getDate());
+    }
+
+    @Test
+    public void testPhilly() throws Exception {
+        // http://www.philly.com/archive/john_timpane/Princetons-Tracy-K-Smith-named-US-Poet-Laureate.html
+        JResult res = new JResult();
+        res.setUrl("http://www.philly.com/archive/john_timpane/Princetons-Tracy-K-Smith-named-US-Poet-Laureate.html");
+        res = extractor.extractContent(res, c.streamToString(getClass().getResourceAsStream("philly.html")));
+        assertEquals("http://www.philly.com/philly/entertainment/Princetons-Tracy-K-Smith-named-US-Poet-Laureate.html", res.getCanonicalUrl());
+        assertEquals("Princeton's Tracy K. Smith named U.S. Poet Laureate", res.getTitle());
+        assertTrue(res.getText(), res.getText().startsWith("Tracy K. Smith, a professor of creative writing at Princeton University,"));
+        assertTrue(res.getText(), res.getText().endsWith("‘Let’s have this conversation and see what comes out of it that’s of value.”"));
+        assertEquals("John Timpane", res.getAuthorName());
+        assertEquals("John Timpane is the books/fine arts editor/writer for the Inquirer. His beat includes books, social media, dance, theater, art, museums, and classical music. From 1997 to 2008 he was the Commentary page editor.", res.getAuthorDescription());
+        compareDates("2017-06-14 09:39:00 -04:00", res.getDate());
+    }
+
+    @Test
+    public void testFoxNews1() throws Exception {
+        // http://nation.foxnews.com/2017/06/13/sessions-inquisition-comes-empty-trump-unscathed-after-attorney-generals-testimony
+        JResult res = new JResult();
+        res.setUrl("http://nation.foxnews.com/2017/06/13/sessions-inquisition-comes-empty-trump-unscathed-after-attorney-generals-testimony");
+        res = extractor.extractContent(res, c.streamToString(getClass().getResourceAsStream("foxnews1.html")));
+        assertEquals("http://nation.foxnews.com/2017/06/13/sessions-inquisition-comes-empty-trump-unscathed-after-attorney-generals-testimony", res.getCanonicalUrl());
+        assertEquals("The Sessions Inquisition Comes Up Empty: Trump Unscathed After Attorney General's Testimony", res.getTitle());
+        assertTrue(res.getText(), res.getText().startsWith("As disappointed as Democrats were by James Comey’s testimony last week,"));
+        assertTrue(res.getText(), res.getText().endsWith("and vowed to defend himself “against scurrilous and false allegations.”"));
+        assertEquals(StringUtils.EMPTY, res.getAuthorName());
+        assertEquals(StringUtils.EMPTY, res.getAuthorDescription());
+        compareDates("2017-06-15 00:00:00", res.getDate());
+    }
+
+    @Test
+    public void testUpi() throws Exception {
+        // http://www.upi.com/Entertainment_News/TV/2017/06/19/Star-Trek-Discovery-gets-a-premiere-date-Sept-24/8671497893578/
+        JResult res = new JResult();
+        res.setUrl("http://www.upi.com/Entertainment_News/TV/2017/06/19/Star-Trek-Discovery-gets-a-premiere-date-Sept-24/8671497893578/");
+        res = extractor.extractContent(res, c.streamToString(getClass().getResourceAsStream("upi.html")));
+        assertEquals("http://www.upi.com/Entertainment_News/TV/2017/06/19/Star-Trek-Discovery-gets-a-premiere-date-Sept-24/8671497893578/", res.getCanonicalUrl());
+        assertEquals("'Star Trek: Discovery' gets a premiere date -- Sept. 24", res.getTitle());
+        assertTrue(res.getText(), res.getText().startsWith("June 19 (UPI) -- The new sci-fi adventure Star Trek: Discovery -- starring Sonequa Martin-Green and Jason Isaacs -- is scheduled to premiere on CBS Sept. 24."));
+        assertTrue(res.getText(), res.getText().endsWith("which will begin streaming in January."));
+        assertEquals("Karen Butler", res.getAuthorName());
+        assertEquals(res.getAuthorName(), res.getAuthorDescription());
+        compareDates("2017-06-19 14:02:24 -04:00", res.getDate());
+    }
+
+    @Test
+    public void testUpi1() throws Exception {
+        // http://www.upi.com/Defense-News/2017/06/19/King-Aerospace-recieves-EO-5-aircraft-contract/2311497885914/
+        JResult res = new JResult();
+        res.setUrl("http://www.upi.com/Defense-News/2017/06/19/King-Aerospace-recieves-EO-5-aircraft-contract/2311497885914/");
+        res = extractor.extractContent(res, c.streamToString(getClass().getResourceAsStream("upi1.html")));
+        assertEquals("http://www.upi.com/Defense-News/2017/06/19/King-Aerospace-receives-EO-5-aircraft-contract/2311497885914/", res.getCanonicalUrl());
+        assertEquals("King Aerospace receives EO-5 aircraft contract", res.getTitle());
+        assertTrue(res.getText(), res.getText().startsWith("June 19 (UPI) -- King Aerospace has received a $15 million contract modification for EO-5 Army reconnaissance aircraft logistical support."));
+        assertTrue(res.getText(), res.getText().endsWith("SEMA aircraft have seen extensive use in Iraq, Afghanistan, Libya, and other theatres."));
+        assertEquals("Stephen Carlson", res.getAuthorName());
+        assertEquals("By Stephen Carlson | June 19, 2017 at 1:48 PM Follow @upi", res.getAuthorDescription());
+        compareDates("2017-06-19 13:48:20 -04:00", res.getDate());
+    }
+
+    @Test
+    public void testReuters3() throws Exception {
+        // http://www.reuters.com/article/us-mexico-oil-ninth-idUSKBN19A2M9
+        JResult res = new JResult();
+        res.setUrl("http://www.reuters.com/article/us-mexico-oil-ninth-idUSKBN19A2M9");
+        res = extractor.extractContent(res, c.streamToString(getClass().getResourceAsStream("reuters3.html")));
+        assertEquals("http://www.reuters.com/article/us-mexico-oil-ninth-idUSKBN19A2M9", res.getCanonicalUrl());
+        assertEquals("Capricorn and Citla win block in Mexico shallow water oil auction", res.getTitle());
+        assertTrue(res.getText(), res.getText().startsWith("A consortium comprising Capricorn Energy, a subsidiary of Britain's Cairn Energy,"));
+        assertTrue(res.getText(), res.getText().endsWith("(Reporting by Adriana Barrera)"));
+        assertEquals("Adriana Barrera", res.getAuthorName());
+        assertEquals("(Reporting by Adriana Barrera)", res.getAuthorDescription());
+        compareDates("2017-06-19 18:20:26", res.getDate());
+    }
+
+    @Test
+    public void testReuters4() throws Exception {
+        // http://www.reuters.com/article/us-safrica-mining-idUSKBN19A2PY
+        JResult res = new JResult();
+        res.setUrl("http://www.reuters.com/article/us-safrica-mining-idUSKBN19A2PY");
+        res = extractor.extractContent(res, c.streamToString(getClass().getResourceAsStream("reuters4.html")));
+        assertEquals("http://www.reuters.com/article/us-safrica-mining-idUSKBN19A2PY", res.getCanonicalUrl());
+        assertEquals("Fitch says South Africa's new mining rules may deter investment", res.getTitle());
+        assertTrue(res.getText(), res.getText().startsWith("Fitch Ratings agency said on Monday that new regulations seeking to accelerate black ownership in South Africa's mining industry would deter investment."));
+        assertTrue(res.getText(), res.getText().endsWith("(Reporting by James Macharia. Editing by Jane Merriman)"));
+        assertEquals("James Macharia. Jane Merriman", res.getAuthorName());
+        assertEquals(StringUtils.EMPTY, res.getAuthorDescription());
+        compareDates("2017-06-19 19:12:17", res.getDate());
+    }
+
+    @Test
+    public void testFoxNews2() throws Exception {
+        // http://www.foxnews.com/tech/2017/06/19/southwest-border-cities-to-use-iris-scanning-technology-to-identify-inmates-illegal-immigrants.html
+        JResult res = new JResult();
+        res.setUrl("http://www.foxnews.com/tech/2017/06/19/southwest-border-cities-to-use-iris-scanning-technology-to-identify-inmates-illegal-immigrants.html");
+        res = extractor.extractContent(res, c.streamToString(getClass().getResourceAsStream("foxnews2.html")));
+        assertEquals("http://www.foxnews.com/tech/2017/06/19/southwest-border-cities-to-use-iris-scanning-technology-to-identify-inmates-illegal-immigrants.html", res.getCanonicalUrl());
+        assertEquals("Southwest border cities to use IRIS scanning technology to identify inmates, illegal immigrants", res.getTitle());
+        assertTrue(res.getText(), res.getText().startsWith("Criminals and illegal immigrants who get booked into jail along the southwest border will soon have one less way to hide their identity."));
+        assertTrue(res.getText(), res.getText().endsWith("but I don’t think we would have to go to those for an identification.”"));
+        assertEquals("Ray Bogan", res.getAuthorName());
+        assertEquals("Ray Bogan is a Fox News multimedia reporter based in El Paso, Texas. Follow him on twitter:", res.getAuthorDescription());
+        compareDates("2017-06-19 00:00:00", res.getDate());
+    }
+
+    @Test
+    public void testFoxNews3() throws Exception {
+        // http://www.foxnews.com/politics/2017/06/19/special-counsel-muellers-legal-team-continues-to-raise-questions.html
+        JResult res = new JResult();
+        res.setUrl("http://www.foxnews.com/politics/2017/06/19/special-counsel-muellers-legal-team-continues-to-raise-questions.html");
+        res = extractor.extractContent(res, c.streamToString(getClass().getResourceAsStream("foxnews3.html")));
+        assertEquals("http://www.foxnews.com/politics/2017/06/19/special-counsel-muellers-legal-team-continues-to-raise-questions.html", res.getCanonicalUrl());
+        assertEquals("Special Counsel Mueller's legal team continues to raise questions", res.getTitle());
+        assertTrue(res.getText(), res.getText().startsWith("President Trump's legal team and his defenders are taking an aggressive defensive stance,"));
+        assertTrue(res.getText(), res.getText().endsWith("While a second hire, Andrew Weissman, has a reputation for aggressively turning witnesses."));
+        assertEquals("Doug McKelway", res.getAuthorName());
+        assertEquals("Doug McKelway joined Fox News Channel (FNC) in November 2010 and serves as a Washington-based correspondent. Click here for more information on Doug McKelway.", res.getAuthorDescription());
+        compareDates("2017-06-19 00:00:00", res.getDate());
+    }
+
+    @Test
+    public void testYahooFinance1() throws Exception {
+        // https://uk.finance.yahoo.com/news/trump-likely-won-apos-t-212100132.html
+        JResult res = new JResult();
+        res.setUrl("https://uk.finance.yahoo.com/news/trump-likely-won-apos-t-212100132.html");
+        res = extractor.extractContent(res, c.streamToString(getClass().getResourceAsStream("finance.yahoo.com1.html")));
+        assertEquals("https://uk.finance.yahoo.com/news/trump-likely-won-apos-t-212100132.html", res.getCanonicalUrl());
+        assertEquals("Trump likely won't thwart old foe Jeff Bezos' latest move", res.getTitle());
+        assertTrue(res.getText(), res.getText().startsWith("Despite President Donald Trump 's campaign trail animosity toward Amazon CEO Jeff Bezos,"));
+        assertTrue(res.getText(), res.getText().endsWith("Whole Foods did not immediately respond to a request for comment."));
+        assertEquals("Jacob Pramuk", res.getAuthorName());
+        assertEquals("http://www.cnbc.com", res.getAuthorDescription());
+        compareDates("2017-06-19 21:21:00", res.getDate());
+    }
+
+    @Test
+    public void testStlToday() throws Exception {
+        // http://www.stltoday.com/news/national/coke-tweet-targeting-pittsburghers-uses-map-of-philadelphia/article_df15f84f-bac7-5ef6-890c-28b966fa5269.html
+        JResult res = new JResult();
+        res.setUrl("http://www.stltoday.com/news/national/coke-tweet-targeting-pittsburghers-uses-map-of-philadelphia/article_df15f84f-bac7-5ef6-890c-28b966fa5269.html");
+        res = extractor.extractContent(res, c.streamToString(getClass().getResourceAsStream("stltoday.html")));
+        assertEquals("http://www.stltoday.com/news/national/coke-tweet-targeting-pittsburghers-uses-map-of-philadelphia/article_df15f84f-bac7-5ef6-890c-28b966fa5269.html", res.getCanonicalUrl());
+        assertEquals("Coke tweet targeting Pittsburghers uses map of Philadelphia | Nation", res.getTitle());
+        assertTrue(res.getText(), res.getText().startsWith("PITTSBURGH (AP) — Coca-Cola's marketing efforts during the weekend's heatwave in Pittsburgh"));
+        assertTrue(res.getText(), res.getText().endsWith("in this case, our map accidentally missed the mark — literally.\""));
+        assertEquals(StringUtils.EMPTY, res.getAuthorName());
+        assertEquals(StringUtils.EMPTY, res.getAuthorDescription());
+        compareDates("2017-06-19 13:49:20 -05:00", res.getDate());
+    }
+
+    @Test
+    public void testCbc() throws Exception {
+        // http://www.cbc.ca/news/canada/calgary/sled-island-preview-1.4167762
+        JResult res = new JResult();
+        res.setUrl("http://www.cbc.ca/news/canada/calgary/sled-island-preview-1.4167762");
+        res = extractor.extractContent(res, c.streamToString(getClass().getResourceAsStream("cbc.html")));
+        assertEquals("http://www.cbc.ca/news/canada/calgary/sled-island-preview-1.4167762", res.getCanonicalUrl());
+        assertEquals("Sprawling, multi-venue Sled Island Festival kicks off this week", res.getTitle());
+        assertTrue(res.getText(), res.getText().startsWith("Sled Island 2017 kicks off Tuesday with more than 250 bands,"));
+        assertTrue(res.getText(), res.getText().endsWith("And we also have a lot of free events."));
+        assertEquals(StringUtils.EMPTY, res.getAuthorName());
+        assertEquals(StringUtils.EMPTY, res.getAuthorDescription());
+        compareDates("2017-06-20 00:00:00", res.getDate());
     }
 
     public static void compareDates(String expectedDateString, Date actual) {
