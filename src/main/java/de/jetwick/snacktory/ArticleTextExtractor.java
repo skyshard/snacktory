@@ -142,7 +142,7 @@ public class ArticleTextExtractor {
                 "[id=secondary]"
             ));
         aMap.put("beet.tv", Arrays.asList(
-                "[class*=single-recent-post-container]"
+                ".single-recent-post-container"
             ));
         aMap.put("efytimes.com", Arrays.asList(
                 ".data-para"
@@ -180,11 +180,11 @@ public class ArticleTextExtractor {
                 ".m-linkset__entries-item",
                 ".m-linkset",
                 ".feature-photos-story.feature-photos-column",
-                "[class*=js-carousel-pane]",
+                ".js-carousel-pane",
                 "[id=feature-photos-model]"
             ));
         aMap.put("today.com", Arrays.asList(
-                "[class*=j-video-feeds]",
+                ".j-video-feeds",
                 ".player-closedcaption"
             ));
         aMap.put("bizjournals.com", Arrays.asList(
@@ -201,7 +201,7 @@ public class ArticleTextExtractor {
                 "p:has(b):contains(See Also:)"
             ));
         aMap.put("nytimes.com", Arrays.asList(
-                "[class*=hidden]"
+                ".hidden"
             ));
         aMap.put("teenvogue.com", Arrays.asList(
                 ".rendition-social-outer"
@@ -225,10 +225,10 @@ public class ArticleTextExtractor {
                 "div.storycontent"
             ));
         aMap.put("prnewswire.com", Arrays.asList(
-                "div[class*=release-body]"
+                "div.release-body"
             ));
         aMap.put("theverge.com", Arrays.asList(
-                "article[class*=m-feature]"
+                "article.m-feature"
             ));
         aMap.put("iheart.com", Arrays.asList(
                 "article"
@@ -237,10 +237,10 @@ public class ArticleTextExtractor {
                 ".full-content"
             ));
         aMap.put("computerweekly.com", Arrays.asList(
-                "[class*=main-article-chapter]"
+                ".main-article-chapter"
         ));
         aMap.put("nytimes.com", Arrays.asList(
-                "[class*=theme-main]"
+                ".theme-main"
         ));
         aMap.put("bizjournals.com", Arrays.asList(
                 "article[class=detail]"
@@ -2090,8 +2090,8 @@ public class ArticleTextExtractor {
             }
 
             if (authorName.isEmpty()) {  // a hack for http://jdsupra.com/
-                authorName = SHelper.innerTrim(doc.select("[class*=author_name]").text());
-                if(DEBUG_AUTHOR_EXTRACTION && !authorName.isEmpty()) System.out.println("AUTHOR: [class*=author_name]");
+                authorName = SHelper.innerTrim(doc.select(".author_name").text());
+                if(DEBUG_AUTHOR_EXTRACTION && !authorName.isEmpty()) System.out.println("AUTHOR: .author_name");
             }
 
             // A generic check against common class names
@@ -2161,8 +2161,8 @@ public class ArticleTextExtractor {
 
                     // hack for mycustomer.com/
                     if(matches == null || matches.size() == 0){
-                        matches = doc.select("*[class*=field-name-field-computed-username]");
-                        if(DEBUG_AUTHOR_EXTRACTION && matches!=null && matches.size()>0) System.out.println("AUTHOR: *[class*=field-name-field-computed-username]");
+                        matches = doc.select("*.field-name-field-computed-username");
+                        if(DEBUG_AUTHOR_EXTRACTION && matches!=null && matches.size()>0) System.out.println("AUTHOR: .field-name-field-computed-username");
                     }
 
                     if(matches == null || matches.size() == 0){
@@ -2177,8 +2177,8 @@ public class ArticleTextExtractor {
 
                     // a hack for http://sports.espn.go.com/
                     if(matches == null || matches.size() == 0){
-                        matches = doc.select("cite[class*=source]");
-                        if(DEBUG_AUTHOR_EXTRACTION && matches!=null && matches.size()>0) System.out.println("AUTHOR: cite[class*=source]");
+                        matches = doc.select("cite.source");
+                        if(DEBUG_AUTHOR_EXTRACTION && matches!=null && matches.size()>0) System.out.println("AUTHOR: cite.source");
                     }
 
                     // a hack for http://marketingprofs.com/
@@ -2341,12 +2341,12 @@ public class ArticleTextExtractor {
         }
 
         // Special case for jdsupra.com
-        matches = doc.select("[class*=author_tag_firm_name]");
+        matches = doc.select(".author_tag_firm_name");
         if (matches!= null && matches.size() > 0){
             Element bestMatch = matches.first(); // assume it is the first.
             authorDesc = bestMatch.text();
             if(DEBUG_AUTHOR_DESC_EXTRACTION) {
-                System.out.println("AUTHOR_DESC: [class*=author_tag_firm_name]");
+                System.out.println("AUTHOR_DESC: .author_tag_firm_name");
                 System.out.println("AUTHOR: AUTHOR_DESC=" + authorDesc);
             }
             return SHelper.innerTrim(authorDesc);
@@ -2370,7 +2370,7 @@ public class ArticleTextExtractor {
             Element bestMatch = matches.first(); // assume it is the first.
             authorDesc = bestMatch.text();
             if(DEBUG_AUTHOR_DESC_EXTRACTION){
-                System.out.println("AUTHOR_DESC: [id*=user-biography]");
+                System.out.println("AUTHOR_DESC: [class*=user-biography]");
                 System.out.println("AUTHOR: AUTHOR_DESC=" + authorDesc);
             }
             return SHelper.innerTrim(authorDesc);
@@ -2413,7 +2413,7 @@ public class ArticleTextExtractor {
         }
 
         // http://www.computerweekly.com
-        matches = doc.select("div [class*=main-article-author-contact] a");
+        matches = doc.select("div .main-article-author-contact a");
         if (matches!= null && matches.size() > 0){
 
             List<String> descs = new ArrayList<String>();
@@ -2422,7 +2422,7 @@ public class ArticleTextExtractor {
             }
             authorDesc = StringUtils.join(descs, ", ");
             if(DEBUG_AUTHOR_DESC_EXTRACTION){
-                System.out.println("AUTHOR_DESC: [class*=main-article-author-contact] a");
+                System.out.println("AUTHOR_DESC: .main-article-author-contact a");
                 System.out.println("AUTHOR: AUTHOR_DESC=" + authorDesc);
             }
             return SHelper.innerTrim(authorDesc);
