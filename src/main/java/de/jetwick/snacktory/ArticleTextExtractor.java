@@ -252,6 +252,9 @@ public class ArticleTextExtractor {
         aMap.put("teenvogue.com", Arrays.asList(
                 "div.listicle-wrapper"
         ));
+        aMap.put("popsugar.com", Arrays.asList(
+                ".shoppable-container"
+        ));
 
         BEST_ELEMENT_PER_DOMAIN = Collections.unmodifiableMap(aMap);
     }

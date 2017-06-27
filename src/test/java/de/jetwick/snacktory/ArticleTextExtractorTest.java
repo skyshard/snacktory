@@ -3565,6 +3565,25 @@ public class ArticleTextExtractorTest {
         compareDates("2017-06-23 00:00:00", res.getDate());
     }
 
+
+    @Test
+    public void testPopSugar() throws Exception {
+        // https://www.popsugar.com/beauty/Beauty-Tips-Save-Time-Morning-36523705#photo-36587830
+        JResult res = new JResult();
+        res.setUrl("https://www.popsugar.com/beauty/Beauty-Tips-Save-Time-Morning-36523705#photo-36587830");
+        res = extractor.extractContent(res, c.streamToString(getClass().getResourceAsStream("popsugar.html")));
+        assertEquals("https://www.popsugar.com/beauty/Beauty-Tips-Save-Time-Morning-36523705", res.getCanonicalUrl());
+        assertEquals("Beauty Tips to Save Time in the Morning", res.getTitle());
+        assertTrue(res.getText(), res.getText().startsWith("You know the scene: It's 6 a.m.,"));
+        assertTrue(res.getText(), res.getText().contains("This five-minute, five-product makeup routine from Bobbi Brown Director of Global Artistry"));
+        assertTrue(res.getText(), res.getText().contains("If you wake up to find a can't-miss party invitation for the same night sitting in your in-box,"));
+        assertTrue(res.getText(), res.getText().contains("If you're really pressed for time, you can line your eyes and curl your lashes in one step."));
+        assertTrue(res.getText(), res.getText().endsWith("it's a topcoat, base coat, and strengthener all in one."));
+        assertEquals("Alicia Lu", res.getAuthorName());
+        assertEquals("Alicia Lu", res.getAuthorDescription());
+        compareDates("2017-06-02 07:05:03 -07:00", res.getDate());
+    }
+
     public static void compareDates(String expectedDateString, Date actual) {
         String[] patterns = {
                 "yyyy-MM-dd",
