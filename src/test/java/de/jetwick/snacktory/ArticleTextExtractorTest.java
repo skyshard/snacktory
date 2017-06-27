@@ -3550,6 +3550,21 @@ public class ArticleTextExtractorTest {
         compareDates("2017-05-22 00:00:00", res.getDate());
     }
 
+    @Test
+    public void testNt4admins() throws Exception {
+        // https://www.nt4admins.de/thema-des-monats/blogs-auf-nt4admins/artikel/cloud-networking-in-einer-hybrid-it-welt.html
+        JResult res = new JResult();
+        res.setUrl("https://www.nt4admins.de/thema-des-monats/blogs-auf-nt4admins/artikel/cloud-networking-in-einer-hybrid-it-welt.html");
+        res = extractor.extractContent(res, c.streamToString(getClass().getResourceAsStream("nt4admins.html")));
+        assertEquals("https://www.nt4admins.de/thema-des-monats/blogs-auf-nt4admins/artikel/cloud-networking-in-einer-hybrid-it-welt.html", res.getCanonicalUrl());
+        assertEquals("NT4Admins : Cloud-Networking in einer Hybrid-IT-Welt", res.getTitle());
+        assertTrue(res.getText(), res.getText().startsWith("Aktuell setzen Microsoft und Amazon ihren Kampf um Preis"));
+        assertTrue(res.getText(), res.getText().endsWith("können sie diesen Innovationen immer einen Schritt voraus sein."));
+        assertEquals("Patrick Hubbard", res.getAuthorName());
+        assertEquals("Patrick Hubbard, HeadGeek bei SolarWinds (Quelle: SolarWinds)", res.getAuthorDescription());
+        compareDates("2017-06-23 00:00:00", res.getDate());
+    }
+
     public static void compareDates(String expectedDateString, Date actual) {
         String[] patterns = {
                 "yyyy-MM-dd",

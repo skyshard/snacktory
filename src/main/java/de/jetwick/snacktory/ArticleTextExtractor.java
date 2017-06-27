@@ -2263,6 +2263,13 @@ public class ArticleTextExtractor {
                             System.out.println("AUTHOR: div.meta");
                     }
 
+                    // https://www.nt4admins.de/thema-des-monats/blogs-auf-nt4admins/artikel/cloud-networking-in-einer-hybrid-it-welt.html
+                    if (matches == null || matches.size() == 0) {
+                        matches = doc.select("dl > dd");
+                        if (DEBUG_AUTHOR_EXTRACTION && matches != null && matches.size() > 0)
+                            System.out.println("AUTHOR: dl > dd");
+                    }
+
                     // Regex match should be very last option in cases like
                     // http://www.reuters.com/article/us-mexico-oil-ninth-idUSKBN19A2M9
                     // http://www.reuters.com/article/us-safrica-mining-idUSKBN19A2PY
