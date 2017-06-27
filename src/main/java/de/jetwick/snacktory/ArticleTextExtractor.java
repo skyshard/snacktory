@@ -71,17 +71,6 @@ public class ArticleTextExtractor {
 
     private static final Pattern NEGATIVE_STYLE =
             Pattern.compile("hidden|display: ?none|font-size: ?small");
-    private static final String ELLIPSIS_PATTERN = "…|\\.\\.\\.";
-    private static final Pattern[] IGNORE_AUTHOR_PARTS = new Pattern[]{
-            // Deliberately keeping patterns separate to make is more readable and maintainable
-
-            // Remove the Prefixes
-            Pattern.compile("(?<![a-zA-Z])(Door|Über|by|name|author|posted|twitter|handle|news|locally researched|report(ing|ed)?( by)?|edit(ing|ed)( by)?)(?![a-zA-Z])", Pattern.CASE_INSENSITIVE|Pattern.UNICODE_CHARACTER_CLASS),
-            // Remove the Suffixes
-            Pattern.compile("((\\|| - |, ).*)"),
-            // Remove any arbitrary special symbols
-            Pattern.compile("(" + "@|:|\\(|\\)|" + ELLIPSIS_PATTERN + ")+"),
-    };
     private static final Set<String> IGNORED_TITLE_PARTS = new LinkedHashSet<String>() {
         {
             add("hacker news");
@@ -303,8 +292,8 @@ public class ArticleTextExtractor {
     private static final Pattern COMPUTER_WEEKLY_DATE_PATTERN = Pattern.compile("<a[^>]*>([^<]*)</a>");
     private static final Pattern DATE_PATTERN = Pattern.compile("\"(ptime|publish(ed)?[_\\-]?(date|time)?|(date|time)?[_\\-]?publish(ed)?|posted[_\\-]?on|display[_\\-]?(date|time)?)\"\\s*:\\s*\"(?<dateStr>[^\"]*?)\"", Pattern.CASE_INSENSITIVE);
 
-    private final String MMM_PATTERN = "(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec|January|February|March|April|May|June|July|August|September|October|November|December)";
-    private final Pattern[] DATE_PATTERNS = new Pattern[] {
+    private final static String MMM_PATTERN = "(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec|January|February|March|April|May|June|July|August|September|October|November|December)";
+    private final static Pattern[] DATE_PATTERNS = new Pattern[] {
 
             // Covers below patterns (date and time delimiter can .-/:)
             // "yyyy/MM/dd"
@@ -336,6 +325,31 @@ public class ArticleTextExtractor {
             // "dd-MM-yyyy HH:mm"
             // "dd-MM-yyyy HH:mm:ss"
             Pattern.compile("\\d{2}[\\-./]?\\d{2}[\\-./]?\\d{4}\\s*(\\d{2}[\\-.:]?\\d{2}([\\-.:]?\\d{2})?)?")
+    };
+    private static final String[] SPECIAL_SYMBOLS = new String[]{
+            "\\+",
+            "-",
+            "@",
+            ":",
+            "\\(",
+            "\\)",
+            "/",
+            "\\.\\.\\.",    // Ellipsis
+            "…",            // Ellipsis
+    };
+    private static final Pattern[] IGNORE_AUTHOR_PARTS = new Pattern[]{
+            // Deliberately keeping patterns separate to make is more readable and maintainable
+
+            // Remove the Prefixes
+            Pattern.compile("(?<![a-zA-Z])(Door|Über|by|name|author|posted|twitter|handle|news|locally researched|report(ing|ed)?( by)?|edit(ing|ed)( by)?)(?![a-zA-Z])", Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CHARACTER_CLASS),
+            // Remove month names if any
+            Pattern.compile("\\s+" + MMM_PATTERN + "\\s+"),
+            // Remove the Suffixes
+            Pattern.compile("((\\|| - |, ).*)"),
+            // Remove any sequence of numbers
+            Pattern.compile("(\\d+)"),
+            // Remove any arbitrary special symbols
+            Pattern.compile("(" + StringUtils.join(SPECIAL_SYMBOLS, "|") + ")", Pattern.CASE_INSENSITIVE),
     };
 
     public ArticleTextExtractor() {
@@ -1793,10 +1807,10 @@ public class ArticleTextExtractor {
             while (matcher.find()) {
                 dateStr = matcher.group();
                 Date parsedDate = parseDate(dateStr);
-                if (DEBUG_DATE_EXTRACTION) {
-                    System.out.println("RULE- REGEX MATCH " + pattern.pattern());
-                }
                 if (parsedDate != null) {
+                    if (DEBUG_DATE_EXTRACTION) {
+                        System.out.println("RULE- REGEX MATCH " + pattern.pattern());
+                    }
                     return parsedDate;
                 }
             }
@@ -2001,6 +2015,15 @@ public class ArticleTextExtractor {
                 authorName = SHelper.innerTrim(result.ownText());
                 if (DEBUG_AUTHOR_EXTRACTION && !authorName.isEmpty())
                     System.out.println("AUTHOR: .kasten_titel");
+            }
+
+            // http://www.it-administrator.de/themen/netzwerkmanagement/fachartikel/235539.html
+            if (authorName.isEmpty()) {
+                result = doc.select("div.date_author").first();
+                if (result != null) {
+                    authorName = SHelper.innerTrim(result.text());
+                    if(DEBUG_AUTHOR_EXTRACTION && !authorName.isEmpty()) System.out.println("AUTHOR: .date_author");
+                }
             }
 
             // http://www.einnews.com/pr_news/339534444/rackspace-reaches-openstack-leadership-milestone-six-years-and-one-billion-server-hours
@@ -2275,7 +2298,7 @@ public class ArticleTextExtractor {
         }
 
         for (Pattern pattern:IGNORE_AUTHOR_PARTS) {
-            authorName = pattern.matcher(authorName).replaceAll("");
+            authorName = pattern.matcher(authorName).replaceAll(" ");
         }
         return SHelper.innerTrim(authorName);
     }
@@ -2529,6 +2552,17 @@ public class ArticleTextExtractor {
             authorDesc = SHelper.innerTrim(matches.first().ownText());
             if(DEBUG_AUTHOR_DESC_EXTRACTION){
                 System.out.println("AUTHOR_DESC: div[class=ra-credits].ownText");
+                System.out.println("AUTHOR: AUTHOR_DESC=" + authorDesc);
+            }
+            return authorDesc;
+        }
+
+        // http://www.it-administrator.de/themen/netzwerkmanagement/fachartikel/235539.html
+        matches = doc.select("div.date_author");
+        if (matches == null || matches.size() > 0){
+            authorDesc = SHelper.innerTrim(matches.first().text());
+            if(DEBUG_AUTHOR_DESC_EXTRACTION){
+                System.out.println("AUTHOR_DESC: div.date_author");
                 System.out.println("AUTHOR: AUTHOR_DESC=" + authorDesc);
             }
             return authorDesc;

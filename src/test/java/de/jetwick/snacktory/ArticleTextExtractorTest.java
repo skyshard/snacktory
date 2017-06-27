@@ -43,7 +43,7 @@ public class ArticleTextExtractorTest {
         assertTrue(res.getText(), res.getText().endsWith("\"How Four Drinking Buddies Saved Brazil.\""));
         assertEquals("http://media.npr.org/assets/img/2010/10/04/real_wide.jpg?t=1286218782&s=3", res.getImageUrl());
         assertTrue(res.getKeywords().isEmpty());
-        assertEquals("Chana Joffe-Walt", res.getAuthorName());
+        assertEquals("Chana Joffe Walt", res.getAuthorName());
     }
 
     /*
@@ -2857,7 +2857,7 @@ public class ArticleTextExtractorTest {
         assertEquals("Rackspace Reaches OpenStack Leadership Milestone, Six Years and One Billion Server Hours", res.getTitle());
         assertTrue(res.getText(), res.getText().startsWith("/EINPresswire.com/ -- SAN FRANCISCO, CA--(Marketwired - August 11, 2016) - Rackspace® (NYSE: RAX) today announced from"));
         compareDates("2016-08-11 17:15:00", res.getDate());
-        assertEquals("Christina Weaver 210-312-4593", res.getAuthorName());
+        assertEquals("Christina Weaver", res.getAuthorName());
         assertEquals("Media Contact: Christina Weaver 210-312-4593 christina.weaver@rackspace.com", res.getAuthorDescription());
     }
 
@@ -2871,7 +2871,7 @@ public class ArticleTextExtractorTest {
         assertEquals("Hybrid Cloud Computing Industry Global Market to grow at CAGR 34.4% between 2016 – 2022", res.getTitle());
         assertTrue(res.getText(), res.getText().startsWith("Hybrid Cloud Computing Industry Global Market to grow at CAGR 34.4% between 2016 – 2022"));
         compareDates("2016-07-22 15:26:09", res.getDate());
-        assertEquals("Norah Trent wiseguyreports +1 646 845 9349 / +44 208 133 9349", res.getAuthorName());
+        assertEquals("Norah Trent wiseguyreports", res.getAuthorName());
         assertEquals("Norah Trent wiseguyreports +1 646 845 9349 / +44 208 133 9349 email us here", res.getAuthorDescription());
     }
 
@@ -3016,7 +3016,7 @@ public class ArticleTextExtractorTest {
         assertEquals("From Media Monitoring to Media Intelligence", res.getTitle());
         assertTrue(res.getText(), res.getText().startsWith("For public relations professionals, media monitoring can be both tedious and exciting."));
         assertTrue(res.getText(), res.getText().endsWith("Hungry for more? Read “How to prove PR value to your CEO” next…"));
-        assertEquals("Kelly Byrd May 3", res.getAuthorName());
+        assertEquals("Kelly Byrd", res.getAuthorName());
         assertEquals("Kelly Byrd May 3, 2017", res.getAuthorDescription());
         compareDates("2017-05-03 06:12:16 -07:00", res.getDate());
     }
@@ -3046,7 +3046,7 @@ public class ArticleTextExtractorTest {
         assertEquals("San Antonio Space Scientists Prepare for Jupiter ContactRivard Report", res.getTitle());
         assertTrue(res.getText(), res.getText().startsWith("As the countdown began on Aug. 5, 2011 at the Kennedy Space Center in Florida,"));
         assertTrue(res.getText(), res.getText().endsWith("Artistic depiction of Juno. Photo courtesy of NASA."));
-        assertEquals("Cherise Rohr-Allegrini", res.getAuthorName());
+        assertEquals("Cherise Rohr Allegrini", res.getAuthorName());
         assertEquals("https://therivardreport.com/author/cherise-rohr-allegrini/", res.getAuthorDescription());
         compareDates("2016-07-02 05:01:58", res.getDate());
     }
@@ -3529,6 +3529,25 @@ public class ArticleTextExtractorTest {
         assertEquals(StringUtils.EMPTY, res.getAuthorName());
         assertEquals(StringUtils.EMPTY, res.getAuthorDescription());
         compareDates("2017-06-20 00:00:00", res.getDate());
+    }
+
+    @Test
+    public void testITAdministrator() throws Exception {
+        // http://www.it-administrator.de/themen/netzwerkmanagement/fachartikel/235540.html
+        JResult res = new JResult();
+        res.setUrl("http://www.it-administrator.de/themen/netzwerkmanagement/fachartikel/235540.html");
+        res = extractor.extractContent(res,
+                c.streamToString(getClass().getResourceAsStream("it-administrator.html"), "iso-8859-1"));
+        assertEquals("http://www.it-administrator.de/themen/netzwerkmanagement/fachartikel/235540.html", res.getCanonicalUrl());
+        assertEquals("Monitoring fÃ¼r eine bessere Automatisierung", res.getTitle());
+        assertTrue(res.getText(), res.getText().startsWith("Monitoring fÃ¼r eine bessere Automatisierung"));
+        assertTrue(res.getText(), res.getText().endsWith("22.05.2017/jp/ln/Leon Adato, Head Geek bei SolarWinds"));
+        // @TODO - We can't extract exact author name this stage but,
+        // once we used NLP to extract entities from author name string,
+        // we are most likely to get exact author name - Leon Adato
+        assertEquals("jp ln Leon Adato", res.getAuthorName());
+        assertEquals("22.05.2017/jp/ln/Leon Adato, Head Geek bei SolarWinds", res.getAuthorDescription());
+        compareDates("2017-05-22 00:00:00", res.getDate());
     }
 
     public static void compareDates(String expectedDateString, Date actual) {
