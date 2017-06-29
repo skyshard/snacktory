@@ -43,7 +43,7 @@ public class ArticleTextExtractorTest {
         assertTrue(res.getText(), res.getText().endsWith("\"How Four Drinking Buddies Saved Brazil.\""));
         assertEquals("http://media.npr.org/assets/img/2010/10/04/real_wide.jpg?t=1286218782&s=3", res.getImageUrl());
         assertTrue(res.getKeywords().isEmpty());
-        assertEquals("Chana Joffe-Walt", res.getAuthorName());
+        assertEquals("Chana Joffe Walt", res.getAuthorName());
     }
 
     /*
@@ -181,7 +181,7 @@ public class ArticleTextExtractorTest {
                 "Sunday Service", "Indigo", "Patrick Zimmer", "Patrick Zimmer aka finn.", "video", "video sharing",
                 "digital cameras", "videoblog", "vidblog", "video blogging", "home video", "home movie"),
                 res.getKeywords());
-        assertEquals("finn.", res.getAuthorName());
+        assertEquals("finn", res.getAuthorName());
     }
 
     /* Test broken after change to check ratio of text in getFormattedText. TODO: Find a way to support this.
@@ -377,7 +377,7 @@ public class ArticleTextExtractorTest {
         assertFalse(res.getText(), res.getText().contains("Please verify you're not a robot by clicking the box. Invalid email address."));
         assertFalse(res.getText(), res.getText().contains("View all New York Times newsletters. See Sample Manage Email Preferences Not you? Privacy Policy"));
         assertTrue(res.getText(), res.getText().endsWith("He’s the embodiment of integrity.”"));
-        assertEquals("Rebecca R. Ruiz and Mark Landler", res.getAuthorName());
+        assertEquals("Rebecca R Ruiz and Mark Landler", res.getAuthorName());
         assertEquals("https://www.nytimes.com/by/rebecca-r-ruiz", res.getAuthorDescription());
         compareDates("2017-05-17 00:00:00", res.getDate());
     }
@@ -2425,7 +2425,7 @@ public class ArticleTextExtractorTest {
         assertTrue(res.getText(), res.getText().startsWith("Warning to parents and guardians: Beware of collecting, storing or sharing your child's biometric details,"));
         assertFalse(res.getText(), res.getText().contains("See Also: 2017 Predictions on Data Security: Insights on Important Trends in Security for the Banking Industry"));
         assertTrue(res.getText(), res.getText().endsWith("as they would their Social Security card or birth certificate."));
-        assertEquals("Mathew J. Schwartz", res.getAuthorName());
+        assertEquals("Mathew J Schwartz", res.getAuthorName());
         assertEquals("About the Author Mathew J. Schwartz Executive Editor, DataBreachToday & Europe Schwartz is an award-winning journalist with two decades of experience in magazines, newspapers and electronic media. He has covered the information security and privacy sector throughout his career. Before joining Information Security Media Group in 2014, where he now serves as the Executive Editor, DataBreachToday and for European news coverage, Schwartz was the information security beat reporter for InformationWeek and a frequent contributor to DarkReading, amongst other publications. He lives in Scotland.", res.getAuthorDescription());
         compareDates("2016-06-29 00:00:00", res.getDate());
     }
@@ -2857,7 +2857,7 @@ public class ArticleTextExtractorTest {
         assertEquals("Rackspace Reaches OpenStack Leadership Milestone, Six Years and One Billion Server Hours", res.getTitle());
         assertTrue(res.getText(), res.getText().startsWith("/EINPresswire.com/ -- SAN FRANCISCO, CA--(Marketwired - August 11, 2016) - Rackspace® (NYSE: RAX) today announced from"));
         compareDates("2016-08-11 17:15:00", res.getDate());
-        assertEquals("Christina Weaver 210-312-4593", res.getAuthorName());
+        assertEquals("Christina Weaver", res.getAuthorName());
         assertEquals("Media Contact: Christina Weaver 210-312-4593 christina.weaver@rackspace.com", res.getAuthorDescription());
     }
 
@@ -2871,7 +2871,7 @@ public class ArticleTextExtractorTest {
         assertEquals("Hybrid Cloud Computing Industry Global Market to grow at CAGR 34.4% between 2016 – 2022", res.getTitle());
         assertTrue(res.getText(), res.getText().startsWith("Hybrid Cloud Computing Industry Global Market to grow at CAGR 34.4% between 2016 – 2022"));
         compareDates("2016-07-22 15:26:09", res.getDate());
-        assertEquals("Norah Trent wiseguyreports +1 646 845 9349 / +44 208 133 9349", res.getAuthorName());
+        assertEquals("Norah Trent wiseguyreports", res.getAuthorName());
         assertEquals("Norah Trent wiseguyreports +1 646 845 9349 / +44 208 133 9349 email us here", res.getAuthorDescription());
     }
 
@@ -3016,7 +3016,7 @@ public class ArticleTextExtractorTest {
         assertEquals("From Media Monitoring to Media Intelligence", res.getTitle());
         assertTrue(res.getText(), res.getText().startsWith("For public relations professionals, media monitoring can be both tedious and exciting."));
         assertTrue(res.getText(), res.getText().endsWith("Hungry for more? Read “How to prove PR value to your CEO” next…"));
-        assertEquals("Kelly Byrd May 3", res.getAuthorName());
+        assertEquals("Kelly Byrd", res.getAuthorName());
         assertEquals("Kelly Byrd May 3, 2017", res.getAuthorDescription());
         compareDates("2017-05-03 06:12:16 -07:00", res.getDate());
     }
@@ -3046,7 +3046,7 @@ public class ArticleTextExtractorTest {
         assertEquals("San Antonio Space Scientists Prepare for Jupiter ContactRivard Report", res.getTitle());
         assertTrue(res.getText(), res.getText().startsWith("As the countdown began on Aug. 5, 2011 at the Kennedy Space Center in Florida,"));
         assertTrue(res.getText(), res.getText().endsWith("Artistic depiction of Juno. Photo courtesy of NASA."));
-        assertEquals("Cherise Rohr-Allegrini", res.getAuthorName());
+        assertEquals("Cherise Rohr Allegrini", res.getAuthorName());
         assertEquals("https://therivardreport.com/author/cherise-rohr-allegrini/", res.getAuthorDescription());
         compareDates("2016-07-02 05:01:58", res.getDate());
     }
@@ -3166,7 +3166,7 @@ public class ArticleTextExtractorTest {
         assertEquals("Computerpartner - hpc Consulting nominiert für Constantinus Award 2017", res.getTitle());
         assertTrue(res.getText(), res.getText().startsWith("Mit ihrem innovativen Zeitmessungssystem für das Erzberg-Rodeo schaffte hpc Consulting"));
         assertTrue(res.getText(), res.getText().endsWith(", meint Anatol Heinrich, Geschäftsführer hpc Consulting."));
-        assertEquals("M. Reisner", res.getAuthorName());
+        assertEquals("M Reisner", res.getAuthorName());
         assertEquals(StringUtils.EMPTY, res.getAuthorDescription());
         compareDates("2017-06-02 00:00:00", res.getDate());
     }
@@ -3451,7 +3451,7 @@ public class ArticleTextExtractorTest {
         assertEquals("Fitch says South Africa's new mining rules may deter investment", res.getTitle());
         assertTrue(res.getText(), res.getText().startsWith("Fitch Ratings agency said on Monday that new regulations seeking to accelerate black ownership in South Africa's mining industry would deter investment."));
         assertTrue(res.getText(), res.getText().endsWith("(Reporting by James Macharia. Editing by Jane Merriman)"));
-        assertEquals("James Macharia. Jane Merriman", res.getAuthorName());
+        assertEquals("James Macharia Jane Merriman", res.getAuthorName());
         assertEquals(StringUtils.EMPTY, res.getAuthorDescription());
         compareDates("2017-06-19 19:12:17", res.getDate());
     }

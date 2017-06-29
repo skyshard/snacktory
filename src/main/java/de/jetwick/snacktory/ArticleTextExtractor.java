@@ -1,6 +1,7 @@
 package de.jetwick.snacktory;
 
 import com.google.common.net.InternetDomainName;
+import de.jetwick.snacktory.utils.AuthorUtils;
 import de.jetwick.snacktory.utils.Configuration;
 import de.jetwick.snacktory.utils.DateUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -92,9 +93,6 @@ public class ArticleTextExtractor {
     };
     private static final OutputFormatter DEFAULT_FORMATTER = new OutputFormatter();
     private OutputFormatter formatter = DEFAULT_FORMATTER;
-
-    private static final int MAX_AUTHOR_NAME_LENGHT = 255;
-    private static final int MIN_AUTHOR_NAME_LENGTH = 4;
 
     private static final int MAX_LINK_SIZE = 512;
 
@@ -303,41 +301,6 @@ public class ArticleTextExtractor {
     private static final Pattern COMPUTER_WEEKLY_DATE_PATTERN = Pattern.compile("<a[^>]*>([^<]*)</a>");
     private static final Pattern DATE_PATTERN = Pattern.compile("\"(ptime|publish(ed)?[_\\-]?(date|time)?|(date|time)?[_\\-]?publish(ed)?|posted[_\\-]?on|display[_\\-]?(date|time)?)\"\\s*:\\s*\"(?<dateStr>[^\"]*?)\"", Pattern.CASE_INSENSITIVE);
 
-    private final String MMM_PATTERN = "(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec|January|February|March|April|May|June|July|August|September|October|November|December)";
-    private final Pattern[] DATE_PATTERNS = new Pattern[] {
-
-            // Covers below patterns (date and time delimiter can .-/:)
-            // "yyyy/MM/dd"
-            // "yyyy/MM/dd HH:mm"
-            // "yyyy/MM/dd HH:mm:ss"
-            Pattern.compile("\\d{4}[\\-./]?\\d{2}[\\-./]?\\d{2}\\s*(\\d{2}[\\-.:]?\\d{2}([\\-.:]?\\d{2})?)?"),
-
-            // Covers below patterns (date and time delimiter can .-/:)
-            // "dd MMM yyyy"
-            // "dd MMM yyyy HH:mm"
-            // "dd MMM yyyy HH:mm:ss"
-            // "dd MMMM yyyy"
-            // "dd MMMM yyyy HH:mm"
-            // "dd MMMM yyyy HH:mm:ss"
-            Pattern.compile("\\d{2} " + MMM_PATTERN + "\\s\\d{4}\\s*(\\d{2}[\\-.:]?\\d{2}([\\-.:]?\\d{2})?)?", Pattern.CASE_INSENSITIVE),
-
-            // Covers below patterns (date and time delimiter can .-/:)
-            // "MMM dd, yyyy"
-            // "MMM dd, yyyy HH:mm"
-            // "MMM dd, yyyy HH:mm:ss"
-            // "MMMM dd, yyyy"
-            // "MMMM dd, yyyy HH:mm"
-            // "MMMM dd, yyyy HH:mm:ss"
-            Pattern.compile( MMM_PATTERN + "\\s\\d{2},\\s\\d{4}\\s*(\\d{2}[\\-.:]?\\d{2}([\\-.:]?\\d{2})?)?", Pattern.CASE_INSENSITIVE),
-
-            // Covers below patterns (date and time delimiter can .-/:)
-            // This is ambiguous to MM-dd-yyyy pattern. Not sure how we can differentiate between two.
-            // "dd-MM-yyyy"
-            // "dd-MM-yyyy HH:mm"
-            // "dd-MM-yyyy HH:mm:ss"
-            Pattern.compile("\\d{2}[\\-./]?\\d{2}[\\-./]?\\d{4}\\s*(\\d{2}[\\-.:]?\\d{2}([\\-.:]?\\d{2})?)?")
-    };
-
     public ArticleTextExtractor() {
         setUnlikely("com(bx|ment|munity)|dis(qus|cuss)|e(xtra|[-]?mail)|foot|"
                 + "header|menu|re(mark|ply)|rss|sh(are|outbox)|sponsor"
@@ -479,7 +442,8 @@ public class ArticleTextExtractor {
         res.setLanguage(extractLanguage(doc));
 
         // get author information
-        res.setAuthorName(extractAuthorName(doc));
+        res.setRawAuthorName(extractAuthorName(doc));
+        res.setAuthorName(AuthorUtils.cleanup(res.getRawAuthorName()));
         res.setAuthorDescription(extractAuthorDescription(doc, res.getAuthorName()));
 
         // add extra selection gravity to any element containing author name
@@ -568,11 +532,6 @@ public class ArticleTextExtractor {
         res.setFaviconUrl(extractFaviconUrl(doc));
         res.setKeywords(extractKeywords(doc));
 
-        // Sanity checks in author
-        if (res.getAuthorName().length() > MAX_AUTHOR_NAME_LENGHT){
-            res.setAuthorName(utf8truncate(res.getAuthorName(), MAX_AUTHOR_NAME_LENGHT));
-        }
-
         // Sanity checks in author description.
         String authorDescSnippet = getSnippet(res.getAuthorDescription());
         if (getSnippet(res.getText()).equals(authorDescSnippet) ||
@@ -580,7 +539,7 @@ public class ArticleTextExtractor {
             res.setAuthorDescription("");
         } else {
             if (res.getAuthorDescription().length() > MAX_AUTHOR_DESC_LENGHT){
-                res.setAuthorDescription(utf8truncate(res.getAuthorDescription(), MAX_AUTHOR_DESC_LENGHT));
+                res.setAuthorDescription(SHelper.utf8truncate(res.getAuthorDescription(), MAX_AUTHOR_DESC_LENGHT));
             }
         }
 
@@ -657,7 +616,7 @@ public class ArticleTextExtractor {
         if (text.length() > res.getTitle().length()) {
             if (maxContentSize > 0){
                 if (text.length() > maxContentSize){
-                    text = utf8truncate(text, maxContentSize);
+                    text = SHelper.utf8truncate(text, maxContentSize);
                 }
             }
             res.setText(text);
@@ -1788,7 +1747,7 @@ public class ArticleTextExtractor {
 
     public Date extractDateUsingRegex(String document) {
         String dateStr;
-        for (Pattern pattern : DATE_PATTERNS) {
+        for (Pattern pattern : DateUtils.DATE_PATTERNS) {
             Matcher matcher = pattern.matcher(document);
             while (matcher.find()) {
                 dateStr = matcher.group();
@@ -2254,9 +2213,6 @@ public class ArticleTextExtractor {
                         Element bestMatch = getBestMatchElement(matches);
                         if (!(bestMatch == null)) {
                             authorName = bestMatch.text();
-                            if (authorName.length() < MIN_AUTHOR_NAME_LENGTH) {
-                                authorName = bestMatch.text().split(",")[0];
-                            }
                         }
                     }
                 } catch(Exception e){
@@ -2269,15 +2225,7 @@ public class ArticleTextExtractor {
             System.out.println("AUTHOR: authorName=" + authorName);
         }
 
-        // Remove date patterns if any
-        for (Pattern pattern:DATE_PATTERNS) {
-            authorName = pattern.matcher(authorName).replaceAll("");
-        }
-
-        for (Pattern pattern:IGNORE_AUTHOR_PARTS) {
-            authorName = pattern.matcher(authorName).replaceAll("");
-        }
-        return SHelper.innerTrim(authorName);
+        return authorName;
     }
 
     // Returns the author description or null
@@ -3346,41 +3294,6 @@ public class ArticleTextExtractor {
             }
         }
         return null;
-    }
-
-    /**
-     * Truncate a Java string so that its UTF-8 representation will not
-     * exceed the specified number of bytes.
-     *
-     * For discussion of why you might want to do this, see
-     * http://lpar.ath0.com/2011/06/07/unicode-alchemy-with-db2/
-     */
-    public static String utf8truncate(String input, int length) {
-      StringBuffer result = new StringBuffer(length);
-      int resultlen = 0;
-      for (int i = 0; i < input.length(); i++) {
-        char c = input.charAt(i);
-        int charlen = 0;
-        if (c <= 0x7f) {
-          charlen = 1;
-        } else if (c <= 0x7ff) {
-          charlen = 2;
-        } else if (c <= 0xd7ff) {
-          charlen = 3;
-        } else if (c <= 0xdbff) {
-          charlen = 4;
-        } else if (c <= 0xdfff) {
-          charlen = 0;
-        } else if (c <= 0xffff) {
-          charlen = 3;
-        }
-        if (resultlen + charlen > length) {
-          break;
-        }
-        result.append(c);
-        resultlen += charlen;
-      }
-      return result.toString();
     }
 
     /**
