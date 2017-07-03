@@ -28,6 +28,9 @@ final public class AuthorUtils {
     public static final Pattern[] IGNORE_AUTHOR_PARTS = new Pattern[]{
             // Deliberately keeping patterns separate to make is more readable and maintainable
 
+            // Extract author-name from facebook profile urls
+            Pattern.compile("((http(s)?://)?(www\\.)?facebook.com/)"),
+
             // Remove the Prefixes
             Pattern.compile("(?<![\\w])(from|Door|Über|by|name|author|posted|twitter|handle|news|locally researched|report(ing|ed)?( by)?|edit(ing|ed)( by)?)(?![\\w])", Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CHARACTER_CLASS),
             // Remove month names if any
@@ -41,7 +44,7 @@ final public class AuthorUtils {
             // Remove any starting special symbols
             Pattern.compile("^[\\s]*" + SPECIAL_SYMBOLS_PATTERN),
             // Remove any ending special symbols
-            Pattern.compile(SPECIAL_SYMBOLS_PATTERN + "[\\s]*$")
+            Pattern.compile(SPECIAL_SYMBOLS_PATTERN + "[\\s]*$"),
     };
 
     private static final int MAX_AUTHOR_NAME_LENGTH = 255;

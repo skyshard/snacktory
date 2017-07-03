@@ -72,17 +72,6 @@ public class ArticleTextExtractor {
 
     private static final Pattern NEGATIVE_STYLE =
             Pattern.compile("hidden|display: ?none|font-size: ?small");
-    private static final String ELLIPSIS_PATTERN = "…|\\.\\.\\.";
-    private static final Pattern[] IGNORE_AUTHOR_PARTS = new Pattern[]{
-            // Deliberately keeping patterns separate to make is more readable and maintainable
-
-            // Remove the Prefixes
-            Pattern.compile("(?<![a-zA-Z])(Door|Über|by|name|author|posted|twitter|handle|news|locally researched|report(ing|ed)?( by)?|edit(ing|ed)( by)?)(?![a-zA-Z])", Pattern.CASE_INSENSITIVE|Pattern.UNICODE_CHARACTER_CLASS),
-            // Remove the Suffixes
-            Pattern.compile("((\\|| - |, ).*)"),
-            // Remove any arbitrary special symbols
-            Pattern.compile("(" + "@|:|\\(|\\)|" + ELLIPSIS_PATTERN + ")+"),
-    };
     private static final Set<String> IGNORED_TITLE_PARTS = new LinkedHashSet<String>() {
         {
             add("hacker news");
@@ -1752,10 +1741,10 @@ public class ArticleTextExtractor {
             while (matcher.find()) {
                 dateStr = matcher.group();
                 Date parsedDate = parseDate(dateStr);
-                if (DEBUG_DATE_EXTRACTION) {
-                    System.out.println("RULE- REGEX MATCH " + pattern.pattern());
-                }
                 if (parsedDate != null) {
+                    if (DEBUG_DATE_EXTRACTION) {
+                        System.out.println("RULE- REGEX MATCH " + pattern.pattern());
+                    }
                     return parsedDate;
                 }
             }
