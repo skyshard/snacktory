@@ -23,19 +23,25 @@ final public class AuthorUtils {
             "…",            // Ellipsis
     };
 
+    public static final String SPECIAL_SYMBOLS_PATTERN = "(" + StringUtils.join(SPECIAL_SYMBOLS, "|") + ")";
+
     public static final Pattern[] IGNORE_AUTHOR_PARTS = new Pattern[]{
             // Deliberately keeping patterns separate to make is more readable and maintainable
 
             // Remove the Prefixes
-            Pattern.compile("(?<![a-zA-Z])(from|Door|Über|by|name|author|posted|twitter|handle|news|locally researched|report(ing|ed)?( by)?|edit(ing|ed)( by)?)(?![a-zA-Z])", Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CHARACTER_CLASS),
+            Pattern.compile("(?<![\\w])(from|Door|Über|by|name|author|posted|twitter|handle|news|locally researched|report(ing|ed)?( by)?|edit(ing|ed)( by)?)(?![\\w])", Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CHARACTER_CLASS),
             // Remove month names if any
             Pattern.compile("\\s+" + DateUtils.MMM_PATTERN + "\\s+"),
             // Remove the Suffixes
             Pattern.compile("((\\|| - |, ).*)"),
             // Remove any sequence of numbers
             Pattern.compile("(\\d+)"),
-            // Remove any arbitrary special symbols
-            Pattern.compile("(" + StringUtils.join(SPECIAL_SYMBOLS, "|") + ")", Pattern.CASE_INSENSITIVE),
+            // Remove any arbitrary special "whitespace followed by specil symbol followed by whitespace"
+            Pattern.compile("(?<![\\w])" + SPECIAL_SYMBOLS_PATTERN + "(?![\\w])", Pattern.UNICODE_CHARACTER_CLASS),
+            // Remove any starting special symbols
+            Pattern.compile("^[\\s]*" + SPECIAL_SYMBOLS_PATTERN),
+            // Remove any ending special symbols
+            Pattern.compile(SPECIAL_SYMBOLS_PATTERN + "[\\s]*$")
     };
 
     private static final int MAX_AUTHOR_NAME_LENGTH = 255;
