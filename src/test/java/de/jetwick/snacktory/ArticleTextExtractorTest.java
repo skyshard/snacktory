@@ -3600,6 +3600,20 @@ public class ArticleTextExtractorTest {
         assertEquals("By Kelly Byrd, PR Engineer,", res.getRawAuthorName());
     }
 
+    @Test
+    public void testBusinessinsider() throws Exception {
+        // http://markets.businessinsider.com/news/stocks/Why-Ambarella-Inc--Stock-Fell-17-1percent-in-June-5560734
+        JResult res = new JResult();
+        res.setUrl("http://markets.businessinsider.com/news/stocks/Why-Ambarella-Inc--Stock-Fell-17-1percent-in-June-5560734");
+        res = extractor.extractContent(res, c.streamToString(getClass().getResourceAsStream("markets.businessinsider.html")));
+        assertEquals("http://markets.businessinsider.com/news/stocks/Why-Ambarella-Inc--Stock-Fell-17-1percent-in-June-5560734", res.getCanonicalUrl());
+        assertEquals("Why Ambarella Inc. Stock Fell 17.1% in June", res.getTitle());
+        assertEquals(res.getText(), "The market was less than impressed with the video-processing chip specialist's second-quarter guidance. Here's what investors need to know.");
+        assertEquals("MotleyFool", res.getAuthorName());
+        assertEquals(res.getAuthorName(), res.getAuthorDescription());
+        compareDates("2017-07-04 02:46:00", res.getDate());
+    }
+
     public static void compareDates(String expectedDateString, Date actual) {
         String[] patterns = {
                 "yyyy-MM-dd",

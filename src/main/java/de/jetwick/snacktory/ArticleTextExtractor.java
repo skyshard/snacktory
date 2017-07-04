@@ -300,7 +300,7 @@ public class ArticleTextExtractor {
                 + "login|si(debar|gn|ngle)");
         setPositive("(^(body|content|h?entry|main|page|post|text|blog|story|haupt))"
                 + "|arti(cle|kel)|instapaper_body|storybody|short-story|storycontent|articletext|story-primary|^newsContent$|dcontainer|announcement-details");
-        setHighlyPositive("news-detail-content|news-release-detail|storybody|main-content|articlebody|article_body|article-body|html-view-content|entry__body|^main-article$|^article__content$|^articleContent$|^mainEntityOfPage$|art_body_article|^article_text$|main-article-chapter|post-body");
+        setHighlyPositive("news-content|news-detail-content|news-release-detail|storybody|main-content|articlebody|article_body|article-body|html-view-content|entry__body|^main-article$|^article__content$|^articleContent$|^mainEntityOfPage$|art_body_article|^article_text$|main-article-chapter|post-body");
         setNegative("nav($|igation)|user|com(ment|bx)|(^com-)|contact|"
                 + "foot|masthead|(me(dia|ta))|outbrain|promo|related|scroll|(sho(utbox|pping))|"
                 + "sidebar|sponsor|tags|tool|widget|player|disclaimer|toc|infobox|vcard|title|truncate|slider|^sectioncolumns$|ad-container");
@@ -2004,6 +2004,14 @@ public class ArticleTextExtractor {
                 if (result != null) {
                     authorName = SHelper.innerTrim(result.text().split(",")[0]);
                     if(DEBUG_AUTHOR_EXTRACTION && !authorName.isEmpty()) System.out.println("AUTHOR: div#namepost");
+                }
+            }
+
+            if (authorName.isEmpty()) { // http://markets.businessinsider.com/news/stocks/Why-Ambarella-Inc--Stock-Fell-17-1percent-in-June-5560734
+                result = doc.select("div.news-post-source").first();
+                if (result != null) {
+                    authorName = SHelper.innerTrim(result.text());
+                    if(DEBUG_AUTHOR_EXTRACTION && !authorName.isEmpty()) System.out.println("AUTHOR: div#news-post-source");
                 }
             }
 
