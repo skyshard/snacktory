@@ -43,7 +43,7 @@ public class ArticleTextExtractorTest {
         assertTrue(res.getText(), res.getText().endsWith("\"How Four Drinking Buddies Saved Brazil.\""));
         assertEquals("http://media.npr.org/assets/img/2010/10/04/real_wide.jpg?t=1286218782&s=3", res.getImageUrl());
         assertTrue(res.getKeywords().isEmpty());
-        assertEquals("Chana Joffe Walt", res.getAuthorName());
+        assertEquals("Chana Joffe-Walt", res.getAuthorName());
     }
 
     /*
@@ -181,7 +181,7 @@ public class ArticleTextExtractorTest {
                 "Sunday Service", "Indigo", "Patrick Zimmer", "Patrick Zimmer aka finn.", "video", "video sharing",
                 "digital cameras", "videoblog", "vidblog", "video blogging", "home video", "home movie"),
                 res.getKeywords());
-        assertEquals("finn.", res.getAuthorName());
+        assertEquals("finn", res.getAuthorName());
     }
 
     /* Test broken after change to check ratio of text in getFormattedText. TODO: Find a way to support this.
@@ -3046,7 +3046,7 @@ public class ArticleTextExtractorTest {
         assertEquals("San Antonio Space Scientists Prepare for Jupiter ContactRivard Report", res.getTitle());
         assertTrue(res.getText(), res.getText().startsWith("As the countdown began on Aug. 5, 2011 at the Kennedy Space Center in Florida,"));
         assertTrue(res.getText(), res.getText().endsWith("Artistic depiction of Juno. Photo courtesy of NASA."));
-        assertEquals("Cherise Rohr Allegrini", res.getAuthorName());
+        assertEquals("Cherise Rohr-Allegrini", res.getAuthorName());
         assertEquals("https://therivardreport.com/author/cherise-rohr-allegrini/", res.getAuthorDescription());
         compareDates("2016-07-02 05:01:58", res.getDate());
     }
@@ -3545,7 +3545,7 @@ public class ArticleTextExtractorTest {
         // @TODO - We can't extract exact author name this stage but,
         // once we used NLP to extract entities from author name string,
         // we are most likely to get exact author name - Leon Adato
-        assertEquals("jp ln Leon Adato", res.getAuthorName());
+        assertEquals("jp/ln/Leon Adato", res.getAuthorName());
         assertEquals("22.05.2017/jp/ln/Leon Adato, Head Geek bei SolarWinds", res.getAuthorDescription());
         compareDates("2017-05-22 00:00:00", res.getDate());
     }
@@ -3582,6 +3582,22 @@ public class ArticleTextExtractorTest {
         assertEquals("Alicia Lu", res.getAuthorName());
         assertEquals("Alicia Lu", res.getAuthorDescription());
         compareDates("2017-06-02 07:05:03 -07:00", res.getDate());
+    }
+
+    @Test
+    public void testRawAuthorName() throws Exception {
+        // http://www.einnews.com/pr_news/336348008/hybrid-cloud-computing-industry-global-market-to-grow-at-cagr-34-4-between-2016-2022
+        JResult res = new JResult();
+        res = extractor.extractContent(res, c.streamToString(getClass().getResourceAsStream("einnews_1.html")));
+        assertEquals("Norah Trent wiseguyreports +1 646 845 9349 / +44 208 133 9349", res.getRawAuthorName());
+    }
+
+    @Test
+    public void testRawAuthorName1() throws Exception {
+        // https://www.bulldogreporter.com/are-you-guilty-of-pr-data-bias-what-why-and-how-to-check/
+        JResult res = new JResult();
+        res = extractor.extractContent(res, c.streamToString(getClass().getResourceAsStream("bulldogreporter.html")));
+        assertEquals("By Kelly Byrd, PR Engineer,", res.getRawAuthorName());
     }
 
     public static void compareDates(String expectedDateString, Date actual) {
