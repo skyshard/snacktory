@@ -1,0 +1,522 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <meta http-equiv="Content-Language" content="de" />
+    <title>Monitoring für eine bessere Automatisierung | it-administrator.de</title><meta name="Keywords" lang="de" xml:lang="de" content="Monitoring für eine bessere Automatisierung, Administrator, Systemadministrator, Netzwerkadministrator, Systemmanagement, Netzwerkmanagement, Netzwerkinfrastruktur, Sicherheit, Storage, Windows, Unix, Linux, Netware" />
+    <meta name="organization" content="Heinemann Verlag GmbH, Leopoldstraße 87, 80802 M&uuml;nchen" />
+    <meta name="author" content="Heinemann Verlag GmbH, Leopoldstraße 87, 80802 M&uuml;nchen" />
+    <meta name="publisher" content="Heinemann Verlag GmbH, Leopoldstraße 87, 80802 M&uuml;nchen" />
+    <meta name="copyright" content="Heinemann Verlag GmbH, Leopoldstraße 87, 80802 M&uuml;nchen" />
+    <meta http-equiv="Expires" content="0" />
+    <meta http-equiv="cache-control" content="no-cache" />
+    <meta http-equiv="pragma" content="no-cache" />
+    <meta name="robots" content="index, follow" />
+    <meta name="revisit-after" content="1 days" />
+    <meta name="MSSmartTagsPreventParsing" content="true" />
+    <meta http-equiv="imagetoolbar" content="no" />
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<scr'+'ipt src="/inc/js/jquery-1.9.1.min.js"></scr'+'ipt>');</script>
+
+    <script type="text/javascript" src="/inc/js/ita.js?cb=1704201320"></script>
+
+
+
+
+
+
+    <script type="text/javascript">
+	var Ads_BA_ADIDsite = "it-administrator.de";
+	var Ads_BA_ADIDsection = "netzwerkmanagement";
+	var Ads_BA_keyword = "";
+</script>
+    <script type="text/javascript" src="/inc/js/itad_adlib3.js"></script>
+
+
+
+
+
+
+
+    <link rel="stylesheet" type="text/css" href="/inc/css/ita.css?cb=1704201320" />
+    <!--[if IE 7]><link rel="stylesheet" type="text/css" href="/inc/css/ita_ie7.css" /><![endif]-->
+
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="http://www.it-administrator.de/rss.xml" />
+
+    <!-- google analytics -->
+    <script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+    <script type="text/javascript">
+try{
+var pageTracker = _gat._getTracker("UA-523549-1");
+_gat._anonymizeIp();
+pageTracker._trackPageview();
+} catch(err) {}</script>
+
+
+</head>
+<body><div class="body_wrapper clearfix">
+
+    <!-- Start Alexa Certify Javascript -->
+    <script type="text/javascript">
+_atrk_opts = { atrk_acct:"7nITh1aUXR00E+", domain:"it-administrator.de",dynamic: true};
+(function() { var as = document.createElement('script'); as.type = 'text/javascript'; as.async = true; as.src = "https://d31qbv1cthcecs.cloudfront.net/atrk.js"; var s = document.getElementsByTagName('script')[0];s.parentNode.insertBefore(as, s); })();
+</script>
+    <noscript><img src="https://d5nxst8fruw4z.cloudfront.net/atrk.gif?account=7nITh1aUXR00E+" style="display:none" height="1" width="1" alt="" /></noscript>
+    <!-- End Alexa Certify Javascript -->
+
+
+    <div class="adlib_wrapper adlib_wrapper_leaderboard">
+
+
+        <div id="Ads_BA_BS"><script type="text/javascript">Ads_BA_AD('BS');</script></div>
+
+
+    </div>
+
+
+    <div id="wrapper">
+        <!-- Header Logo, Topnavigation & Servicenavigation -->
+        <div id="header">
+            <div id="ita_logo">
+                <a href="/"><img src="/img/intern/ita-header-2014-2.png" width="990" height="79" alt=""></a>
+                <a class="link_adminmagazin" href="http://www.admin-magazin.de/" target="_blank"></a>
+            </div>
+            <div id="topnav">
+                <!-- Navigation initialisieren -->
+
+
+                <!-- Definition Navigations-Folder -->
+                <!-- Definition Navigations-Item -->
+
+                <!-- Definition Navigations-Folder -->
+                <!-- Definition Navigations-Item -->
+
+                <!-- Definition Navigations-Folder -->
+                <!-- Definition Navigations-Item -->
+
+                <!-- Definition Navigations-Folder -->
+                <!-- Definition Navigations-Item -->
+
+                <!-- Definition Navigations-Folder -->
+                <!-- Definition Navigations-Item -->
+
+                <!-- Definition Navigations-Folder -->
+                <!-- Definition Navigations-Item -->
+
+                <!-- Definition Navigations-Folder -->
+                <!-- Definition Navigations-Item -->
+
+                <!-- Definition Navigations-Folder -->
+                <!-- Definition Navigations-Item -->
+
+                <!-- Definition Navigations-Folder -->
+                <!-- Definition Navigations-Item -->
+
+                <!-- Definition Navigations-Folder -->
+                <!-- Definition Navigations-Item -->
+
+                <!-- Definition Navigations-Folder -->
+                <!-- Definition Navigations-Item -->
+
+                <!-- Definition Navigations-Folder aktiv -->
+                <!-- Definition Navigations-Item aktiv -->
+
+
+                <!-- Navigation ausgeben -->
+                <ul>
+                    <li><a class="current" href="/">Home</a></li><li><a href="/newsletter/">Newsletter</a></li><li><a href="/workshops/">Trainings</a></li><li><a href="/job-weiterbildung/">Job &amp; Weiterbildung</a></li><li class="markt"><a href="/markt/whitepapers/">Markt</a></li><li class="markt"><a href="/lexikon/">Lexikon</a></li><li class="magazin"><a href="/magazin/it-administrator/">Magazin</a></li><li class="magazin"><a href="http://shop.heinemann-verlag.de/">Abo &amp; Kiosk</a></li><li class="magazin"><a href="/downloads/software/">Downloads</a></li>		</ul>
+                <ul class="social_buttons">
+                    <li class="social_button twitter"><a href="http://twitter.com/ita_blog" target="_blank">IT-Administrator bei Twitter</a></li>
+                    <li class="social_button facebook"><a href="http://facebook.de/itanet" target="_blank">IT-Administrator bei Facebook</a></li>
+                    <li class="social_button googleplus"><a href="https://plus.google.com/117247849177653471635/" target="_blank">IT-Administrator bei Google+</a></li>
+                    <li class="social_button xing"><a href="http://xing.com/net/itanet" target="_blank">IT-Administrator bei XING</a></li>
+                    <li class="social_button rss"><a href="http://www.it-administrator.de/rss.xml" target="_blank">IT-Administrator RSS-Feed</a></li>
+                </ul>
+            </div>
+            <div id="servicenav">
+                <!-- Service-Navigation initialisieren -->
+
+                <!-- Definition Navigations-Folder -->
+
+                <!-- Definition Navigations-Folder -->
+
+                <!-- Definition Navigations-Item -->
+
+                <!-- Definition Navigations-Item -->
+
+                <!-- Definition Navigations-Item -->
+
+                <!-- Definition Navigations-Item -->
+
+                <!-- Definition Navigations-Item aktiv -->
+
+                <!-- Definition Navigations-Item Ausnahme Item #1 -->
+
+                <!-- Navigation ausgeben -->
+                <ul>
+                    <li><a class="icon_kontakt" href="/service/kontaktformular/"><img src="/inc/img/icon_kontakt_0.gif" alt="Kontaktformular"/></a></li><li><a href="/service/nutzungshinweise/">?</a></li><li><a href="/service/datenschutz/">Datenschutz</a></li><li><a href="/service/impressum/">Impressum</a></li><li><a href="/mediainfo/">MediaInfo</a></li>		</ul>
+            </div>
+        </div>
+
+
+        <div class="adlib_wrapper adlib_wrapper_billboard">
+
+
+            <div class="adlib_container_billboard">
+
+                <div id="Ads_BA_FLB"><script type="text/javascript">Ads_BA_AD('FLB');</script></div>
+
+            </div>
+
+
+        </div>
+
+
+
+
+
+        <div id="main_wrapper">
+            <div id="main">
+
+                <div id="nav_wrapper">
+                    <!-- Searchbox & Subnavigation -->
+                    <div id="search_box">
+                        <form method="post" name="SearchFormLeft" onsubmit="" action="/suche/">
+                            <p>Suchbegriff / Link-Code</p>
+                            <div class="search_field"><input class="search_field" name="we_lv_search_0" type="text" value=""><input type="hidden" name="we_from_search_0" value="1"><input class="search_button" type="image" src="/inc/img/button_search_0.gif" /></div>
+                        </form></div>
+
+
+                    <div id="nav">
+
+                        <!-- Navigation initialisieren -->
+
+                        <!-- nicht aktive Menuepunkte generell nicht anzeigen -->
+
+                        <!-- Level 1 = Haupt-Menue nicht (nochmal) anzeigen; Submenue nur anzeigen, wenn aktiver Menuepunkt Untermenuepunkte enthaelt -->
+
+                        <!-- Level 2 = Ueberschriften (nur Folder) -->
+
+                        <!-- Level 3 = Untermenuepunkte (nur Items) -->
+
+                        <!-- Level 3 = Untermenuepunkte aktiv -->
+
+                        <!-- Navigation ausgeben -->
+                        <ul><li>			<h2>Aktuelles</h2>							<ul><li><a href="/aktuelles/news/" class="test">Nachrichten</a></li><li><a href="/aktuelles/tipps_tools/">Tipps &amp; Tools</a></li></ul>					</li><li>			<h2>Themen</h2>							<ul><li><a href="/themen/netzwerkmanagement/">Netzwerkmanagement</a></li><li><a href="/themen/netzwerkinfrastruktur/">Netzwerkinfrastruktur</a></li><li><a href="/themen/virtualisierung/">Virtualisierung</a></li><li><a href="/themen/kommunikation/">Kommunikation</a></li><li><a href="/themen/sicherheit/">Sicherheit</a></li><li><a href="/themen/storage/">Storage</a></li><li><a href="/themen/server_client/">Server / Client</a></li></ul>					</li></ul>
+                    </div>
+                    <!-- MenuAd -->
+                    <div class="adlib_wrapper adlib_wrapper_menuad adlib_wrapper_buttonad">
+                        <div id="Ads_BA_BUT"><script type="text/javascript">Ads_BA_AD('BUT');</script></div>
+                    </div>
+                    <!-- Button Stellenmarkt -->
+                    <div id="button_stellenmarkt"><div><a target="_blank" href="//jobs.it-administrator.de/"></a></div></div>
+
+                </div>
+
+                <div id="contentbox_wrapper" class="subpage_2">
+                    <div id="contentbox"><div id="themen_headline_wrapper"><div id="themen_headline"><img src="/inc/img/themen_header_netzwerkmanagement.gif" /></div></div><div id="content_wrapper">
+                        <div id="content">
+
+
+                            <!-- Artikel Detailansicht -->
+                            <div class="artikelbox">
+                                <h2>Fachartikel</h2>
+
+
+
+                                <div class="artikel article_type_0">
+                                    <h3>Monitoring für eine bessere Automatisierung</h3>
+                                    <div class="vorspann">Verbinden IT-Verantwortliche Daten aus ihrem Monitoring mit Werkzeugen der Automatisierung kann dies den Support beschleunigen, was Zeit und Budget der IT-Abteilung schont. Entsprechende Voraussetzungen und Maßnahmen untersucht dieser Artikel.</div>
+                                    <div class="left">
+                                        <table width="200" align="left" cellpadding="0" cellspacing="0" border="0">
+                                            <tr><td>
+                                                <img src="/img/artikel/2017/2017-05/MonitoringAutomatisierung-b00.jpg" alt="" height="150" width="200" name="BildFullsize" align="left">												</td></tr>
+                                            <tr><td>
+                                                <div class="bildunterschrift">Zentrum für Problembehebung - ein gutes Monitoring macht Automatisierung erst möglich.</div>
+                                            </td></tr>
+                                        </table>
+
+                                    </div>
+                                    <div class="text">
+                                        IT-Verantwortliche sind immer irgendwie stolz auf ihre eigene IT-Infrastruktur: Sie glauben, dass ihre Umgebung im Vergleich zu allen anderen einzigartig und besonders ist und deutliche Unterschiede zum üblichen Design von Unternehmensinfrastrukturen aufweist. Auch wenn es um Best Practices und standardisierte Techniken geht, gibt es keine Universallösung. Stattdessen müssen alle Methoden an die charakteristischen Eigenschaften der individuellen IT-Infrastruktur angepasst werden.<br />
+                                        <br />
+                                        <b>
+                                            Monitoring kann auch einfach sein</b><br />
+
+                                        Erfahrungsgemäß ist dieses Bild einer einzigartigen, einmaligen IT-Infrastruktur am häufigsten bei Überwachungstechnologien zu finden. IT-Abteilungen, die ihren jeweiligen Mix aus Servern, Anwendungen, Netzwerkgeräten und der gesamten Infrastruktur als exklusiv behandeln, haben oft ein benutzerdefiniertes internes Überwachungssystem aufgebaut. Die Sache hat jedoch einen Haken: Solche benutzerdefinierten Lösungen sind häufig kein logisches und gut durchdachtes Überwachungssystem, sondern erinnern eher an einen Interpretationstanz. Sie erfordern besondere Sorgfalt und Aufmerksamkeit von einem speziell geschulten Systemadministrator, der diese mysteriöse Sprache beherrscht. Ein IT-Experte mit über 30 Jahren Erfahrung im IT-Monitoring, der bereits zahlreiche Überwachungstools in jeder nur vorstellbaren Umgebung eingesetzt hat, würde jedoch sagen: "Die Überwachung ist einfach &#8211; und es ist nicht nötig, sie in eine komplexe Infrastruktur zu transformieren".										</div>
+                                    <div class="adlib_wrapper adlib_wrapper_contentad adlib_wrapper_contentad2 adlib_wrapper_contentad_within_text clearfix">
+                                        <div id="Ads_BA_CAD2"><script type="text/javascript">Ads_BA_AD('CAD2');</script></div>
+                                    </div>
+
+                                    <div class="text text2">
+                                        Überwachung ist nicht mehr, aber auch nicht weniger als die fortlaufende, regelmäßige Erfassung einer konsistenten Reihe an Messdaten von einer Gruppe von Zielen. Egal, ob diese nun physische Geräte, virtuelle Maschinen, cloudbasierte Anwendungen oder etwas dazwischen sind. Monitoring ist die Erfassung von Messdaten, Daten und Informationen von einer Reihe verschiedener Geräte.<br><br>Alles Weitere – Warnungen, Tickets und Automatisierung – sind ein angenehmer Nebeneffekt. Das alles dient einem höheren Ziel: Die Überwachung sollte aussagekräftige und entscheidungsrelevante Warnungen ausgeben, anstelle irrelevanter Informationen, nahtlos die Statistiken und Einsichten erfassen, die IT-Verantwortliche benötigen und automatisierte Antworten bei häufigen Problemen ausführen. Ein gutes Überwachungssystem erstmalig einzurichten, kann mühsam sein, ist jedoch den Aufwand wert.<br><br><b>Automatisierung als Ergebnis einer guten Überwachung</b><br>Ein großartiger Aspekt der Überwachung wird häufig übersehen, nämlich die Automatisierung. Dieser Aspekt erscheint vielen Unternehmen schwer greifbar. Viele IT-Experten glauben, die Automatisierung könne am besten für Server und Anwendungen genutzt werden und dies ginge nur über die schöne neue Welt der Software-defined Networks (SDNs). Das ist so jedoch nicht ganz richtig.<br><br>Eine gute und effektive Automatisierung kann das Ergebnis einer guten Überwachung sein. Besteht ein robustes Überwachungssystem, können beispielsweise folgende Punkte für den IT-Verantwortlichen einfacher werden:<br><ul><li>Konfigurationsänderungs-Traps empfangen.</li><li>Konfigurationen von dem Gerät erfassen, das gerade einen Trap gesendet hat.</li><li>Konfigurationen vergleichen.</li><li>Regelmäßig die Konfigurationen von Netzwerkgeräten erfassen.</li></ul>Entsprechend werden Geräte, die ohne eine ordnungsgemäße Änderungskontrolle modifiziert wurden – übrigens der häufigste Grund für Ausfallzeiten in Unternehmensnetzwerken –, zwangsweise in ihren vorherigen Zustand zurückversetzt, bis die neuen Änderungen erfasst werden können.<br><br>IT-Team erhalten ständig Warnungen zu kleineren Fehlern, sodass die Reaktion idealerweise automatisch geschehen sollte. Ohne Automatisierung summieren sich diese kleinen Maßnahmen und Problembehebungen schnell zu sehr viel verschwendeter Zeit, selbst wenn die einzelnen Handlungen nur wenige Minuten in Anspruch nehmen. Diese Zeit kann durch die Einrichtung einer effektiven Automatisierung gespart werden. Mit durchdachten Automatisierungs- und Überwachungssystemen lassen sich lästige und häufig übersehene Fehler beheben:<br><ul><li>"Warnung: XYZ-Dienst ausgefallen": Automatisierte Antwort: Neustart des Geräts versuchen.</li><li>"Warnung: Datenträger zu über X Prozent belegt": Automatisierte Antwort: Standard-TEMP-Ordner leeren.</li><li>"Warnung: IP-Adresskonflikt festgestellt": Automatisierte Antwort: Port des neueren Geräts herunterfahren.</li></ul>Falls eine automatisierte Antwort nicht erfolgreich ist, lösen die entsprechenden Überwachungstools eine sekundäre Aktion aus. Im schlimmsten Fall wird eine E-Mail, eine SMS oder ein Ticket um einige Minuten verzögert. Selbst dann wird der Techniker, der auf diese E-Mail, SMS oder das Ticket reagiert, darüber Bescheid wissen, dass bereits eine erste Aktion versucht wurde, die fehlgeschlagen ist. Somit ist er im normalen Fehlerbehebungsprozess bereits ein paar Schritte weiter. Egal, wie er letztendlich zur Lösung gelangt – mit Automatisierungstools geht es um einiges schneller.<br><br><font color="#017761"><a href="/themen/netzwerkmanagement/fachartikel/235539.html">Seite 1: Monitoring kann auch einfach sein<br></a></font><font color="#017761"><a href="/themen/netzwerkmanagement/fachartikel/235540.html">Seite 2: Automatisierung denkt mit</a></font><br>
+                                        <br>
+                                        <table style="width: 100%;">
+                                            <tbody>
+                                            <tr>
+                                                <td align="center" width="30%"><br>
+                                                </td>
+                                                <td align="center" width="40%"><font color="#017761">Seite 1 von 2</font></td>
+                                                <td align="center" width="30%"><font color="#017761"><a href="/themen/netzwerkmanagement/fachartikel/235540.html">Nächste Seite &gt;&gt;</a></font></td>
+                                            </tr>
+                                            </tbody>
+                                        </table>										</div>
+                                    <div class="date_author"><em>22.05.2017/jp/ln/Leon Adato, Head Geek bei SolarWinds</em></div>
+
+                                    <div class="social_buttons_addthis">
+
+                                        <!-- AddThis Button BEGIN -->
+                                        <!-- Go to www.addthis.com/dashboard to customize your tools -->
+                                        <div class="addthis_inline_share_toolbox"></div>
+                                        <!-- AddThis Button END -->
+
+                                    </div>
+
+                                </div>
+
+
+
+                            </div>
+                            <div class="adlib_wrapper adlib_wrapper_textad clearfix">
+                                <div id="Ads_BA_TEXT"><script type="text/javascript">Ads_BA_AD('TEXT');</script></div>
+                            </div>
+
+
+                            <!-- 2 Nachrichten lang, 2 kurz, kategorieabhaengig -->
+                            <div class="artikelbox">
+                                <h2>Nachrichten</h2>
+
+                                <div class="artikel article_type_">
+
+                                    <h3><a href="/themen/server_client/235633.html">Nutzererfahrung im Fokus</a> <span class="datum">[21.06.2017]</span></h3>
+                                    <div class="vorspann">Mit der neusten Version von 'SteelCentral' will Riverbed die Qualitätskontrolle des Nutzererlebnisses verbessern. Mit dem aktuellen Release soll es laut Hersteller nun möglich sein, alle Teilaspekte des Nutzererlebnisses zu messen und auftretende Fehler zu beheben &#8211;auf Endgeräten bis hin zu Backend-Netzwerk, zur Infrastruktur, zur Cloud und zu Anwendungen.&nbsp;[<a href="/themen/server_client/235633.html"><em>mehr</em></a>]</div>
+                                </div>
+                                <div class="artikel article_type_">
+
+                                    <h3><a href="/themen/server_client/235558.html">Dashboards für mobil aufgestellte Unternehmen</a> <span class="datum">[23.05.2017]</span></h3>
+                                    <a href="/themen/server_client/235558.html"><img src="/img/meldungen/2017/2017-05/20170523_NetMotion_thn.jpg" alt="" height="62" width="100" name="BildPreview_2"></a>
+                                    <div class="vorspann">NetMotion hat mit 'Mobile IQ' vor, eine Visualisierungs-, Analyse- und Alert-Plattform für mobile Umgebungen auf den Markt gebracht. Die Kerntechnologie des Werkzeugs basiert auf Splunk Enterprise und soll bislang ungenutzte Big Data von mobilen Geräten erschließen.&nbsp;[<a href="/themen/server_client/235558.html"><em>mehr</em></a>]</div>
+                                </div>
+
+                                <div class="artikel">
+
+                                    <h3><a href="/themen/netzwerkmanagement/235542.html">WhatsUp Gold verstehen</a> <span class="datum">[18.05.2017]</span></h3>
+                                </div>
+                                <div class="artikel">
+
+                                    <h3><a href="/themen/netzwerkmanagement/235508.html">Neues beim Active-Directory-Management</a> <span class="datum">[17.05.2017]</span></h3>
+                                </div>
+
+
+                                <div class="artikel"><p>[<a href="/themen/netzwerkmanagement/archiv/"><em>weitere Nachrichten</em></a>]</p></div>
+
+                            </div>
+
+                            <!-- 2 Tipps & Tools lang, 2 kurz, kategorieabhaengig -->
+                            <div class="artikelbox">
+                                <h2>Tipps &amp; Tools</h2>
+
+                                <div class="artikel article_type_">
+
+                                    <h3><a href="/themen/netzwerkmanagement/235613.html">Online-Toolbox für Netzwerktests</a> <span class="datum">[14.06.2017]</span></h3>
+                                    <a href="/themen/netzwerkmanagement/235613.html"><img src="/img/meldungen/2017/2017-06/kloth-net_thn.jpg" alt="" height="44" width="100" name="BildPreview_1"></a>
+                                    <div class="vorspann">Wartungsarbeiten im Netzwerk gehören zu den alltäglichen Aufgaben von Admins. Viele unkomplizierte Tasks lassen sich bequem von Tools erledigen. Diese müssen nicht immer lokal vorliegen, sondern sind unter Umständen auch online nutzbar, etwa über die Seite 'kloth.net'. Dort können Sie Ihre IP-Adresse und Browser-Infos abfragen, Whois-Anfragen durchführen oder Webserver von außen überprüfen. So haben Sie einen kleinen Online-Werkzeugkasten zur Hand, falls Sie etwa einmal unterwegs sind.&nbsp;[<a href="/themen/netzwerkmanagement/235613.html"><em>mehr</em></a>]</div>
+                                </div>
+                                <div class="artikel article_type_">
+
+                                    <h3><a href="/themen/netzwerkmanagement/235602.html">Sophos-Firewall mit PRTG überwachen</a> <span class="datum">[11.06.2017]</span></h3>
+                                    <a href="/themen/netzwerkmanagement/235602.html"><img src="/img/artikel/2017/2017-06/TippPRTGSophos_thn.jpg" alt="" height="75" width="100" name="BildPreview_2"></a>
+                                    <div class="vorspann">Wer im Unternehmen PRTG für sein Netzwerk-Monitoring einsetzt und auch die UTM-Firewall von Sophos überwachen lassen will, findet dafür keinen fertigen Sensor in PRTG vor. Und die Lösung, die MIB-Files für die entsprechende Firewall herunterzuladen und Custom-Sensoren zu bauen, erscheint doch arg umständlich. Erfreulicherweise gibt es jedoch eine einfache Alternative.&nbsp;[<a href="/themen/netzwerkmanagement/235602.html"><em>mehr</em></a>]</div>
+                                </div>
+
+                                <div class="artikel">
+
+                                    <h3><a href="/themen/sicherheit/235465.html">CryptoLocker über PRTG-Monitoring entdecken</a> <span class="datum">[7.05.2017]</span></h3>
+                                </div>
+                                <div class="artikel">
+
+                                    <h3><a href="/themen/netzwerkmanagement/235461.html">Download der Woche: SysGauge</a> <span class="datum">[3.05.2017]</span></h3>
+                                </div>
+
+
+                                <div class="artikel"><p>[<a href="/themen/netzwerkmanagement/archiv/"><em>weitere Tipps &amp; Tools</em></a>]</p></div>
+                            </div>
+
+                            <!-- Sponsored Links & Partner Links -->
+                            <div class="sponsoredlinks">
+                                <!-- Sponsored Links -->
+
+                                <div class="artikelbox">
+                                    <h2>Sponsored Links</h2>
+                                    <table border="0" cellspacing="3" cellpadding="2">
+                                        <tr>
+                                            <td align="center" valign="middle"><a href="http://click.it-administrator.de/tracker.php?a=t9rece8dh0n" target="_blank"><img src="/img/links/centron_100x30px.gif" alt="" width="100" height="20" name="Linkbild_1" align="center" border="0"></a></td>
+                                            <td>&nbsp;</td>
+                                            <td><a href="http://click.it-administrator.de/tracker.php?a=t9rece8dh0n" target="_blank">Andere können IT. Wir können IT besser. Managed Server vom echten Profi. Do IT right! Premium-Support, ISO-zertifiziert, Datenhaltung in Deutschland.</a></td>
+                                        </tr>
+                                        <tr>
+                                            <td align="center" valign="middle"><a href="http://click.it-administrator.de/tracker.php?a=thuwheuturb" target="_blank"><img src="/img/links/Thomas-Krenn-Logo.gif" alt="" width="100" height="45" name="Linkbild_2" align="center" border="0"></a></td>
+                                            <td>&nbsp;</td>
+                                            <td><a href="http://click.it-administrator.de/tracker.php?a=thuwheuturb" target="_blank">Serversizing mit Windows Server 2016? Alles was man darüber wissen sollte, jetzt im gratis Whitepaper von Thomas-Krenn. Hier geht es zum Download.</a></td>
+                                        </tr>
+                                        <tr>
+                                            <td align="center" valign="middle"><a href="http://www.jakobsoftware-novastor.de/vorteile.html" target="_blank"><img src="/img/links/JakobsoftwareLogo.jpg" alt="" height="88" width="96" name="Linkbild_3" align="center" border="0"></a></td>
+                                            <td>&nbsp;</td>
+                                            <td><a href="http://www.jakobsoftware-novastor.de/vorteile.html" target="_blank">Jakobsoftware ist Ihr zuverlässiger Partner für den erfolgreichen Vertrieb von IT- Sicherheitslösungen. IT Sicherheit ist unsere Domäne.</a></td>
+                                        </tr>
+                                    </table>
+                                </div>
+
+                                <!-- Partner Links -->
+
+                                <div class="artikelbox">
+                                    <h2>Partner Links</h2>
+                                    <table border="0" cellspacing="3" cellpadding="2">
+                                        <tr>
+                                            <td align="center" valign="middle"><a href="http://www.it-administrator.de/lib/golink/golink.php?id=101" target="_blank"><img src="/img/links/administrator_de_100.gif" alt="" height="30" width="100" name="Linkbild_1" align="center" border="0"></a></td>
+                                            <td>&nbsp;</td>
+                                            <td><a href="http://www.it-administrator.de/lib/golink/golink.php?id=101" target="_blank">IT-Forum, News und Knowledgebase, Diskussionsforum mit einer Wissensdatenbank für alle IT-Benutzergruppen</a></td>
+                                        </tr>
+                                        <tr>
+                                            <td align="center" valign="middle"><a href="https://www.rheinwerk-verlag.de/netze-betriebssysteme/" target="_blank"><img src="/img/links/rheinwerk-verlag_logo_100x30.png" alt="" width="100" height="30" name="Linkbild_2" align="center" border="0"></a></td>
+                                            <td>&nbsp;</td>
+                                            <td><a href="https://www.rheinwerk-verlag.de/netze-betriebssysteme/" target="_blank">Bücher und Video-Trainings für IT-Administratoren. Umfangreiches Expertenwissen zu Betriebssystemen, Datenbanken, Servern, Virtualisierung, Netzwerken und mehr.</a></td>
+                                        </tr>
+                                    </table>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                        <div id="marginal_wrapper">
+                            <div id="marginal">
+
+
+
+
+
+
+
+                                <!-- 1 x Buch kurz -->
+
+                                <div class="artikelbox">
+                                    <h2>Buchbesprechung</h2>
+                                    <div class="artikel">
+                                        <h3><a href="/buecher/229293.html">Datenschutz-Grundverordnung</a></h3>
+                                        <p>von Niko Härting</p>
+                                    </div>
+
+                                    <div class="artikel"><p>[<a href="/buecher/"><em>weitere B&uuml;cher</em></a>]</p></div>
+                                </div>
+
+                                <!-- 2 x Workshop-Termine kurz -->
+                                <!-- 2 x Workshop-Termine kurz -->
+
+                                <div class="artikelbox">
+                                    <h2>N&auml;chster Workshop</h2>
+                                    <div class="artikel">
+                                        <h3><a href="/trainings/235584.html">Intensiv-Seminar »Exchange Server 2016 - Alles für erfahrene Administratoren«</a></h3>
+                                    </div>
+                                    <div class="artikel">
+                                        <h3><a href="/trainings/235583.html">Training »Docker und Linux-Container«</a></h3>
+                                    </div>
+                                    <div class="artikel"><p>[<a href="/workshops/"><em>weitere Workshops</em></a>]</p></div>
+                                </div>
+
+
+                                <!-- TextAds -->
+
+                                <div class="textads">
+                                    <p>Anzeigen</p>
+                                    <ul>
+                                        <li>
+                                            <h4><a href="http://www.management-qualifizierung.de/kursangebote/it-operative-professionals">Aufstiegsfortbildungen</a></h4>
+                                            <p>mit IHK-Abschluss für IT-Beschäftigte. Berufsbegleitend und staatlich gefördert durch Meister-BAföG (48% Zuschuss).</p>
+                                            <a href="http://www.management-qualifizierung.de/kursangebote/it-operative-professionals">www.management-qualifizierung.de</a>
+                                        </li>
+                                        <li>
+                                            <h4><a href="https://www.bestestromvergleich.de/">Beste Stromvergleich</a></h4>
+                                            <p>Günstigeren Stromanbieter mit dem Stromvergleich einfach finden.</p>
+                                            <a href="https://www.bestestromvergleich.de/">BesteStromvergleich.de</a>
+                                        </li>
+                                        <li>
+                                            <h4><a href="http://www.gutscheinewurst.com/">Gutscheine 2017</a></h4>
+                                            <p>Einfach Gutscheincodes einlösen und beim Online-Shoppen ordentlich Geld sparen.</p>
+                                            <a href="http://www.gutscheinewurst.com/">www.gutscheinewurst.com</a>
+                                        </li>
+                                    </ul>
+                                </div>
+
+
+                                <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+                                <!-- IT-Administrator Vertical TextAd 160x600 -->
+                                <ins class="adsbygoogle"
+                                     style="display:inline-block;width:160px;height:600px"
+                                     data-ad-client="ca-pub-8843936470613902"
+                                     data-ad-slot="2810661478"></ins>
+                                <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+
+
+
+                            </div>
+                        </div>
+                        <div class="adlib_wrapper adlib_wrapper_skyscraper">
+                            <div id="Ads_BA_SKY"><script type="text/javascript">Ads_BA_AD('SKY');</script></div>
+                        </div>
+                        <!-- -->
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div id="footer_wrapper">
+            <div id="footer">
+                <div></div>
+            </div>
+        </div>
+
+
+
+    </div>
+
+    <script type="text/javascript" src="http://www.etracker.de/et_mmedetect.js"></script>
+    <script type="text/javascript" src="/inc/js/etracker.js"></script>
+    <noscript>
+        <p><a href='http://www.etracker.de/app?et=iVKXdE'>
+            <img style='border:0px;' alt='' src='http://www.etracker.de/cnt.php?
+et=iVKXdE&amp;v=2.4&amp;java=n&amp;et_easy=1
+&amp;et_pagename=
+&amp;et_areas=&amp;et_ilevel=0&amp;et_target=,,,0
+&amp;et_lpage=&amp;et_trig=&amp;et_se=0&amp;et_cust=0
+&amp;et_basket=&amp;et_url='/></a></p>
+    </noscript>
+
+</div>
+<!-- Go to www.addthis.com/dashboard to customize your tools -->
+<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-51e682093b88cfba"></script>
+
+
+<div class="cookie_advice">
+    <div class="container clearfix">
+        <div class="inner">
+            <p class="left">
+                Cookies ermöglichen eine bestmögliche Bereitstellung unserer Dienste. Mit der Nutzung der IT-Administrator-Seiten und Services erklären Sie sich damit einverstanden, dass wir Cookies verwenden.
+                <a href="//www.it-administrator.de/service/datenschutz/">Mehr Infos</a>.
+            </p>
+            <p class="right"><a class="close" href="javascript:void(0);">OK</a></p>
+        </div>
+    </div>
+</div>
+
+
+<!-- Webpage Tag 14699 / it-administrator.de Homepage -->
+<script type="text/javascript"> (function(){  var myrtbHost = (("https:" == document.location.protocol) ? "https://lib." : "http://lib.");  var myrtbScript = document.createElement("script");myrtbScript.type = "text/javascript";myrtbScript.async = true;  myrtbScript.src=myrtbHost+"selfcampaign.com/tag/14699_23e93ac1520e4c234663ef0f58192a0d?async=1";  (document.getElementsByTagName("head")[0]||document.getElementsByTagName("body")[0]).appendChild(myrtbScript); })();</script>
+
+</body>
+</html>

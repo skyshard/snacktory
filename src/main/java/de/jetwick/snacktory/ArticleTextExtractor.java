@@ -250,6 +250,9 @@ public class ArticleTextExtractor {
         aMap.put("teenvogue.com", Arrays.asList(
                 "div.listicle-wrapper"
         ));
+        aMap.put("popsugar.com", Arrays.asList(
+                ".shoppable-container"
+        ));
 
         BEST_ELEMENT_PER_DOMAIN = Collections.unmodifiableMap(aMap);
     }
@@ -297,7 +300,7 @@ public class ArticleTextExtractor {
                 + "login|si(debar|gn|ngle)");
         setPositive("(^(body|content|h?entry|main|page|post|text|blog|story|haupt))"
                 + "|arti(cle|kel)|instapaper_body|storybody|short-story|storycontent|articletext|story-primary|^newsContent$|dcontainer|announcement-details");
-        setHighlyPositive("news-detail-content|news-release-detail|storybody|main-content|articlebody|article_body|article-body|html-view-content|entry__body|^main-article$|^article__content$|^articleContent$|^mainEntityOfPage$|art_body_article|^article_text$|main-article-chapter|post-body");
+        setHighlyPositive("news-content|news-detail-content|news-release-detail|storybody|main-content|articlebody|article_body|article-body|html-view-content|entry__body|^main-article$|^article__content$|^articleContent$|^mainEntityOfPage$|art_body_article|^article_text$|main-article-chapter|post-body");
         setNegative("nav($|igation)|user|com(ment|bx)|(^com-)|contact|"
                 + "foot|masthead|(me(dia|ta))|outbrain|promo|related|scroll|(sho(utbox|pping))|"
                 + "sidebar|sponsor|tags|tool|widget|player|disclaimer|toc|infobox|vcard|title|truncate|slider|^sectioncolumns$|ad-container");
@@ -1951,6 +1954,15 @@ public class ArticleTextExtractor {
                     System.out.println("AUTHOR: .kasten_titel");
             }
 
+            // http://www.it-administrator.de/themen/netzwerkmanagement/fachartikel/235539.html
+            if (authorName.isEmpty()) {
+                result = doc.select("div.date_author").first();
+                if (result != null) {
+                    authorName = SHelper.innerTrim(result.text());
+                    if(DEBUG_AUTHOR_EXTRACTION && !authorName.isEmpty()) System.out.println("AUTHOR: .date_author");
+                }
+            }
+
             // http://www.einnews.com/pr_news/339534444/rackspace-reaches-openstack-leadership-milestone-six-years-and-one-billion-server-hours
             if (authorName.isEmpty()) {
                 result = doc.select("p.contact").first();
@@ -1992,6 +2004,14 @@ public class ArticleTextExtractor {
                 if (result != null) {
                     authorName = SHelper.innerTrim(result.text().split(",")[0]);
                     if(DEBUG_AUTHOR_EXTRACTION && !authorName.isEmpty()) System.out.println("AUTHOR: div#namepost");
+                }
+            }
+
+            if (authorName.isEmpty()) { // http://markets.businessinsider.com/news/stocks/Why-Ambarella-Inc--Stock-Fell-17-1percent-in-June-5560734
+                result = doc.select("div.news-post-source").first();
+                if (result != null) {
+                    authorName = SHelper.innerTrim(result.text());
+                    if(DEBUG_AUTHOR_EXTRACTION && !authorName.isEmpty()) System.out.println("AUTHOR: div#news-post-source");
                 }
             }
 
@@ -2186,6 +2206,13 @@ public class ArticleTextExtractor {
                         matches = doc.select("div.meta");
                         if (DEBUG_AUTHOR_EXTRACTION && matches != null && matches.size() > 0)
                             System.out.println("AUTHOR: div.meta");
+                    }
+
+                    // https://www.nt4admins.de/thema-des-monats/blogs-auf-nt4admins/artikel/cloud-networking-in-einer-hybrid-it-welt.html
+                    if (matches == null || matches.size() == 0) {
+                        matches = doc.select("dl > dd");
+                        if (DEBUG_AUTHOR_EXTRACTION && matches != null && matches.size() > 0)
+                            System.out.println("AUTHOR: dl > dd");
                     }
 
                     // Regex match should be very last option in cases like
@@ -2466,6 +2493,17 @@ public class ArticleTextExtractor {
             authorDesc = SHelper.innerTrim(matches.first().ownText());
             if(DEBUG_AUTHOR_DESC_EXTRACTION){
                 System.out.println("AUTHOR_DESC: div[class=ra-credits].ownText");
+                System.out.println("AUTHOR: AUTHOR_DESC=" + authorDesc);
+            }
+            return authorDesc;
+        }
+
+        // http://www.it-administrator.de/themen/netzwerkmanagement/fachartikel/235539.html
+        matches = doc.select("div.date_author");
+        if (matches == null || matches.size() > 0){
+            authorDesc = SHelper.innerTrim(matches.first().text());
+            if(DEBUG_AUTHOR_DESC_EXTRACTION){
+                System.out.println("AUTHOR_DESC: div.date_author");
                 System.out.println("AUTHOR: AUTHOR_DESC=" + authorDesc);
             }
             return authorDesc;

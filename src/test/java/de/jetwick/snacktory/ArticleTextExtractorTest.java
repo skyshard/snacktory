@@ -3532,6 +3532,59 @@ public class ArticleTextExtractorTest {
     }
 
     @Test
+    public void testITAdministrator() throws Exception {
+        // http://www.it-administrator.de/themen/netzwerkmanagement/fachartikel/235540.html
+        JResult res = new JResult();
+        res.setUrl("http://www.it-administrator.de/themen/netzwerkmanagement/fachartikel/235540.html");
+        res = extractor.extractContent(res,
+                c.streamToString(getClass().getResourceAsStream("it-administrator.html"), "iso-8859-1"));
+        assertEquals("http://www.it-administrator.de/themen/netzwerkmanagement/fachartikel/235540.html", res.getCanonicalUrl());
+        assertEquals("Monitoring fÃ¼r eine bessere Automatisierung", res.getTitle());
+        assertTrue(res.getText(), res.getText().startsWith("Monitoring fÃ¼r eine bessere Automatisierung"));
+        assertTrue(res.getText(), res.getText().endsWith("22.05.2017/jp/ln/Leon Adato, Head Geek bei SolarWinds"));
+        // @TODO - We can't extract exact author name this stage but,
+        // once we used NLP to extract entities from author name string,
+        // we are most likely to get exact author name - Leon Adato
+        assertEquals("jp/ln/Leon Adato", res.getAuthorName());
+        assertEquals("22.05.2017/jp/ln/Leon Adato, Head Geek bei SolarWinds", res.getAuthorDescription());
+        compareDates("2017-05-22 00:00:00", res.getDate());
+    }
+
+    @Test
+    public void testNt4admins() throws Exception {
+        // https://www.nt4admins.de/thema-des-monats/blogs-auf-nt4admins/artikel/cloud-networking-in-einer-hybrid-it-welt.html
+        JResult res = new JResult();
+        res.setUrl("https://www.nt4admins.de/thema-des-monats/blogs-auf-nt4admins/artikel/cloud-networking-in-einer-hybrid-it-welt.html");
+        res = extractor.extractContent(res, c.streamToString(getClass().getResourceAsStream("nt4admins.html")));
+        assertEquals("https://www.nt4admins.de/thema-des-monats/blogs-auf-nt4admins/artikel/cloud-networking-in-einer-hybrid-it-welt.html", res.getCanonicalUrl());
+        assertEquals("NT4Admins : Cloud-Networking in einer Hybrid-IT-Welt", res.getTitle());
+        assertTrue(res.getText(), res.getText().startsWith("Aktuell setzen Microsoft und Amazon ihren Kampf um Preis"));
+        assertTrue(res.getText(), res.getText().endsWith("können sie diesen Innovationen immer einen Schritt voraus sein."));
+        assertEquals("Patrick Hubbard", res.getAuthorName());
+        assertEquals("Patrick Hubbard, HeadGeek bei SolarWinds (Quelle: SolarWinds)", res.getAuthorDescription());
+        compareDates("2017-06-23 00:00:00", res.getDate());
+    }
+
+
+    @Test
+    public void testPopSugar() throws Exception {
+        // https://www.popsugar.com/beauty/Beauty-Tips-Save-Time-Morning-36523705#photo-36587830
+        JResult res = new JResult();
+        res.setUrl("https://www.popsugar.com/beauty/Beauty-Tips-Save-Time-Morning-36523705#photo-36587830");
+        res = extractor.extractContent(res, c.streamToString(getClass().getResourceAsStream("popsugar.html")));
+        assertEquals("https://www.popsugar.com/beauty/Beauty-Tips-Save-Time-Morning-36523705", res.getCanonicalUrl());
+        assertEquals("Beauty Tips to Save Time in the Morning", res.getTitle());
+        assertTrue(res.getText(), res.getText().startsWith("You know the scene: It's 6 a.m.,"));
+        assertTrue(res.getText(), res.getText().contains("This five-minute, five-product makeup routine from Bobbi Brown Director of Global Artistry"));
+        assertTrue(res.getText(), res.getText().contains("If you wake up to find a can't-miss party invitation for the same night sitting in your in-box,"));
+        assertTrue(res.getText(), res.getText().contains("If you're really pressed for time, you can line your eyes and curl your lashes in one step."));
+        assertTrue(res.getText(), res.getText().endsWith("it's a topcoat, base coat, and strengthener all in one."));
+        assertEquals("Alicia Lu", res.getAuthorName());
+        assertEquals("Alicia Lu", res.getAuthorDescription());
+        compareDates("2017-06-02 07:05:03 -07:00", res.getDate());
+    }
+
+    @Test
     public void testRawAuthorName() throws Exception {
         // http://www.einnews.com/pr_news/336348008/hybrid-cloud-computing-industry-global-market-to-grow-at-cagr-34-4-between-2016-2022
         JResult res = new JResult();
@@ -3545,6 +3598,20 @@ public class ArticleTextExtractorTest {
         JResult res = new JResult();
         res = extractor.extractContent(res, c.streamToString(getClass().getResourceAsStream("bulldogreporter.html")));
         assertEquals("By Kelly Byrd, PR Engineer,", res.getRawAuthorName());
+    }
+
+    @Test
+    public void testBusinessinsider() throws Exception {
+        // http://markets.businessinsider.com/news/stocks/Why-Ambarella-Inc--Stock-Fell-17-1percent-in-June-5560734
+        JResult res = new JResult();
+        res.setUrl("http://markets.businessinsider.com/news/stocks/Why-Ambarella-Inc--Stock-Fell-17-1percent-in-June-5560734");
+        res = extractor.extractContent(res, c.streamToString(getClass().getResourceAsStream("markets.businessinsider.html")));
+        assertEquals("http://markets.businessinsider.com/news/stocks/Why-Ambarella-Inc--Stock-Fell-17-1percent-in-June-5560734", res.getCanonicalUrl());
+        assertEquals("Why Ambarella Inc. Stock Fell 17.1% in June", res.getTitle());
+        assertEquals(res.getText(), "The market was less than impressed with the video-processing chip specialist's second-quarter guidance. Here's what investors need to know.");
+        assertEquals("MotleyFool", res.getAuthorName());
+        assertEquals(res.getAuthorName(), res.getAuthorDescription());
+        compareDates("2017-07-04 02:46:00", res.getDate());
     }
 
     public static void compareDates(String expectedDateString, Date actual) {
