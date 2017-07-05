@@ -181,7 +181,7 @@ public class ArticleTextExtractorTest {
                 "Sunday Service", "Indigo", "Patrick Zimmer", "Patrick Zimmer aka finn.", "video", "video sharing",
                 "digital cameras", "videoblog", "vidblog", "video blogging", "home video", "home movie"),
                 res.getKeywords());
-        assertEquals("finn.", res.getAuthorName());
+        assertEquals("finn", res.getAuthorName());
     }
 
     /* Test broken after change to check ratio of text in getFormattedText. TODO: Find a way to support this.
@@ -2857,7 +2857,7 @@ public class ArticleTextExtractorTest {
         assertEquals("Rackspace Reaches OpenStack Leadership Milestone, Six Years and One Billion Server Hours", res.getTitle());
         assertTrue(res.getText(), res.getText().startsWith("/EINPresswire.com/ -- SAN FRANCISCO, CA--(Marketwired - August 11, 2016) - Rackspace® (NYSE: RAX) today announced from"));
         compareDates("2016-08-11 17:15:00", res.getDate());
-        assertEquals("Christina Weaver 210-312-4593", res.getAuthorName());
+        assertEquals("Christina Weaver", res.getAuthorName());
         assertEquals("Media Contact: Christina Weaver 210-312-4593 christina.weaver@rackspace.com", res.getAuthorDescription());
     }
 
@@ -2871,7 +2871,7 @@ public class ArticleTextExtractorTest {
         assertEquals("Hybrid Cloud Computing Industry Global Market to grow at CAGR 34.4% between 2016 – 2022", res.getTitle());
         assertTrue(res.getText(), res.getText().startsWith("Hybrid Cloud Computing Industry Global Market to grow at CAGR 34.4% between 2016 – 2022"));
         compareDates("2016-07-22 15:26:09", res.getDate());
-        assertEquals("Norah Trent wiseguyreports +1 646 845 9349 / +44 208 133 9349", res.getAuthorName());
+        assertEquals("Norah Trent wiseguyreports", res.getAuthorName());
         assertEquals("Norah Trent wiseguyreports +1 646 845 9349 / +44 208 133 9349 email us here", res.getAuthorDescription());
     }
 
@@ -3016,7 +3016,7 @@ public class ArticleTextExtractorTest {
         assertEquals("From Media Monitoring to Media Intelligence", res.getTitle());
         assertTrue(res.getText(), res.getText().startsWith("For public relations professionals, media monitoring can be both tedious and exciting."));
         assertTrue(res.getText(), res.getText().endsWith("Hungry for more? Read “How to prove PR value to your CEO” next…"));
-        assertEquals("Kelly Byrd May 3", res.getAuthorName());
+        assertEquals("Kelly Byrd", res.getAuthorName());
         assertEquals("Kelly Byrd May 3, 2017", res.getAuthorDescription());
         compareDates("2017-05-03 06:12:16 -07:00", res.getDate());
     }
@@ -3529,6 +3529,22 @@ public class ArticleTextExtractorTest {
         assertEquals(StringUtils.EMPTY, res.getAuthorName());
         assertEquals(StringUtils.EMPTY, res.getAuthorDescription());
         compareDates("2017-06-20 00:00:00", res.getDate());
+    }
+
+    @Test
+    public void testRawAuthorName() throws Exception {
+        // http://www.einnews.com/pr_news/336348008/hybrid-cloud-computing-industry-global-market-to-grow-at-cagr-34-4-between-2016-2022
+        JResult res = new JResult();
+        res = extractor.extractContent(res, c.streamToString(getClass().getResourceAsStream("einnews_1.html")));
+        assertEquals("Norah Trent wiseguyreports +1 646 845 9349 / +44 208 133 9349", res.getRawAuthorName());
+    }
+
+    @Test
+    public void testRawAuthorName1() throws Exception {
+        // https://www.bulldogreporter.com/are-you-guilty-of-pr-data-bias-what-why-and-how-to-check/
+        JResult res = new JResult();
+        res = extractor.extractContent(res, c.streamToString(getClass().getResourceAsStream("bulldogreporter.html")));
+        assertEquals("By Kelly Byrd, PR Engineer,", res.getRawAuthorName());
     }
 
     public static void compareDates(String expectedDateString, Date actual) {

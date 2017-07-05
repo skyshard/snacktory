@@ -43,6 +43,7 @@ public class JResult implements Serializable {
     private String faviconUrl;
     private String description;
     private String authorName;
+    private String rawAuthorName;
     private String authorDescription;
     private Date   date;
     private Collection<String> keywords;
@@ -128,8 +129,17 @@ public class JResult implements Serializable {
     public JResult setAuthorName(String authorName) {
         this.authorName = authorName;
         return this;
-    }	
-	
+    }
+
+    public String getRawAuthorName() {
+        return rawAuthorName;
+    }
+
+    public JResult setRawAuthorName(String rawAuthorName) {
+        this.rawAuthorName = rawAuthorName;
+        return this;
+    }
+
     public String getAuthorDescription() {
         if (authorDescription == null)
             return "";
