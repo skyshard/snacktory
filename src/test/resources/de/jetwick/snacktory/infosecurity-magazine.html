@@ -1,0 +1,735 @@
+
+
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head><title>
+    How to adopt performance data in your security strategy. - Infosecurity Magazine
+</title>
+    <script type="text/javascript">document.domain = 'infosecurity-magazine.com';</script>
+
+    <link rel="dns-prefetch" href="//res.infosecurity-magazine.com" />
+    <link rel="dns-prefetch" href="//assets.infosecurity-magazine.com" />
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"/>
+    <meta name="format-detection" content="telephone=no"/>
+    <meta name="HandheldFriendly" content="True"/>
+    <meta name="theme-color" content="#d6c250"/>
+    <link rel="canonical" href="https://www.infosecurity-magazine.com/blogs/adopting-performance-security/" />
+    <meta property="og:url" content="https://www.infosecurity-magazine.com/blogs/adopting-performance-security/"/>
+    <meta property="og:title" content="How to adopt performance data in your security strategy."/>
+    <meta property="twitter:title" content="How to adopt performance data in your security strategy."/>
+    <meta property="og:description" content="It is essential that data centres use standard performance metrics as the basis of a comprehensive security policy and process."/>
+    <meta property="twitter:description" content="It is essential that data centres use standard performance metrics as the basis of a comprehensive security policy and process."/>
+    <meta property="og:site_name" content="Infosecurity Magazine"/>
+    <meta property="twitter:site" content="@InfosecurityMag"/>
+    <meta property="twitter:card" content="summary_large_image"/>
+    <link rel="publisher" href="https://plus.google.com/+InfosecurityMagazine" />
+    <link rel="shortcut icon" href="https://www.infosecurity-magazine.com/favicon.ico" type="image/x-icon"/>
+    <link rel="apple-touch-icon" href="https://www.infosecurity-magazine.com/_common/img/icons/152x152.png" sizes="152x152"/>
+    <link rel="apple-touch-icon" href="https://www.infosecurity-magazine.com/_common/img/icons/144x144.png" sizes="144x144"/>
+    <link rel="apple-touch-icon" href="https://www.infosecurity-magazine.com/_common/img/icons/120x120.png" sizes="120x120"/>
+    <link rel="apple-touch-icon" href="https://www.infosecurity-magazine.com/_common/img/icons/114x114.png" sizes="114x114"/>
+    <link rel="apple-touch-icon" href="https://www.infosecurity-magazine.com/_common/img/icons/72x72.png" sizes="72x72"/>
+    <meta name="application-name" content="Infosecurity Magazine"/>
+    <meta name="msapplication-TileColor" content="#000000"/>
+    <meta name="msapplication-TileImage" content="https://www.infosecurity-magazine.com/_common/img/icons/528x528.png"/>
+    <meta name="description" content="It is essential that data centres use standard performance metrics as the basis of a comprehensive security policy and process."/>
+    <meta property="og:image" content="https://assets.infosecurity-magazine.com/webpage/og/408c1922-d52b-49a5-b362-b09cf6b4ec59.jpg"/>
+    <meta property="twitter:image:src" content="https://assets.infosecurity-magazine.com/webpage/tw/408c1922-d52b-49a5-b362-b09cf6b4ec59.jpg"/>
+    <meta property="og:type" content="article"/>
+    <meta property="article:publisher" content="https://www.facebook.com/pages/Infosecurity-Magazine/210560332330063"/>
+    <meta property="article:published_time" content="2017-06-07T10:45:00"/>
+    <meta name="author" content="Destiny Bertucci"/>
+    <meta property="article:author" content="https://www.infosecurity-magazine.com/profile/destiny-bertucci/"/>
+    <meta property="article:author:first_name" content="Destiny"/>
+    <meta property="article:author:last_name" content="Bertucci"/>
+    <meta property="tiwtter:creator" content="@solarwinds"/>
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Bitter:400,400italic,700%7cOpen+Sans:400italic,800"/>
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Lato"/>
+    <link rel="stylesheet" type="text/css" href="//res.infosecurity-magazine.com/css-0034/base.css"/>
+    <link rel="stylesheet" type="text/css" href="//res.infosecurity-magazine.com/css-0034/colour-codes.css"/>
+    <link rel="stylesheet" type="text/css" href="//res.infosecurity-magazine.com/css-0034/article.css"/>
+    <link rel="stylesheet" type="text/css" href="//res.infosecurity-magazine.com/css-0034/whats-hot.css"/>
+    <!--[if IE 8]>
+    <style>.mega-drop{border: 2px solid #f7f7f7;}.form-panel .textbox.password{font-family: serif;}</style>
+    <![endif]-->
+
+    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script type="text/javascript" src="//nexus.ensighten.com/reedexpo/infosec-mag/Bootstrap.js"></script>
+    <script type="text/javascript" src="//res.infosecurity-magazine.com/js-0034/modernizr.js"></script>
+    <!--[if (gte IE 6)&(lte IE 8)]>
+    <script type="text/javascript" src="//res.infosecurity-magazine.com/js-0034/selectivizr.min.js"></script>
+    <![endif]-->
+
+    <script type="text/javascript">
+        var googletag = googletag || {};
+        googletag.cmd = googletag.cmd || [];
+
+        (function () {
+            var gads = document.createElement("script");
+            gads.async = true;
+            gads.type = "text/javascript";
+            var useSSL = "https:" == document.location.protocol;
+            gads.src = (useSSL ? "https:" : "http:") + "//www.googletagservices.com/tag/js/gpt.js";
+            var node = document.getElementsByTagName("script")[0];
+            node.parentNode.insertBefore(gads, node);
+        })();
+    </script>
+    <!-- 06/07/2017 08:53:41 -->
+    <script>
+        (function() {
+            var cx = '013025419539759983845:qhnrzazqj0o';
+            var gcse = document.createElement('script');
+            gcse.type = 'text/javascript';
+            gcse.async = true;
+            gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
+                '//www.google.com/cse/cse.js?cx=' + cx;
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(gcse, s);
+        })();
+    </script>
+    <script type="text/javascript">
+        (function () {
+            var date = new Date(); date.setTime(date.getTime() + (5 * 24 * 60 * 60 * 1000));
+            document.cookie = 'ISM.ScreenSize=' + screen.width + ';expires=' + date.toGMTString + ';path=/;domain=infosecurity-magazine.com';
+
+            document.createElement('header');
+            document.createElement('nav');
+            document.createElement('footer');
+        }());
+    </script>
+    <script type="text/javascript">
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-7632735-1', 'infosecurity-magazine.com');
+        ga('require', 'localHitSender');
+        ga('require', 'displayfeatures');
+        ga('send', 'pageview');
+        setTimeout(function() { ga('send','event','Profitable Engagement','time on page more than 180 seconds') },180000);
+
+    </script>
+</head>
+<body itemscope itemtype="http://schema.org/WebPage">
+
+
+
+<div class="global-header" style="">
+    <div class="container">
+        <a href="javascript:;" id="gh-mobile-toggle" class="global-header__mobile-toggle">Infosecurity Group Websites</a>
+
+        <div style="">
+            <ul class="global-header__nav" style="">
+                <li class="global-header__nav-item global-header__nav-item--group"><img src="/_common/img/infosecurity-group.svg" style="" /></li>
+                <li class="global-header__nav-item global-header__nav-item--current">Magazine</li>
+                <li class="global-header__nav-item">
+                    <a href="javascript:;" class="global-header__nav-link global-header__nav-link--dropdown">Events</a>
+
+                    <ul class="global-sub-nav">
+                        <li class="global-sub-nav__item"><a href="http://www.infosecurityeurope.com/" target="_blank" class="global-sub-nav__link">Infosecurity Europe</a></li>
+                        <li class="global-sub-nav__item"><a href="http://www.infosecurityleadersnetwork.com/en/Leadership-Summit1/" target="_blank" class="global-sub-nav__link">Infosecurity Leadership Summit</a></li>
+                        <li class="global-sub-nav__item"><a href="http://www.infosecurity-magazine.com/conferences/boston-agile-cybersecurity/" target="_blank" class="global-sub-nav__link">Infosecurity Magazine Conferences</a></li>
+                        <li class="global-sub-nav__item"><a href="http://www.infosecuritynorthamerica.com/" target="_blank" class="global-sub-nav__link">Infosecurity North America</a></li>
+                        <li class="global-sub-nav__item"><a href="http://www.infosecurity.nl/" target="_blank" class="global-sub-nav__link">Infosecurity Netherlands</a></li>
+                        <li class="global-sub-nav__item"><a href="http://www.infosecurity.be/" target="_blank" class="global-sub-nav__link">Infosecurity Belgium</a></li>
+                        <li class="global-sub-nav__item"><a href="http://www.infosecurityrussia.ru/" target="_blank" class="global-sub-nav__link">Infosecurity Russia</a></li>
+                        <li class="global-sub-nav__item"><a href="http://www.infosecuritymexico.com/" target="_blank" class="global-sub-nav__link">Infosecurity Mexico</a></li>
+                        <li class="global-sub-nav__item"><a href="http://isnrabudhabi.com/Portal/home.aspx" target="_blank" class="global-sub-nav__link">Infosecurity Middle East</a></li>
+                    </ul>
+                </li>
+                <li class="global-header__nav-item"><a href="http://www.infosecurityleadersnetwork.com/" target="_blank" class="global-header__nav-link">Leaders Network</a></li>
+                <li class="global-header__nav-item">
+                    <a href="javascript:;" class="global-header__nav-link global-header__nav-link--dropdown">Insight</a>
+
+                    <ul class="global-sub-nav">
+                        <li class="global-sub-nav__item"><a href="http://www.infosecurity-magazine.com/webinars/" target="_blank" class="global-sub-nav__link">Infosecurity Webinars</a></li>
+                        <li class="global-sub-nav__item"><a href="http://www.infosecurity-magazine.com/white-papers/" target="_blank" class="global-sub-nav__link">Infosecurity Whitepapers</a></li>
+                        <li class="global-sub-nav__item"><a href="http://www.infosecurity-magazine.com/virtual-conferences/" target="_blank" class="global-sub-nav__link">Infosecurity Virtual Conferences</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('#gh-mobile-toggle').on('click', function () {
+            var global_header = $('.global-header'),
+                global_header_nav = $('.global-header__nav'),
+                class_gh_open = 'global-header--open',
+                class_ghn_open = 'global-header__nav--open';
+
+            if (global_header.hasClass(class_gh_open)) {
+                global_header_nav.removeClass(class_ghn_open)
+                global_header.removeClass(class_gh_open);
+            } else {
+                global_header.addClass(class_gh_open);
+                global_header_nav.addClass(class_ghn_open)
+            }
+        });
+
+        $('.global-header__nav-link--dropdown').on('click', function () {
+            var subNav = $(this).siblings('ul'),
+                parentItem = $(this).parent('li'),
+                class_gsn_open = 'global-sub-nav--open',
+                class_ghni_open = 'global-header__nav-item--open',
+                isOpen = $(this).siblings('ul').hasClass(class_gsn_open);
+
+            $('.global-sub-nav').removeClass(class_gsn_open);
+            $('.global-header__nav-item').removeClass(class_ghni_open);
+
+            if (isOpen) {
+                subNav.removeClass(class_gsn_open);
+                parentItem.removeClass(class_ghni_open);
+            } else {
+                subNav.addClass(class_gsn_open);
+                parentItem.addClass(class_ghni_open);
+            }
+        });
+    });
+</script>
+
+<div class="site-wrapper">
+    <div class="cookieNotice">
+        <div class="cookieNoticeInner">
+            <h4>Our website uses cookies</h4>
+            <p>Cookies enable us to provide the best experience possible and help us understand how visitors use our website. By browsing Infosecurity Magazine, you agree to our use of cookies.</p>
+            <a href="#" class="cookieAccept">Okay, I understand</a>
+            <a href="https://www.infosecurity-magazine.com/cookies/" class="cookieDecline">Learn more</a>
+        </div>
+    </div>
+    <div class="pullout-overlay"></div>
+
+    <div class="page">
+
+        <div class="pullout-menu">
+            <ul class="search-box">
+                <li>
+                    <div class="gcse-searchbox-only" data-enableAutoComplete="false" data-resultsUrl="https://www.infosecurity-magazine.com/search/"></div>
+                </li>
+            </ul>
+            <div id="mobile-links">
+
+            </div>
+        </div>
+
+
+        <div class="page-wrapper">
+
+            <header>
+                <div class="container">
+                    <div class="header-ad-row">
+                        <div class="dfp leaderboard" id="dfp-ad-e9221da1-8b5a-42c0-8297-e6fec3ae601c" data-ad-sizes="[728,90]" style="display: none;"></div>
+
+                        <div class="links-container">
+                            <div class="sec-menu"></div>
+                            <div class="header-social-links">
+                                <a href="https://www.facebook.com/pages/Infosecurity-Magazine/210560332330063" target="_blank" class="fb"><i class="spricon-fb"></i></a>
+                                <a href="https://twitter.com/InfosecurityMag" target="_blank" class="tw"><i class="spricon-tw"></i></a>
+                                <a href="https://plus.google.com/+InfosecurityMagazine/posts" target="_blank" class="gp"><i class="spricon-gp"></i></a>
+                                <a href="http://www.linkedin.com/groups?gid=2035794&amp;trk=myg_ugrp_ovr" target="_blank" class="li"><i class="spricon-li"></i></a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="header-logo-row">
+                        <div class="flyout-controls">
+                            <a href="#" class="menu"><i class="spricon-menu"></i></a>
+                        </div>
+
+                        <a href="https://www.infosecurity-magazine.com/" class="infosec-logo"><i class="spricon-infosec"></i></a>
+
+                        <div class="ticker-panel">
+                            <div class="ticker-controls">
+                                <span class="ticker-item-label">Latest</span>
+                            </div>
+
+
+                            <ul class="ticker">
+
+                                <li><a href="https://www.infosecurity-magazine.com/news/the-aa-exposes-100000-customer/">The AA Exposes 100,000+ Customer Records</a>
+
+                                <li><a href="https://www.infosecurity-magazine.com/news/bithumb-hack-millions-bitcoin/">Bithumb Hack Leads to Millions in Bitcoin Losses</a>
+
+                                <li><a href="https://www.infosecurity-magazine.com/news/cloud-security-investment-rises/">Cloud Security Investment Rises</a>
+
+                                <li><a href="https://www.infosecurity-magazine.com/news/uk-councils-still-failing-on-gdpr/">UK Councils Still Failing on GDPR Compliance Plans</a>
+
+                                <li><a href="https://www.infosecurity-magazine.com/news/av-test-ransomware-is-a-marginal/">AV-Test: Ransomware is a &#39;Marginal Phenomenon&#39;</a>
+
+                            </ul>
+
+                            <div class="clear"></div>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                </div>
+
+                <nav>
+                    <div class="nav-row container">
+                        <ul>
+                            <li class="home"><a href="https://www.infosecurity-magazine.com/"><i class="spricon-home"></i>&nbsp;</a></li>
+                            <li><a href="https://www.infosecurity-magazine.com/news/" class="nav-bar-link colour-news">News</a></li>
+                            <li>
+                                <a href="https://www.infosecurity-magazine.com/nav/topics/" class="nav-bar-link colour-topics">Topics</a>
+                                <ul class="mega-drop mega-drop-topics" id="nav-topics" style=""></ul>
+                            </li>
+                            <li>
+                                <a href="https://www.infosecurity-magazine.com/nav/features/" class="nav-bar-link colour-features">Features</a>
+                                <ul class="mega-drop mega-drop-features" id="nav-features"></ul>
+                            </li>
+                            <li><a href="https://www.infosecurity-magazine.com/webinars/" class="nav-bar-link colour-webinars">Webinars</a></li>
+                            <li><a href="https://www.infosecurity-magazine.com/white-papers/" class="nav-bar-link colour-whitepapers">White Papers</a></li>
+
+                            <li>
+                                <a href="https://www.infosecurity-magazine.com/nav/events/" class="nav-bar-link colour-events">Events &amp; Conferences</a>
+                                <ul class="mega-drop mega-drop-features" id="nav-events"></ul>
+                            </li>
+                            <li><a href="https://www.infosecurity-magazine.com/directory/" class="nav-bar-link colour-directory">Directory</a></li>
+                            <li id="nav-search-li">
+                                <a href="javascript:;" class="nav-bar-link">Search<i class="spricon-search"></i></a>
+
+                                <ul class="mega-drop mega-drop-search" id="nav-search">
+                                    <li>
+                                        <div class="gcse-searchbox-only" data-resultsurl="https://www.infosecurity-magazine.com/search/"></div>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <div class="clear"></div>
+                    </div>
+                </nav>
+            </header>
+
+
+            <div id="pnlBreadcrumb" class="breadcrumb">
+
+                <div class="container" itemprop="breadcrumb">
+                    <a href="https://www.infosecurity-magazine.com/">Infosecurity Magazine Home</a> » <a href="https://www.infosecurity-magazine.com/blogs/">Blogs</a> » <a href="https://www.infosecurity-magazine.com/blogs/adopting-performance-security/">Adopting Performance Data into Your Security Strategy</a>
+                </div>
+
+            </div>
+
+            <div id="pnlMainContent" class="main-content">
+
+
+
+                <div id="cphContent_pnlArticle" itemscope="" itemtype="http://schema.org/BlogPosting">
+
+                    <div id="cphContent_pnlArticleHeader" class="article-header article-header-image" style="background-image:url(//assets.infosecurity-magazine.com/webpage/feat/86c97f65-1e36-4da3-8ded-1eaf19fa1d94.jpg);">
+
+
+
+                        <div class="container">
+                            <div class="overlay">
+                                <div>
+
+
+                                    <div id="cphContent_pnlArticleTitlebar" class="article-title-bar colour-features">
+
+                                        <div class="article-meta">
+                                            <time datetime="2017-06-07T09:45:00" itemprop="datePublished">7 Jun 2017</time>
+                                            <a id="cphContent_lnkContentType" class="content-type" href="https://www.infosecurity-magazine.com/blogs/">Blog</a>
+                                        </div>
+
+                                        <h1 itemProp="name">Adopting Performance Data into Your Security Strategy</h1>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="container">
+
+
+                        <div id="cphContent_pnlMainContent" class="col-2-3 col-left">
+
+
+                            <div class="author" itemprop="author" itemscope itemtype="http://schema.org/Person"><div class="author-image"><img src="//assets.infosecurity-magazine.com/profile/thumb/b82461b8-4f95-4b01-8ab9-512391f40ebd.jpg" alt="Destiny Bertucci" itemprop="image" /></div><h4 class="author-name"><a href="https://www.infosecurity-magazine.com/profile/destiny-bertucci/" itemprop="url name" rel="author">Destiny Bertucci</a><span class="author-title"> <span itemprop="jobTitle">Head Geek</span>, <span itemprop="worksFor">Solarwinds </span></span></h4><ul class="author-contacts"><li><a href="http://twitter.com/solarwinds">Follow @solarwinds</a></li></ul><div class="clear"></div></div>
+
+
+                            <div class="article-body">
+                                <div class="sticky-share">
+                                    <div class="addthis_toolbox">
+                                        <a class="addthis_button_facebook"><i class="spricon-facebook"></i></a>
+                                        <a class="addthis_button_twitter"><i class="spricon-twitter"></i></a>
+                                        <a class="addthis_button_compact"><i class="spricon-share"></i></a>
+                                    </div>
+                                </div>
+
+
+
+
+
+
+
+                                <div class="min-height" itemprop="articleBody"><div id="layout-" class="content-module " data-layout-id="2" data-edit-folder-name="text" data-index="0" ><p>Determining the standard performance metrics of your data centre is a key method for ensuring that your environment is secure. Any deviations from the &ldquo;norm&rdquo; can quickly identify a wider security issue.</p>
+
+                                    <p>
+
+                                    <p>With the persistent threat that security breaches pose to IT professionals, it is essential that data centres use standard performance metrics as the basis of a comprehensive security policy and process.</p>
+
+                                    <p>
+
+                                    <p><strong>Breaking it down</strong></p>
+
+                                    <p>Data center professionals have primarily used baseline data as a tool for determining availability, and for performance troubleshooting. Not understanding which metrics can be applied is the primary reason that data centres fail to capitalise on the full benefits of historical and baseline data provide to security processes. The following performance readings can be used from a security perspective:</p>
+
+                                    <p>
+
+                                    <p><strong>CPU and memory</strong>: Spikes in processing unit and memory performance data can potentially reveal the existence of malware infections. Monitoring CPU and memory metrics will provide you with an understanding of standard performance that will allow for threats to be quickly recognised. &nbsp;</p>
+
+                                    <p>
+
+                                    <p><strong>Network bandwidth utilisation</strong>: A sharp deviation in network traffic can be indicative of data being stolen. Ensuring that you and your team are familiar with the normal flows of network traffic travelling in and out of your data centre is a simple and swift method of identifying when a breach has occurred. Traffic monitoring tools such as NetFlow, sFlow, and J-Flow track data across the entire network, giving you the ability to pinpoint potential threats and then take the necessary action.</p>
+
+                                    <p>
+
+                                    <p><strong>Data storage volume</strong>: Unanticipated increases or decreases in data volume could be signs of data being deleted or duplicated. Understanding the standard storage metrics of your data centre will help you to identify breaches. In addition, the unexplained movement of files can also be a tell-tale sign of a data breach, making it crucial to also monitor for normalcy of data placement.&nbsp;</p>
+
+                                    <p>
+
+                                    <p><strong>Building your approach</strong></p>
+
+                                    <p>As well as providing data center professionals with the ability to identify data breaches, performance metrics can also form the basis of a comprehensive security strategy. Detailed below are the specific steps that should be taken in your data centre to apply baseline data to the development of this strategy.</p>
+
+                                    <p>
+
+                                    <p>Alongside your IT department and key business leaders, determine:</p>
+
+                                    <ul>
+                                        <li>What are the key data centre performance metrics that should be analysed?</li>
+                                        <li>Which departments within your business have access to sensitive data?</li>
+                                        <li>What level of access is permitted (tablets, smartphones, laptops, applications, etc.)?</li>
+                                        <li>What government policies (if any) apply to your business and the data you handle?</li>
+                                    </ul>
+
+                                    <p>Then:</p>
+
+                                    <ol>
+                                        <li>With this information, create the security policy and distribute it throughout the business.</li>
+                                        <li>Create an adaptable security maintenance schedule.</li>
+                                        <li>Employ data centre monitoring software that will alert your team if there are any abnormalities from the predetermined performance metrics.</li>
+                                        <li>Implement security procedures within the data centre and on the network. Do this after the performance baselines have been determined so that the effects of the incoming procedures can be properly evaluated.&nbsp;</li>
+                                        <li>Produce fixed response procedures that can be applied when abnormalities are detected and there is risk of a security breach</li>
+                                        <li>Ensure that all team leads are familiar with the response plans.</li>
+                                        <li>Train all business employees at every level on security policies and processes. It may be necessary to arrange for drills to be undertaken so that the responses can be practiced and refined in mock scenarios.</li>
+                                        <li>Regularly review the performance baselines with at least one week&rsquo;s worth of performance data to maintain validity.</li>
+                                    </ol>
+
+                                    <p>
+
+                                    <p>With a disciplined approach coupled with the application of security-specific tools, data center monitoring should be fundamental in your security strategy. Baselining can provide your team with the ability to develop and execute a predetermined response plan when abnormalities are detected. Often, this can all be achieved through the monitoring system that you likely already have in place within your data centre. The most successful IT projects are often those that let you recycle what you already have for a new purpose, and data centre security is no exception.&nbsp;</p>
+                                </div></div>
+
+                            </div>
+
+
+
+                            <div class="article-margin">
+
+
+                                <div class="addthis_recommended_horizontal"></div>
+                                <div id="disqus_thread"></div>
+                            </div>
+
+                        </div>
+
+                        <div id="cphContent_pnlAdditionalInfo" class="col-1-3 col-right">
+
+                            <div class="dfp " id="dfp-ad-0758a1ea-e3ab-4322-b45c-ec9688104133" data-ad-sizes="[300,250]" style="display: none;"></div>
+
+
+
+
+
+
+                            <div class="why-not-watch">
+                                <h2>Why Not Watch?</h2>
+                                <div class="webinar  wnw-webinar" data-height-group="suggested-webinar"><a class="wrapper-link" href="https://www.infosecurity-magazine.com/webinars/securing-data-cloud-combatting/"><span><img src="//assets.infosecurity-magazine.com/webpage/rect/84f8c51f-13d1-47cb-8570-aa2a9e20dd26.jpg" alt="Secure Data in the Cloud – Learn to Combat Cyber Threats to Protect Your Assets" /></span><div class="content-meta"><time datetime="2015-02-19T15:00:00">19 Feb 2015</time><time datetime="2015-02-19T16:00:00"></time></div><span class="title-link">Secure Data in the Cloud – Learn to Combat Cyber Threats to Protect Your Assets</span></a></div><div class="webinar webinar-right wnw-webinar" data-height-group="suggested-webinar"><a class="wrapper-link" href="https://www.infosecurity-magazine.com/webinars/modernizing-your-application/"><span><img src="//assets.infosecurity-magazine.com/webpage/rect/5841274c-58bd-419e-91a4-30048ffdee99.jpg" alt="Modernizing your Application Security Program" /></span><div class="content-meta"><time datetime="2015-09-10T14:00:00">10 Sep 2015</time><time datetime="2015-09-10T15:00:00"></time></div><span class="title-link">Modernizing your Application Security Program</span></a></div><div class="webinar  wnw-webinar" data-height-group="suggested-webinar"><a class="wrapper-link" href="https://www.infosecurity-magazine.com/webinars/shutting-the-door-on-the-attacker/"><span><img src="//assets.infosecurity-magazine.com/webpage/rect/a51849ce-736d-47e6-94dc-49460caabefa.jpg" alt="Shutting the Door on the Attacker" /></span><div class="content-meta"><time datetime="2016-06-30T14:00:00">30 Jun 2016</time><time datetime="2016-06-30T15:00:00"></time></div><span class="title-link">Shutting the Door on the Attacker</span></a></div><div class="webinar webinar-right wnw-webinar" data-height-group="suggested-webinar"><a class="wrapper-link" href="https://www.infosecurity-magazine.com/webinars/how-to-build-a-nextgeneration/"><span><img src="//assets.infosecurity-magazine.com/webpage/rect/3af8a6b9-de2b-47c8-9ee4-61d1f9cd7b3e.jpg" alt="How to Build a Next-generation Security Programme" /></span><div class="content-meta"><time datetime="2015-03-05T15:00:00">5 Mar 2015</time><time datetime="2015-03-05T16:00:00"></time></div><span class="title-link">How to Build a Next-generation Security Programme</span></a></div>
+                                <div class="clear"></div>
+                            </div>
+
+
+                            <div class="related-links">
+                                <div class="heading">Related to This Story</div>
+
+                                <ul>
+
+                                    <li>
+                                        <a href="https://www.infosecurity-magazine.com/blogs/your-2017-data-centre-security/">Your 2017 Data Centre Security Checklist</a>
+                                    </li>
+
+                                    <li>
+                                        <a href="https://www.infosecurity-magazine.com/opinions/cloud-data-remains-your/">Cloud Data Remains Your Responsibility</a>
+                                    </li>
+
+                                    <li>
+                                        <a href="https://www.infosecurity-magazine.com/interviews/interview-michael-winterson/">Interview: Michael Winterson, MD, Equinix Services &amp; Russell Poole, MD, Equinix UK</a>
+                                    </li>
+
+                                    <li>
+                                        <a href="https://www.infosecurity-magazine.com/opinions/the-data-centre-as-a-time-machine/">The Data Centre as a Time Machine</a>
+                                    </li>
+
+                                    <li>
+                                        <a href="https://www.infosecurity-magazine.com/blogs/gdpr-compliance-time-face-mission/">GDPR Compliance: Time to Face Mission Impossible?</a>
+                                    </li>
+
+                                </ul>
+                            </div>
+
+
+
+                            <div class="whats-hot">
+                                <h2>What&rsquo;s Hot on Infosecurity Magazine?</h2>
+                                <ul class="whats-hot-tabs">
+                                    <li id="cphContent_WhatsHot_liRead" data-tab-value="read" class="active"><a href="javascript:;">Read</a></li>
+                                    <li id="cphContent_WhatsHot_liShared" data-tab-value="shared"><a href="javascript:;" >Shared</a></li>
+                                    <li id="cphContent_WhatsHot_liWatched" data-tab-value="watched"><a href="javascript:;">Watched</a></li>
+                                    <li id="cphContent_WhatsHot_liEditors" data-tab-value="editors"><a href="javascript:;">Editor's Choice</a></li>
+                                </ul>
+                                <div class="whats-hot-stories">
+                                    <div class="tab-panel active" data-tab-value="read" style="display: block;">
+                                        <div class="col-1-3 col-left"><div class="content-item content-sml whats-hot-item colour-news"><a class="wrapper-link" href="https://www.infosecurity-magazine.com/news/google-staffers-hit-by-breach/"><span class="calendar-date"><span class="day">1</span></span><div class="content-info"><div class="content-meta"><time datetime="2017-07-04T09:00:00">4 Jul 2017</time> <span class="content-type">News</span></div><h3 class="content-headline">Google Staffers Hit by Breach at Third-Party Booking Firm</h3></div><div class="clear"></div></a></div><div class="content-item content-sml whats-hot-item colour-news"><a class="wrapper-link" href="https://www.infosecurity-magazine.com/news/massive-adgholas-malvertising/"><span class="calendar-date"><span class="day">2</span></span><div class="content-info"><div class="content-meta"><time datetime="2017-07-03T20:44:00">3 Jul 2017</time> <span class="content-type">News</span></div><h3 class="content-headline">Massive AdGholas Malvertising Campaign Infects Millions</h3></div><div class="clear"></div></a></div><div class="content-item content-sml whats-hot-item colour-news"><a class="wrapper-link" href="https://www.infosecurity-magazine.com/news/ukraine-police-seize-servers-blame/"><span class="calendar-date"><span class="day">3</span></span><div class="content-info"><div class="content-meta"><time datetime="2017-07-05T08:50:00">5 Jul 2017</time> <span class="content-type">News</span></div><h3 class="content-headline">Ukraine Police Seize Servers, Blame Software Firm for &#39;Petya&#39;</h3></div><div class="clear"></div></a></div></div><div class="col-1-3 col-right"><div class="content-item content-sml whats-hot-item colour-news"><a class="wrapper-link" href="https://www.infosecurity-magazine.com/news/av-test-ransomware-is-a-marginal/"><span class="calendar-date"><span class="day">4</span></span><div class="content-info"><div class="content-meta"><time datetime="2017-07-05T09:59:00">5 Jul 2017</time> <span class="content-type">News</span></div><h3 class="content-headline">AV-Test: Ransomware is a &#39;Marginal Phenomenon&#39;</h3></div><div class="clear"></div></a></div><div class="content-item content-sml whats-hot-item colour-news"><a class="wrapper-link" href="https://www.infosecurity-magazine.com/news/drone-causes-gatwick-chaos-as/"><span class="calendar-date"><span class="day">5</span></span><div class="content-info"><div class="content-meta"><time datetime="2017-07-04T09:29:00">4 Jul 2017</time> <span class="content-type">News</span></div><h3 class="content-headline">Drone Causes Gatwick Chaos as Flights are Diverted</h3></div><div class="clear"></div></a></div><div class="content-item content-sml whats-hot-item colour-news"><a class="wrapper-link" href="https://www.infosecurity-magazine.com/news/uk-councils-still-failing-on-gdpr/"><span class="calendar-date"><span class="day">6</span></span><div class="content-info"><div class="content-meta"><time datetime="2017-07-05T10:30:00">5 Jul 2017</time> <span class="content-type">News</span></div><h3 class="content-headline">UK Councils Still Failing on GDPR Compliance Plans</h3></div><div class="clear"></div></a></div></div>
+                                        <div class="clear"></div>
+                                    </div>
+                                    <div class="tab-panel" data-tab-value="shared">
+                                        <div class="col-1-3 col-left"><div class="content-item content-sml whats-hot-item colour-news"><a class="wrapper-link" href="https://www.infosecurity-magazine.com/news/fbi-us-atms-could-be-hacked-to/"><span class="calendar-date"><span class="day">1</span></span><div class="content-info"><div class="content-meta"><time datetime="2016-11-21T19:31:00">21 Nov 2016</time> <span class="content-type">News</span></div><h3 class="content-headline">FBI: US ATMs Could Be Hacked to Spew Cash</h3></div><div class="clear"></div></a></div><div class="content-item content-sml whats-hot-item colour-news"><a class="wrapper-link" href="https://www.infosecurity-magazine.com/news/us-government-releases-new-iot/"><span class="calendar-date"><span class="day">2</span></span><div class="content-info"><div class="content-meta"><time datetime="2016-11-18T10:35:00">18 Nov 2016</time> <span class="content-type">News</span></div><h3 class="content-headline">US Government Releases New IoT Security Guidance</h3></div><div class="clear"></div></a></div><div class="content-item content-sml whats-hot-item colour-news"><a class="wrapper-link" href="https://www.infosecurity-magazine.com/news/conficker-still-on-top-as-malware/"><span class="calendar-date"><span class="day">3</span></span><div class="content-info"><div class="content-meta"><time datetime="2016-11-22T10:26:00">22 Nov 2016</time> <span class="content-type">News</span></div><h3 class="content-headline">Conficker Still on Top as Malware Jumps 5% in October</h3></div><div class="clear"></div></a></div></div><div class="col-1-3 col-right"><div class="content-item content-sml whats-hot-item colour-news"><a class="wrapper-link" href="https://www.infosecurity-magazine.com/news/data-protection-disputes-to-soar/"><span class="calendar-date"><span class="day">4</span></span><div class="content-info"><div class="content-meta"><time datetime="2016-11-21T12:38:00">21 Nov 2016</time> <span class="content-type">News</span></div><h3 class="content-headline">Data Protection Disputes to Soar Over Next Five Years</h3></div><div class="clear"></div></a></div><div class="content-item content-sml whats-hot-item colour-news"><a class="wrapper-link" href="https://www.infosecurity-magazine.com/news/uk-retailers-facing-one-million/"><span class="calendar-date"><span class="day">5</span></span><div class="content-info"><div class="content-meta"><time datetime="2016-11-18T11:13:00">18 Nov 2016</time> <span class="content-type">News</span></div><h3 class="content-headline">UK Retailers Facing One Million Fraud Attempts Per Day</h3></div><div class="clear"></div></a></div><div class="content-item content-sml whats-hot-item colour-news"><a class="wrapper-link" href="https://www.infosecurity-magazine.com/news/sha-1-time-bomb-third-of-websites/"><span class="calendar-date"><span class="day">6</span></span><div class="content-info"><div class="content-meta"><time datetime="2016-11-17T11:13:00">17 Nov 2016</time> <span class="content-type">News</span></div><h3 class="content-headline">SHA-1 Time Bomb: One Third of Websites Have Yet to Upgrade</h3></div><div class="clear"></div></a></div></div>
+                                        <div class="clear"></div>
+                                    </div>
+                                    <div class="tab-panel" data-tab-value="watched">
+                                        <div class="col-1-3 col-left"><div class="content-item content-sml whats-hot-item colour-webinars"><a class="wrapper-link" href="https://www.infosecurity-magazine.com/webinars/insider-attack-stop/"><span class="calendar-date"><span class="day">1</span></span><div class="content-info"><div class="content-meta"><time datetime="2017-07-06T14:00:00">6 Jul 2017, 15:00 BST, 10:00 EDT</time><time datetime="2017-07-06T15:00:00"></time> <span class="content-type">Webinar</span></div><h3 class="content-headline">Insiders and Smart Attackers: How to Track &amp; Stop the Rogue</h3></div><div class="clear"></div></a></div><div class="content-item content-sml whats-hot-item colour-webinars"><a class="wrapper-link" href="https://www.infosecurity-magazine.com/webinars/ransomware-defend/"><span class="calendar-date"><span class="day">2</span></span><div class="content-info"><div class="content-meta"><time datetime="2017-07-13T14:00:00">13 Jul 2017, 15:00 BST, 10:00 EDT</time><time datetime="2017-07-13T15:00:00"></time> <span class="content-type">Webinar</span></div><h3 class="content-headline">The Impact of Ransomware &amp; How to Defend Against It</h3></div><div class="clear"></div></a></div><div class="content-item content-sml whats-hot-item colour-webinars"><a class="wrapper-link" href="https://www.infosecurity-magazine.com/webinars/suspicious-attack-response/"><span class="calendar-date"><span class="day">3</span></span><div class="content-info"><div class="content-meta"><time datetime="2017-06-29T14:00:00">29 Jun 2017</time><time datetime="2017-06-29T15:00:00"></time> <span class="content-type">Webinar</span></div><h3 class="content-headline">How to Defeat a Suspicious Attack and Prepare the Best Response</h3></div><div class="clear"></div></a></div></div><div class="col-1-3 col-right"><div class="content-item content-sml whats-hot-item colour-webinars"><a class="wrapper-link" href="https://www.infosecurity-magazine.com/webinars/wannacry-postmortem-ransomware/"><span class="calendar-date"><span class="day">4</span></span><div class="content-info"><div class="content-meta"><time datetime="2017-05-23T14:00:00">23 May 2017</time><time datetime="2017-05-23T15:00:00"></time> <span class="content-type">Webinar</span></div><h3 class="content-headline">WannaCry Post-Mortem: Ransomware Analysis &amp; Lessons Learned</h3></div><div class="clear"></div></a></div><div class="content-item content-sml whats-hot-item colour-webinars"><a class="wrapper-link" href="https://www.infosecurity-magazine.com/webinars/password-management-getting/"><span class="calendar-date"><span class="day">5</span></span><div class="content-info"><div class="content-meta"><time datetime="2017-06-22T14:00:00">22 Jun 2017</time><time datetime="2017-06-22T15:00:00"></time> <span class="content-type">Webinar</span></div><h3 class="content-headline">Password Management: Getting Down to Business</h3></div><div class="clear"></div></a></div><div class="content-item content-sml whats-hot-item colour-webinars"><a class="wrapper-link" href="https://www.infosecurity-magazine.com/webinars/cybersecurity-behavior-expert/"><span class="calendar-date"><span class="day">6</span></span><div class="content-info"><div class="content-meta"><time datetime="2017-06-20T15:00:00">20 Jun 2017</time><time datetime="2017-06-20T16:00:00"></time> <span class="content-type">Webinar</span></div><h3 class="content-headline">Life of: A Cybersecurity Behavior Expert</h3></div><div class="clear"></div></a></div></div>
+                                        <div class="clear"></div>
+                                    </div>
+                                    <div class="tab-panel" data-tab-value="editors">
+                                        <div class="col-1-3 col-left"><div class="content-item content-sml whats-hot-item colour-features"><a class="wrapper-link" href="https://www.infosecurity-magazine.com/opinions/call-centers-should-abandon/"><span class="calendar-date"><span class="day">1</span></span><div class="content-info"><div class="content-meta"><time datetime="2017-06-15T08:35:00">15 Jun 2017</time> <span class="content-type">Opinion</span></div><h3 class="content-headline">Five Reasons Call Centers Should Abandon ‘Stop/Start’ Systems</h3></div><div class="clear"></div></a></div><div class="content-item content-sml whats-hot-item colour-features"><a class="wrapper-link" href="https://www.infosecurity-magazine.com/interviews/live-infosec-be-ready-for-gdpr/"><span class="calendar-date"><span class="day">2</span></span><div class="content-info"><div class="content-meta"><time datetime="2017-06-16T13:46:00">16 Jun 2017</time> <span class="content-type">Interview</span></div><h3 class="content-headline">Video Interview: Be Ready for GDPR Compliance</h3></div><div class="clear"></div></a></div><div class="content-item content-sml whats-hot-item colour-features"><a class="wrapper-link" href="https://www.infosecurity-magazine.com/slackspace/facebook-fights-terrorism-with-ai/"><span class="calendar-date"><span class="day">3</span></span><div class="content-info"><div class="content-meta"><time datetime="2017-06-19T19:22:00">19 Jun 2017</time> <span class="content-type">Slackspace</span></div><h3 class="content-headline">Facebook Fights Terrorism with AI; Is It Censorship?</h3></div><div class="clear"></div></a></div></div><div class="col-1-3 col-right"><div class="content-item content-sml whats-hot-item colour-features"><a class="wrapper-link" href="https://www.infosecurity-magazine.com/interviews/video-infosecurity-europe-2017/"><span class="calendar-date"><span class="day">4</span></span><div class="content-info"><div class="content-meta"><time datetime="2017-06-15T14:25:00">15 Jun 2017</time> <span class="content-type">Interview</span></div><h3 class="content-headline">Video: Infosecurity Europe 2017 Editorial Round-Up</h3></div><div class="clear"></div></a></div><div class="content-item content-sml whats-hot-item colour-news"><a class="wrapper-link" href="https://www.infosecurity-magazine.com/news/new-iot-botnet-targets-ip-cameras/"><span class="calendar-date"><span class="day">5</span></span><div class="content-info"><div class="content-meta"><time datetime="2017-06-16T08:41:00">16 Jun 2017</time> <span class="content-type">News</span></div><h3 class="content-headline">New IoT Botnet Targets IP Cameras</h3></div><div class="clear"></div></a></div><div class="content-item content-sml whats-hot-item colour-features"><a class="wrapper-link" href="https://www.infosecurity-magazine.com/opinions/probably-not-safe-ransomware/"><span class="calendar-date"><span class="day">6</span></span><div class="content-info"><div class="content-meta"><time datetime="2017-06-14T11:11:00">14 Jun 2017</time> <span class="content-type">Opinion</span></div><h3 class="content-headline">Why You&#39;re Probably Not Safe from Ransomware</h3></div><div class="clear"></div></a></div></div>
+                                        <div class="clear"></div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <input type="hidden" id="whatsHotActiveTab" value="read" />
+
+
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+
+                </div>
+
+                <script type="text/javascript">
+        var stickySharing = $('.sticky-share');
+        var isStickySharing = false;
+
+        $(function () {
+            $(window).on('scroll', function () {
+                var offsetStickySharing = $('.article-body').offset().top;
+                var scrollTop = $(window).scrollTop();
+
+                if (isStickySharing === true && scrollTop < offsetStickySharing) {
+                    var currentOffset = scrollTop;
+                    var newOffset = offsetStickySharing - scrollTop;
+                    var distanceToMove = Math.abs(offsetStickySharing);
+
+                    isStickySharing = false;
+                    stickySharing.css('position', '').css('top', '0');
+                }
+
+                if (isStickySharing === false && scrollTop >= offsetStickySharing) {
+                    var currentOffset = offsetStickySharing - scrollTop;
+                    var distanceToMove = Math.abs(currentOffset);
+
+                    isStickySharing = true;
+                    stickySharing
+                        .css('position', 'fixed')
+                        .css('top', currentOffset)
+                        .animate({ 'top': 0 }, (distanceToMove * 2));
+                }
+            });
+        });
+    </script>
+
+                <script type="text/javascript">
+        var webpageId = 114718;
+        var prevalErrors = null;
+
+        $('.preval-message').remove();
+        if (prevalErrors !== null) {
+            for (var obj in prevalErrors) {
+                var error = prevalErrors[obj],
+                    control = $('[data-property-name="' + prevalErrors[obj].PropertyName + '"]');
+
+                if (control.length > 0)
+                {
+                    control.addClass('has-preval');
+                }
+            }
+        }
+    </script>
+
+                <script type="text/javascript">
+        $(function(){
+            $('.js-download').on('click', function(){
+                $.ajax({
+                    type: 'POST',
+                    dataType: 'json',
+                    url: '/adv-download/',
+                    data: {
+                        id: $(this).data('layout')
+                    },
+                    success: function(response, status){
+                        if(status === "success") {
+                            window.location = response.RedirectUrl;
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+
+
+                <script type="text/javascript">
+            var disqus_config = function () {
+                this.page.remote_auth_s3 = disqus_remote_auth;
+                this.page.api_key = 'bmQJhm7DWK8yGdGdgMsDlxalVRzAoUeU44hhpTqsPWyxVkLVAFj5CxRHo2GRIl9a';
+                this.sso = {
+                    name: sso_name,
+                    url: sso_url,
+                    button: 'https://www.infosecurity-magazine.com/_common/img/disqus-login.png',
+                    logout: sso_logout,
+                    width: sso_width,
+                    height: sso_height
+                };
+            };
+
+            var disqus_remote_auth = '({})';
+            var disqus_shortname = 'infosecuritymagazine';
+            var disqus_identifier = '';
+            var disqus_title = '';
+            var disqus_url = ''
+            var sso_url = '';
+            var sso_name = 'Infosecurity Magazine';
+            var sso_logout = '';
+            var sso_width = '';
+            var sso_height = '';
+
+            $(function () {
+                $.get('/session-control/?method=disqus&id=114718', function (data) {
+                    if (data.disqus_remote_auth != null) {
+                        disqus_remote_auth = data.disqus_remote_auth;
+                    }
+
+                    disqus_shortname = data.disqus_shortname;
+                    disqus_identifier = data.disqus_identifier;
+                    disqus_title = data.disqus_title;
+                    disqus_url = data.disqus_url;
+
+                    sso_url = data.sso_url;
+                    sso_logout = data.sso_logout;
+                    sso_width = data.sso_width;
+                    sso_height = data.sso_height;
+                    sso_name = data.sso_name;
+                }).done(function () {
+                    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                });
+            });
+        </script>
+
+
+
+
+            </div>
+
+
+            <footer class="footer">
+                <div class="container">
+                    <div class="footer-ad-col">
+                        <div class="dfp leaderboard" id="dfp-ad-e49b9208-c799-4fca-82a3-f4294172887f" data-ad-sizes="[728,90]" style="display: none;"></div>
+
+                        <div class="footer-social-links">
+                            <a href="https://www.facebook.com/pages/Infosecurity-Magazine/210560332330063" target="_blank" class="fb"><i class="spricon-fb"></i></a>
+                            <a href="https://twitter.com/InfosecurityMag" target="_blank" class="tw"><i class="spricon-tw"></i></a>
+                            <a href="https://plus.google.com/+InfosecurityMagazine/posts" target="_blank" class="gp"><i class="spricon-gp"></i></a>
+                            <a href="http://www.linkedin.com/groups?gid=2035794&amp;trk=myg_ugrp_ovr" target="_blank" class="li"><i class="spricon-li"></i></a>
+                        </div>
+
+                        <a href="http://www.infosec.co.uk/en/about/infosecurity-group/" target="_blank" class="infosecurity-group-logo"><i class="spricon-group"></i></a>
+                        <div class="clear"></div>
+                    </div>
+
+                    <div class="footer-links-col">
+                        <div class="left-links">
+                            <ul>
+                                <li class="list-header">The Magazine</li>
+                                <li><a href="https://www.infosecurity-magazine.com/the-magazine/">About Infosecurity</a></li>
+                                <li><a href="https://www.infosecurity-magazine.com/subscription/">Subscription</a></li>
+                                <li><a href="https://www.infosecurity-magazine.com/meet-the-team/">Meet the Team</a></li>
+                                <li><a href="https://www.infosecurity-magazine.com/contacts/">Contact Us</a></li>
+                            </ul>
+                        </div>
+
+                        <div class="right-links">
+                            <ul>
+                                <li class="list-header">Advertisers</li>
+                                <li><a href="https://www.infosecurity-magazine.com/mediapack/">Media Pack</a></li>
+                            </ul>
+                            <ul>
+                                <li class="list-header">Contributors</li>
+                                <li><a href="https://www.infosecurity-magazine.com/forward-features/">Forward Features</a></li>
+                                <li><a href="https://www.infosecurity-magazine.com/op-ed/">Op-ed</a></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="copyright-notices">
+                        <ul class="copyright-links">
+                            <li>Copright &copy; 2017 Reed Exhibitions Ltd.</li>
+                            <li><a href="https://www.infosecurity-magazine.com/terms-and-conditions/">Terms and Conditions</a></li>
+                            <li><a href="https://www.infosecurity-magazine.com/privacy-policy/">Privacy Policy</a></li>
+                            <li><a href="https://www.infosecurity-magazine.com/cookies/">Use of Cookies</a></li>
+                            <li><a href="https://www.infosecurity-magazine.com/sitemap/">Sitemap</a></li>
+                            <li class="reed-expo"><a href="http://www.reedexpo.com/" target="_blank"><i class="spricon-reedex"></i></a></li>
+                        </ul>
+                    </div>
+                </div>
+            </footer>
+
+        </div>
+    </div>
+
+    <div style="background: rgba(0,0,0,0.8); width: 100%; height: 100%; position: fixed; z-index: 1000000; top: 0; left: 0; display: none;filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr='#4c000000', endColorstr='#4c000000');" id="loadingPane">
+        <div style="width: 240px; position: fixed; background: #000; top: 0; left: 50%; margin-left: -140px; padding: 20px; z-index: 1000001; border: 1px solid #fff; border-top: none; color: #fff; text-align: center; font-size:1.7143em;line-height:1.3333em;">
+            Please wait…
+        </div>
+    </div>
+
+    <div class="refresh-ads"></div>
+
+    <script type="text/javascript">
+            var gptZone = 'blogs/adopting-performance-security';
+            var gptTopics = ['Application Security', 'Big Data', 'Cloud Security', 'Mobile Application Security', 'Patch Management', 'Secure Coding', 'Web Application Security', 'Database Security', 'Information Management'];
+        </script>
+
+
+    <script type="text/javascript" src="//res.infosecurity-magazine.com/js-0034/underscore.min.js"></script>
+    <script type="text/javascript" src="//res.infosecurity-magazine.com/js-0034/unveil.js"></script>
+    <script type="text/javascript" src="//res.infosecurity-magazine.com/js-0034/ticker.min.js"></script>
+    <script type="text/javascript" src="//res.infosecurity-magazine.com/js-0034/ism.js"></script>
+    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-4d79fed038d59786"></script>
+    <script type="text/javascript" src="//res.infosecurity-magazine.com/js-0034/ism/ism.whatshot.js"></script>
+
+    <script type="text/javascript">
+            highlightNavigation('colour-features');
+        </script>
+</div>
+</body>
+</html>
