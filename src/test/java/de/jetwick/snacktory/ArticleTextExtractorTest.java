@@ -3585,6 +3585,21 @@ public class ArticleTextExtractorTest {
     }
 
     @Test
+    public void testInfosecurityMagazine() throws Exception {
+        // https://www.infosecurity-magazine.com/blogs/adopting-performance-security/
+        JResult res = new JResult();
+        res.setUrl("https://www.infosecurity-magazine.com/blogs/adopting-performance-security/");
+        res = extractor.extractContent(res, c.streamToString(getClass().getResourceAsStream("infosecurity-magazine.html")));
+        assertEquals("https://www.infosecurity-magazine.com/blogs/adopting-performance-security/", res.getCanonicalUrl());
+        assertEquals("How to adopt performance data in your security strategy. - Infosecurity Magazine", res.getTitle());
+        assertTrue(res.getText(), res.getText().startsWith("Determining the standard performance metrics of your data centre is a key method for ensuring that your environment is secure."));
+        assertTrue(res.getText(), res.getText().endsWith("and data centre security is no exception."));
+        assertEquals("Destiny Bertucci", res.getAuthorName());
+        assertEquals("Head Geek, Solarwinds", res.getAuthorDescription());
+        compareDates("2017-06-07 10:45:00", res.getDate());
+    }
+
+    @Test
     public void testRawAuthorName() throws Exception {
         // http://www.einnews.com/pr_news/336348008/hybrid-cloud-computing-industry-global-market-to-grow-at-cagr-34-4-between-2016-2022
         JResult res = new JResult();

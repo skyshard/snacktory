@@ -2222,7 +2222,7 @@ public class ArticleTextExtractor {
                         matches = doc.select(":containsOwn(reporting by), :containsOwn(reported by), :containsOwn(edited by), :containsOwn(editing by)");
                         if (DEBUG_AUTHOR_EXTRACTION && matches != null && matches.size() > 0)
                             System.out.println("AUTHOR: :containsOwn(reporting by), :containsOwn(reported by), :containsOwn(edited by), :containsOwn(editing by)");
-                    }
+                        }
 
                     // select the best element from them
                     if (matches != null) {
@@ -2342,6 +2342,18 @@ public class ArticleTextExtractor {
             authorDesc = bestMatch.text();
             if(DEBUG_AUTHOR_DESC_EXTRACTION){
                 System.out.println("AUTHOR_DESC: .pb-author-bio");
+                System.out.println("AUTHOR: AUTHOR_DESC=" + authorDesc);
+            }
+            return SHelper.innerTrim(authorDesc);
+        }
+
+        // https://www.infosecurity-magazine.com/blogs/adopting-performance-security/
+        matches = doc.select("span.author-title");
+        if (matches!= null && matches.size() > 0){
+            Element bestMatch = matches.first(); // assume it is the first.
+            authorDesc = bestMatch.text();
+            if(DEBUG_AUTHOR_DESC_EXTRACTION){
+                System.out.println("AUTHOR_DESC: span.author-title");
                 System.out.println("AUTHOR: AUTHOR_DESC=" + authorDesc);
             }
             return SHelper.innerTrim(authorDesc);
