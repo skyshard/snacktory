@@ -148,6 +148,9 @@ public class OutputFormatter {
                 tmpEl = tmpEl.parent();
             }
 
+            if (e.hasAttr("contentExtracted")) {
+                continue MAIN;
+            }
             String text = node2Text(e);
 
             if(DEBUG_OUTPUT)
@@ -160,6 +163,11 @@ public class OutputFormatter {
                 }
             }
 
+            // Mark all the child nodes as visited
+            // It is rare but for sites like http://www.teenvogue.com/gallery/graduation-2017-gift-guide
+            // there are nested elements which are eligible for extraction `h2 > p` where the same contents
+            // are extracted twice
+            e.select(tagName).forEach(childNode -> childNode.attr("contentExtracted", "true"));
 
             if (e.tagName().equals("p")){
                 countOfP++;
@@ -226,7 +234,7 @@ public class OutputFormatter {
             if (unlikely(child)){
                 continue;
             }
-            if (child instanceof TextNode) {
+            if (child instanceof TextNode && !child.hasAttr("contentExtracted")) {
                 TextNode textNode = (TextNode) child;
                 String txt = textNode.text();
                 accum.append(txt);

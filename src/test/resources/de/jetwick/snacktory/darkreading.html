@@ -1,0 +1,1832 @@
+
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+    <link href='//fonts.googleapis.com/css?family=Roboto+Slab:700' rel='stylesheet' type='text/css'>
+    <link type="text/css" rel="stylesheet" href="//twimgs.com/nojitter/css/darkreading.css" />
+    <!-- Pano-Framework Requirements Start //-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="/styles/pano-framework.css?v1.23">
+    <link rel="stylesheet" href="/styles/styles.css?v7">
+    <link rel="stylesheet" href="//i.ubm-us.net/oas/nativead/css/dr_nativead.css?v3">
+    <!--[if lt IE 9]>
+    <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+
+    <script language="JavaScript" src="//i.ubm-us.net/oas/nativead/js/nativead.js"></script>
+    <script language="JavaScript" src="//i.ubm-us.net/oas/nativead/js/dr_nativead.js?v3"></script>
+    <script src="/script/respond.min.js"></script>
+    <!-- Pano-Framework Requirements End //-->
+    <script src="/script/jquery.mobile.custom.min.js"></script>
+    <script language="JavaScript" src="//twimgs.com/nojitter/js/complete.js"></script>
+    <script type="text/javascript" src="//twimgs.com/nojitter/js/jquery-1.11.min.js"></script>
+    <script language="JavaScript" src="//twimgs.com/nojitter/darkreading/darkreading.js?v4"></script>
+
+
+    <META name="description" content="Better visibility is essential to improving the cybersecurity of industrial control systems and critical infrastructure, but the OT-IT cultural divide ...">
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+    <meta name="google-site-verification" content="aqeQJl1dzvKlHHA8IpYN0UlBUkeV64imdVnsZ5yJS7s" />
+
+    <link rel="image_src" href="http://img.deusm.com/darkreading/dr-fb-button.jpg" />
+    <meta name="news_keywords" content="ICS, hackers">
+    <title>Look, But Don't Touch: One Key to Better ICS Security  </title>
+
+    <link rel="shortcut icon" href="http://img.deusm.com/darkreading/favicon.ico" type="image/vnd.microsoft.icon">
+    <link rel="icon" href="http://img.deusm.com/darkreading/favicon.ico" type="image/vnd.microsoft.icon">
+
+    <link rel="meta" type="application/rdf+xml" title="RDF Metadata" href="/rdf_simple.asp?the_docid=1328987&the_url=http%3A%2F%2Fwww%2Edarkreading%2Ecom%2Fvulnerabilities%2D%2D%2Dthreats%2Flook%2Dbut%2Ddont%2Dtouch%2Done%2Dkey%2Dto%2Dbetter%2Dics%2Dsecurity%2D%2D%2Fd%2Fd%2Did%2F1328987" />
+    <link rel="canonical" href="http://www.darkreading.com/vulnerabilities---threats/look-but-dont-touch-one-key-to-better-ics-security--/d/d-id/1328987"/><meta property="og:title" content="Look, But Don't Touch: One Key to Better ICS Security  "/>
+    <meta property="og:type" content="article"/>
+    <meta property="og:image" content="http://img.deusm.com/darkreading/dr-fb-button.jpg"/>
+    <meta property="og:url" content="http://www.darkreading.com/vulnerabilities---threats/look-but-dont-touch-one-key-to-better-ics-security--/d/d-id/1328987"/>
+    <meta property="og:site_name" content="Dark Reading"/>
+    <meta property="og:description" content="Better visibility is essential to improving the cybersecurity of industrial control systems and critical infrastructure, but the OT-IT cultural divide must be united."/>
+    <meta property="fb:app_id" content="640989409269461"/>
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:site" content="@DarkReading">
+    <meta name="twitter:title" content="Look, But Don't Touch: One Key to Better ICS Security  ">
+    <meta name="twitter:description" content="Better visibility is essential to improving the cybersecurity of industrial control systems and critical infrastructure, but the OT-IT cultural divide must be united.">
+    <meta name="twitter:image" content="http://img.deusm.com/darkreading/dr-fb-button.jpg">
+
+    <link type="text/css" rel="stylesheet" href="//twimgs.com/nojitter/css/jplayer.blue.monday.css" />
+    <link type="text/css" rel="stylesheet" href="//twimgs.com/nojitter/css/style.css" />
+    <!--<script type="text/javascript" src="//i.ubm-us.net/shared/omniture/h_s_code_remote.js" ></script>-->
+
+    <script language="JavaScript" src="//twimgs.com/nojitter/js/jquery.jplayer.min.js"></script>
+    <script language="JavaScript" src="//twimgs.com/nojitter/js/jquery.tablesorter.min.js"></script>
+    <script language="JavaScript">
+theSiteDomain = 'www.darkreading.com';
+thePageTitle = 'Look, But Don\'t Touch: One Key to Better ICS Security  ';
+</script>
+    <script language="Javascript">
+document.cookie = "piddlNGSiteReferer=/; path=/";
+document.cookie = "piddlNGPageReferer=/; path=/";
+var ngenv='ng';
+var ngserv='b6fc067711c1f112adbd09d9ced6cd471747a0e3a2a658e578cf380e24825d62';
+var omn_regtrackproduct=';darkreading.com Site Registration;;';
+var omn_nltrackproduct=';darkreading.com Newsletter Registration;;';
+</script>
+    <link rel="stylesheet" type="text/css" href="https://dsimg.ubm-us.net/ubm-widget/css/ubm-widget-style.css" />
+    <script type="text/javascript" src="https://dsimg.ubm-us.net/ubm-widget/js/ubm-widget-min.js"></script>
+    <script type="text/javascript" src="/script/ng_forms.js?v7.4"></script>
+    <link rel="stylesheet" type="text/css" href="//twimgs.com/nojitter/css/widget-extra.css" />
+    <script type="text/javascript">
+var welcomeLinks = {
+	loginText : "Login to your account",
+	logoutText : "Logout",
+	logout : "https://ng.techweb.com/authds/gateway?logout=true&return=https://www.darkreading.com/ng_logout.asp?piddl_nexturl=https%3A%2F%2Fwww%2Edarkreading%2Ecom%2Fvulnerabilities%2D%2D%2Dthreats%2Flook%2Dbut%2Ddont%2Dtouch%2Done%2Dkey%2Dto%2Dbetter%2Dics%2Dsecurity%2D%2D%2Fd%2Fd%2Did%2F1328987%3F",
+	profileText : "Profile",
+	registerText : "Register",
+	register : "https://ng.techweb.com/authds/gateway?gateway=true&return=https%3A%2F%2Fwww%2Edarkreading%2Ecom%2Fvulnerabilities%2D%2D%2Dthreats%2Flook%2Dbut%2Ddont%2Dtouch%2Done%2Dkey%2Dto%2Dbetter%2Dics%2Dsecurity%2D%2D%2Fd%2Fd%2Did%2F1328987%3FngAction%3Dregister",
+};</script>
+    <script type="text/javascript">var loginCheck = 2;
+var loginHTML = '<div class="first-level-nav-item"><a href="https://ng.techweb.com/authds/gateway?gateway=true&return=https%3A%2F%2Fwww%2Edarkreading%2Ecom%2Fvulnerabilities%2D%2D%2Dthreats%2Flook%2Dbut%2Ddont%2Dtouch%2Done%2Dkey%2Dto%2Dbetter%2Dics%2Dsecurity%2D%2D%2Fd%2Fd%2Did%2F1328987%3FngAction%3Dregister" title="Register" >Register</a></div><div class="first-level-nav-item"><a onclick="login(\'\'); return false;" href="#" id="login" >Login to your account</a></div><div class="first-level-nav-item">Welcome Guest</div>';
+var loginHTMLMobile = '<li><a onclick="login(\'\'); return false;" href="#" id="login" >Login to your account</a></li><li><a href="https://ng.techweb.com/authds/gateway?gateway=true&return=https%3A%2F%2Fwww%2Edarkreading%2Ecom%2Fvulnerabilities%2D%2D%2Dthreats%2Flook%2Dbut%2Ddont%2Dtouch%2Done%2Dkey%2Dto%2Dbetter%2Dics%2Dsecurity%2D%2D%2Fd%2Fd%2Did%2F1328987%3FngAction%3Dregister" title="Register" >Register</a></li>';
+    // initial gateway check
+    // only do the initial gateway check if cookies are enabled
+ function initGatewayCheck() {
+    if (cookiesEnabled()){
+        $('<iframe />', {
+        name: 'nginitgateway',
+        id: 'nginitgateway',
+        src: '/ng_initgatewaycheck.asp',
+        frameborder: '0',
+        width: '0',
+        height: '0'
+        }).appendTo('body');
+    }
+    }
+// setup for reg promo
+function setNGReg() {
+    regHeaderContent = regHeaderContent + '<div align="left" style="margin-top: 10px; margin-bottom: 10px;"></div>';
+    registrationWidget._options.headerContent = regHeaderContent;
+    registrationWidget._options.action = regAction + '';
+    registrationWidget.init();
+    }
+</script>
+    <script language = "Javascript">
+function SubmitInPageSurvey(inSurvey, inWidth) {
+	var theForm = GetObject('survey_' + inSurvey);
+	var theFormSubmitURL = '/survey_jspage.asp?survey_submit=yes&survey_width='+ inWidth +'&cbust=10852&survey_async=yes&survey_async_ip=162%2E158%2E75%2E222&';
+	for (var felt = 0; felt <  theForm.elements.length; felt++) {
+		var thisElt = theForm.elements[felt];
+		if (thisElt.type == 'checkbox' || thisElt.type == 'radio') {
+			if (thisElt.checked) {
+				theFormSubmitURL = theFormSubmitURL + thisElt.name + '=' + URLEncodeString(thisElt.value) + '&';
+			}
+		}
+		else {
+			theFormSubmitURL = theFormSubmitURL + thisElt.name + '=' + URLEncodeString(thisElt.value) + '&';
+		}
+	}
+	//alert(theFormSubmitURL);
+	LoadScript(theFormSubmitURL);
+	return false;
+}
+</script>
+
+    <script type="text/javascript">
+var _doubleclickRand = 387877663052116;
+
+function jobalert()
+{
+if(confirm("It looks like you donâ€™t have a job board account, if youâ€™d like to create one, click â€˜Update Profileâ€™. If not, click â€˜hereâ€™ to continue to the Job Board to browse"))
+{
+
+}
+}
+
+</script>
+    <script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-30302365-1']);
+  _gaq.push(['_setDomainName', 'darkreading.com']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+    <!-- Start: GPT Sync -->
+    <script type="text/javascript">
+    var _AdsNativeOpts =
+    { keywords: ['vulnerabilities_threats']};
+</script>
+    <script type='text/javascript'>
+ var gptadslots=[];
+ (function(){
+  var useSSL = 'https:' == document.location.protocol;
+  var src = (useSSL ? 'https:' : 'http:') + '//www.googletagservices.com/tag/js/gpt.js';
+  document.write('<scr' + 'ipt src="' + src + '"></scr' + 'ipt>');
+ })();
+</script>
+
+    <script type="text/javascript">
+
+
+if (document.documentElement.clientWidth > 767){//Adslot 1 declaration
+gptadslots[1]= googletag.defineSlot('/2441/darkreading/vulnerabilities_threats', [[2,2]],'div-gpt-ad-961777897907396673-1').setTargeting('pos',['welcome']).addService(googletag.pubads());}
+else {
+gptadslots[14]= googletag.defineSlot('/2441/darkreading/vulnerabilities_threats',[[7,7]],'div-gpt-ad-961777897907396673-14').setTargeting('pos',['mi']).addService(googletag.pubads()); }
+
+
+
+
+if (document.documentElement.clientWidth > 240){//Adslot 8 declaration
+gptadslots[8]= googletag.defineSlot('/2441/darkreading/vulnerabilities_threats', [[5,5]],'div-gpt-ad-961777897907396673-8').setTargeting('pos',['TAPunit']).addService(googletag.pubads());}
+
+if (document.documentElement.clientWidth > 240){//Adslot 4 declaration
+gptadslots[4]= googletag.defineSlot('/2441/darkreading/vulnerabilities_threats', [[300,250],[336,280],[300,600],[336,850]],'div-gpt-ad-961777897907396673-4').setTargeting('pos',['rec1']).addService(googletag.pubads());}
+
+if (document.documentElement.clientWidth > 240){//Adslot 11 declaration
+gptadslots[11]= googletag.defineSlot('/2441/darkreading/vulnerabilities_threats',[[6,6]],'div-gpt-ad-961777897907396673-11').setTargeting('pos',['promo']).addService(googletag.pubads());}
+
+
+if (document.documentElement.clientWidth > 1027){ //Adslot 2 declaration
+gptadslots[2]= googletag.defineSlot('/2441/darkreading/vulnerabilities_threats',[[1,2]],'div-gpt-ad-961777897907396673-2').setTargeting('pos',['wallpaper']).addService(googletag.pubads());}
+
+if (document.documentElement.clientWidth > 767){ //Adslot 3 declaration
+gptadslots[3]= googletag.defineSlot('/2441/darkreading/vulnerabilities_threats', [[728,90],[970,250]],'div-gpt-ad-961777897907396673-3').setTargeting('pos',['top']).addService(googletag.pubads());}
+else {
+gptadslots[15]= googletag.defineSlot('/2441/darkreading/vulnerabilities_threats',[[300,50]],'div-gpt-ad-961777897907396673-15').setTargeting('pos',['mobile_leaderboard']).addService(googletag.pubads()); }
+
+//Adslot 9 declaration
+gptadslots[9]= googletag.defineSlot('/2441/darkreading/vulnerabilities_threats', [[336,27]],'div-gpt-ad-961777897907396673-9').setTargeting('pos',['logo']).addService(googletag.pubads());
+
+if (document.documentElement.clientWidth > 240){//Adslot 5 declaration
+gptadslots[5]= googletag.defineSlot('/2441/darkreading/vulnerabilities_threats', [[300,250],[336,280],[300,600],[336,850]],'div-gpt-ad-961777897907396673-5').setTargeting('pos',['rec2']).addService(googletag.pubads());}
+
+if (document.documentElement.clientWidth > 240){ //Adslot 13 declaration
+gptadslots[13]= googletag.defineSlot('/2441/darkreading/vulnerabilities_threats', [[300,60]],'div-gpt-ad-961777897907396673-13').setTargeting('pos',['eventpromo']).addService(googletag.pubads());}
+
+//Adslot 12 declaration
+gptadslots[12]= googletag.defineSlot('/2441/darkreading/vulnerabilities_threats', [[3,3]],'div-gpt-ad-961777897907396673-12').setTargeting('pos',['ribbon']).addService(googletag.pubads());
+
+//Adslot 10 declaration
+gptadslots[10]= googletag.defineSlot('/2441/darkreading/vulnerabilities_threats', [[4,4]],'div-gpt-ad-961777897907396673-10').setTargeting('pos',['video']).addService(googletag.pubads());
+
+//Adslot 16 declaration
+gptadslots[16]= googletag.defineSlot('/2441/darkreading/vulnerabilities_threats', [[8,2]],'div-gpt-ad-961777897907396673-16').setTargeting('pos',['native']).addService(googletag.pubads());
+//Adslot 17 declaration
+gptadslots[17]= googletag.defineSlot('/2441/darkreading/vulnerabilities_threats', [[8,4]],'div-gpt-ad-961777897907396673-17').setTargeting('pos',['insight']).addService(googletag.pubads());
+
+
+  googletag.pubads().enableSingleRequest();
+  googletag.pubads().setTargeting('kw',['Advanced_Threats','Authentication','Cloud','Risk_Management','Security_Management']).setTargeting('aid',['1328987']);
+
+  googletag.pubads().enableSyncRendering();
+  googletag.enableServices();
+</script>
+    <script type="text/javascript" src="//static.adsnative.com/static/js/render.v1.js"></script>
+    <!-- End: GPT -->
+
+
+
+    <!-- Begin comScore Tag -->
+    <script>
+	var _comscore = _comscore || [];
+	_comscore.push({ c1: "2", c2: "3005435" });
+	(function() {
+	var s = document.createElement("script"), el = document.getElementsByTagName("script")[0]; s.async = true;
+	s.src = (document.location.protocol == "https:" ? "https://sb" : "http://b") + ".scorecardresearch.com/beacon.js";
+	el.parentNode.insertBefore(s, el);
+	})();
+</script>
+    <noscript>
+        <img src="http://b.scorecardresearch.com/p?c1=2&c2=3005435&cv=2.0&cj=1" />
+    </noscript>
+    <!-- End comScore Tag -->
+    <!-- Facebook Pixel Code -->
+    <script>
+!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+document,'script','https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '832000476880185');
+fbq('track', 'PageView');
+</script>
+    <noscript><img height="1" width="1" style="display:none"
+                   src="https://www.facebook.com/tr?id=832000476880185&ev=PageView&noscript=1"
+    /></noscript>
+    <!-- DO NOT MODIFY -->
+    <!-- End Facebook Pixel Code -->
+</head>
+<body class="sitedefault" border="0" onLoad=" initGatewayCheck(); " >
+<!-- Google Code for Remarketing Tag -->
+<!--------------------------------------------------
+Remarketing tags may not be associated with personally identifiable information or placed on pages related to sensitive categories. See more information and instructions on how to setup the tag on: http://google.com/ads/remarketingsetup
+--------------------------------------------------->
+<script type="text/javascript">
+/* <![CDATA[ */
+var google_conversion_id = 1007530244;
+var google_custom_params = window.google_tag_params;
+var google_remarketing_only = true;
+/* ]]> */
+</script>
+<script type="text/javascript" src="//www.googleadservices.com/pagead/conversion.js">
+</script>
+<noscript>
+    <div style="display:inline;">
+        <img height="1" width="1" style="border-style:none;" alt="" src="//googleads.g.doubleclick.net/pagead/viewthroughconversion/1007530244/?value=0&amp;guid=ON&amp;script=0"/>
+    </div>
+</noscript>
+<script>(function(w,d,t,r,u){var f,n,i;w[u]=w[u]||[],f=function(){var o=;o.q=w[u],w[u]=new UET(o),w[u].push("pageLoad")},n=d.createElement(t),n.src=r,n.async=1,n.onload=n.onreadystatechange=function(){var s=this.readyState;s&&s!=="loaded"&&s!=="complete"||(f(),n.onload=n.onreadystatechange=null)},i=d.getElementsByTagName(t)[0],i.parentNode.insertBefore(n,i)})(window,document,"script","//bat.bing.com/bat.js","uetq");</script><noscript><img src="//bat.bing.com/action/0?ti=5476211&Ver=2" height="0" width="0" style="display:none; visibility: hidden;" /></noscript>
+<div id="fb-root"></div>
+<script>
+(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=640989409269461";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));
+</script>
+
+
+<!-- Beginning Sync AdSlot  -->
+<div id='div-gpt-ad-961777897907396673-1'>
+    <script type='text/javascript'>
+  googletag.display('div-gpt-ad-961777897907396673-1');
+ </script>
+</div>
+<!-- End AdSlot -->
+
+
+<!-- Beginning Sync AdSlot  -->
+<div id='div-gpt-ad-961777897907396673-14'>
+    <script type='text/javascript'>
+  googletag.display('div-gpt-ad-961777897907396673-14');
+ </script>
+</div>
+<!-- End AdSlot -->
+
+
+<!-- Beginning Sync AdSlot  -->
+<div id='div-gpt-ad-961777897907396673-2'>
+    <script type='text/javascript'>
+  googletag.display('div-gpt-ad-961777897907396673-2');
+ </script>
+</div>
+<!-- End AdSlot -->
+
+
+
+
+
+<!-- Drop Down Menus Start //-->
+<div name="inside_app_sec_popmenu" id="inside_app_sec_popmenu" class="popmenu">
+    <div style="margin-top: 11px;">
+        <div class="popmenusubitemwrapper">
+            <div class="popmenusubitem">
+                <span class="white"><a href="/database-security.asp" title="Database Security">Database Security</a></span>
+            </div>
+        </div>
+    </div>
+</div>
+<div name="inside_endpoint_popmenu" id="inside_endpoint_popmenu" class="popmenu">
+    <div style="margin-top: 11px;">
+        <div class="popmenusubitemwrapper">
+            <div class="popmenusubitem">
+                <span class="white"><a href="/authentication.asp" title="Authentication">Authentication</a></span>
+            </div>
+        </div>
+        <div class="popmenusubitemwrapper">
+            <div class="popmenusubitem">
+                <span class="white"><a href="/privacy.asp" title="Privacy">Privacy</a></span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div name="inside_risk_popmenu" id="inside_risk_popmenu" class="popmenu">
+    <div style="margin-top: 11px;">
+        <div class="popmenusubitemwrapper">
+            <div class="popmenusubitem">
+                <span class="white"><a href="/compliance.asp" title="Compliance">Compliance</a></span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div name="inside_operations_popmenu" id="inside_operations_popmenu" class="popmenu">
+    <div style="margin-top: 11px;">
+        <div class="popmenusubitemwrapper">
+            <div class="popmenusubitem">
+                <span class="white"><a href="/identity-and-access-management.asp" title="Identity &amp; Access Management">Identity &amp; Access Management</a></span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div name="inside_analytics_popmenu" id="inside_analytics_popmenu" class="popmenu">
+    <div style="margin-top: 11px;">
+        <div class="popmenusubitemwrapper">
+            <div class="popmenusubitem">
+                <span class="white"><a href="/security-monitoring.asp" title="Security Monitoring">Security Monitoring</a></span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div name="inside_vulns_threats_popmenu" id="inside_vulns_threats_popmenu" class="popmenu">
+    <div style="margin-top: 11px;">
+        <div class="popmenusubitemwrapper">
+            <div class="popmenusubitem">
+                <span class="white"><a href="/advanced-threats.asp" title="Advanced Threats">Advanced Threats</a></span>
+            </div>
+        </div>
+        <div class="popmenusubitemwrapper">
+            <div class="popmenusubitem">
+                <span class="white"><a href="/insider-threats.asp" title="Insider Threats">Insider Threats</a></span>
+            </div>
+        </div>
+        <div class="popmenusubitemwrapper">
+            <div class="popmenusubitem">
+                <span class="white"><a href="/vulnerability-management.asp" title="Vulnerability Management">Vulnerability Management</a></span>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Drop Down Menus End //-->
+
+
+<div id="container-main" align="center" data-role="page" data-enhance="false">
+    <div class="column-full" style="border-bottom: 1px solid #8e8e8e;">
+        <div id="header-full" class="site-padding">
+            <div id="first-level-nav-container" class="column sixteen">
+                <div id="iw-home-button">
+                    <a href="http://www.informationweek.com" target="_blank" title="InformationWeek Home"><img src="http://img.deusm.com/darkreading/iwk-it-network-dr.gif" alt="To InformationWeek" /></a>
+                    <a href="//www.networkcomputing.com" class="first-level-nav-item " target="_blank" title="Network Computing">Network Computing</a>
+                    <a href="//www.darkreading.com" class="first-level-nav-item " target="_blank" title="Darkreading Home">Darkreading</a>
+
+                </div>
+                <div id="first-level-nav">
+                    <div id="loginLinks"></div>
+
+                    <div class="first-level-nav-item"><b><a href="http://createyournextcustomer.techweb.com/contact-us/" class="color-link strong" target="_blank" title="Advertise">Advertise</a></b></div>
+                    <div class="first-level-nav-item"><a href="/document.asp?doc_id=1113937" class="color-link" title="About Us">About Us</a></div>
+
+                </div>
+                <div id="mobile-level-nav">
+                    <div style="float: right;">
+                        <div class="mobile-nav-item"><a href="javascript:void(0)" title="Profile" onClick="showMobileIconOverlay('profile')"><img src="http://img.deusm.com/darkreading/DR_mobile_User_nav.png" /></a></div>
+                        <div class="spacer" style="float: left; width: 10px;"><img src="http://img.deusm.com/images/spacer.gif" width="10" height="24" style="border: 0;" /></div>
+                        <div class="mobile-nav-item"><a href="javascript:void(0)" title="Search" onClick="showMobileIconOverlay('search')"><img src="http://img.deusm.com/darkreading/DR_search.png" /></a></div>
+                        <div class="spacer" style="float: left; width: 10px;"><img src="http://img.deusm.com/images/spacer.gif" width="10" height="24" style="border: 0;" /></div>
+                        <div class="mobile-nav-item"><a href="javascript:void(0)" title="RSS" onClick="showMobileIconOverlay('rss')"><img src="http://img.deusm.com/darkreading/DR_mobile_SM.png" /></a></div>
+                    </div>
+                    <div class="mobile-nav-item" style="width: 8.416666em;"><a href="javascript:void(0)" title="Menu" onClick="showMobileIconOverlay('nav')"><img src="http://img.deusm.com/darkreading/DR-sections-nav.png" /></a></div>
+                </div>
+            </div>
+            <!-- Mobile Menus //-->
+            <div id="mobile-menu-nav" name="nav" class="mobile-menu box-shadow">
+                <div class="mobile-close"><a href="javascript:void(0)" onClick="closeMobileOverlayMenu('nav')" title="Close"><img src="http://img.deusm.com/darkreading/mobile_close.jpg" style="width: 31px; height: 29px; border: 0;" /></a></div>
+                <nav>
+                    <ul class="mobile-menu-main">
+
+                        <li><a href="/authors.asp" title="Authors">Authors</a></li>
+                        <li><a href="/archives.asp?section_id=316" title="Slideshows">Slideshows</a></li>
+                        <li><a href="videos.asp" title="Video">Video</a></li>
+                        <li><a href="http://reports.informationweek.com/search?search=security" title="Reports" target="_blank">Reports</a></li>
+                        <li><a href="http://www.informationweek.com/whitepaper/Security" target="_blank" title="White Papers" target="_blank">White Papers</a></li>
+                        <li><a href="/document.asp?doc_id=1127669" title="Events">Events</a></li>
+                        <li><a href="/black-hat.asp" title="Black Hat">Black Hat</a></li>
+                        <li><a href="/attacks-breaches.asp" title="Attacks/Breaches">Attacks/Breaches</a></li>
+                        <li><a href="/application-security.asp" title="Application Security">App Sec</a></li>
+                        <li><a href="/cloud.asp" title="Cloud">Cloud</a></li>
+                        <li><a href="/endpoint.asp" title="Endpoint">Endpoint</a></li>
+                        <li><a href="/mobile.asp" title="Mobile">Mobile</a></li>
+                        <li><a href="/perimeter.asp" title="Perimteter">Perimeter</a></li>
+                        <li><a href="/risk.asp" title="Risk">Risk</a></li>
+                        <li><a href="/operations.asp" title="Operations">Operations</a></li>
+                        <li><a href="/analytics.asp" title="Analytics">Analytics</a></li>
+                        <li><a href="/vulnerabilities-threats.asp" title="Vulnerabilities &amp; Threats">Vulns/Threats</a></li>
+                        <li><a href="/threat-intelligence.asp" title="Threat Intelligence">Threat Intelligence</a></li>
+                        <li><a href="/careers-and-people.asp" title="Careers and People">Careers and People</a></li>
+                        <li><a href="/IoT.asp" title="IOT">IOT</a></li>
+                    </ul>
+                    </ul>
+                </nav>
+            </div>
+            <div id="mobile-menu-profile" name="profile" class="mobile-menu box-shadow">
+                <div class="mobile-close"><a href="javascript:void(0)" onClick="closeMobileOverlayMenu('profile')" title="Close"><img src="http://img.deusm.com/darkreading/mobile_close.jpg" style="width: 31px; height: 29px; border: 0;" /></a></div>
+                <nav>
+                    <ul id="loginLinksMobile" class="mobile-menu-main">
+                        <li><a href="/document.asp?doc_id=1113937" title="About Us">About Us</a></li>
+
+                        <li><a href="http://createyournextcustomer.techweb.com/contact-us/" target="_blank" title="Advertise with Us">Advertise</a></li>
+
+
+                    </ul>
+                </nav>
+            </div>
+            <div id="mobile-menu-search" name="search" class="mobile-menu box-shadow">
+                <div class="mobile-close"><a href="javascript:void(0)" onClick="closeMobileOverlayMenu('search')" title="Close"><img src="http://img.deusm.com/darkreading/mobile_close.jpg" style="width: 31px; height: 29px; border: 0;" /></a></div>
+                <form name="template_search_a" id="template_search_a" action="/search.asp" method="post" style="margin: 0; padding: 0;">
+                    <div style="height: 2.333333em; overflow: hidden; border: 1px solid #aaa;">
+                        <input id="q" name="q" value="" type="text" maxlength="250" placeholder="Search Dark Reading" />
+                        <div style="float: right; background: url(http://img.deusm.com/darkreading/DR_search.png) no-repeat 0 -1px; width: 2.5em; height: 2.333333em;">
+                            <a href="javascript:GetObject('template_search_a').submit();" title="Search"><img name="search_button" id="search_button" src="http://img.deusm.com/images/spacer.gif" width="30" height="28" style="border: 0;" /></a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div id="mobile-menu-rss" name="rss" class="mobile-menu box-shadow">
+                <div class="mobile-close"><a href="javascript:void(0)" onClick="closeMobileOverlayMenu('rss')" title="Close"><img src="http://img.deusm.com/darkreading/mobile_close.jpg" style="width: 31px; height: 29px; border: 0;" /></a></div>
+                <nav>
+                    <ul class="mobile-menu-main">
+                        <li><a href="https://www.facebook.com/darkreadingcom" title="Facebook">Facebook</a></li>
+                        <li><a href="http://twitter.com/DarkReading" title="Twitter">Twitter</a></li>
+                        <li><a href="http://www.linkedin.com/groups?home=&gid=3193466&trk=anet_ug_hm" title="LinkedIn">LinkedIn</a></li>
+                        <li><a href="https://plus.google.com/+darkreading " title="Google">Google+</a></li>
+                        <li><a href="/rss_feeds.asp" title="RSS">RSS</a></li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="divsplitter" style="height: 1.666em;"></div>
+            <div class="ad-leaderboard">
+                <!-- Beginning Sync AdSlot  -->
+                <div id='div-gpt-ad-961777897907396673-3'>
+                    <script type='text/javascript'>
+  googletag.display('div-gpt-ad-961777897907396673-3');
+ </script>
+                </div>
+                <!-- End AdSlot -->
+
+
+            </div>
+            <div class="divsplitter" style="height: 2.166666em;"></div>
+            <!-- Beginning Sync AdSlot -->
+            <div id="mobile_top">
+                <div class="divsplitter" style="height: 1.666em;"></div>
+                <center><div id='div-gpt-ad-961777897907396673-15'>
+                    <script type='text/javascript'>
+				 googletag.display('div-gpt-ad-961777897907396673-15');
+			</script>
+                </div></center>
+                <div class="divsplitter" style="height: 1.666em;"></div>
+            </div>
+
+            <style>
+		@media only screen and (min-width: 48em) {
+		#mobile_top
+		{ display: none; }
+		}
+		</style>
+            <!-- End AdSlot -->
+            <header id="main-header">
+                <div id="logo">
+                    <div class="header-middle"><a href="//www.darkreading.com" title="Dark Reading | Security | Protect The Business - Enable Access"><img id="img-logo1" src="http://img.deusm.com/darkreading/darkreading-logo.gif" alt="Dark Reading | Security | Protect The Business - Enable Access" /></a></div><div class="header-mid"><div class="header-bh"><img id="logo11" src="http://img.deusm.com/darkreading/joinuslive.gif" width="91" alt="" /></div><a href="http://blackhat.com" title="Dark Reading | Security | Protect The Business - Enable Access"><img id="logo11" src="http://img.deusm.com/darkreading/blackhat.gif" width="91" alt="" /></a><a href="http://www.interop.com" title=""><img id="logo1" src="http://img.deusm.com/darkreading/interopitx.gif" alt="" /></a></div>
+                </div>
+                <div id="search-box">
+                    <form name="template_search_b" id="template_search_b" action="/search.asp" method="post" style="margin: 0; padding: 0;">
+                        <div style="width: 100%; height: 28px; float: right;">
+                            <input id="q" name="q" type="text" maxlength="250" placeholder="Search Dark Reading" />
+                            <div style="float: right; width: 30px; height: 28px;">
+                                <a href="javascript:GetObject('template_search_b').submit();" title="Search"><img name="search_button" id="search_button" src="http://img.deusm.com/darkreading/DR_search.png" alt="Search" style="width: 1.416em; height: auto; margin: .5em .583em; border: 0;" /></a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="divsplitter" style="height: 1em"></div>
+            </header>
+            <div id="second-level" class="column sixteen">
+                <div style="overflow: hidden;">
+                    <div id="social-icons">
+                        <div class="follow-text">Follow DR:</div>
+                        <div class="social-icon" style="background-image: url(http://img.deusm.com/darkreading/rss-icon.png);">
+                            <a href="/rss_feeds.asp" title="RSS"><img src="http://img.deusm.com/images/spacer.gif" width="16" height="16" style="border: 0;" /></a>
+                        </div>
+                        <div class="social-icon" style="background-image: url(http://img.deusm.com/darkreading/google-icon.png);">
+                            <a href="https://plus.google.com/+darkreading " title="Google+" target="_blank"><img src="http://img.deusm.com/images/spacer.gif" width="16" height="16" style="border: 0;" /></a>
+                        </div>
+                        <div class="social-icon" style="background-image: url(http://img.deusm.com/darkreading/li-icon.png);">
+                            <a href="http://www.linkedin.com/groups?home=&gid=3193466&trk=anet_ug_hm" title="LinkedIn" target="_blank"><img src="http://img.deusm.com/images/spacer.gif" width="16" height="16" style="border: 0;" /></a>
+                        </div>
+                        <div class="social-icon" style="background-image: url(http://img.deusm.com/darkreading/tw-icon.png);">
+                            <a href="http://twitter.com/DarkReading" title="Twitter" target="_blank"><img src="http://img.deusm.com/images/spacer.gif" width="16" height="16" style="border: 0;" /></a>
+                        </div>
+                        <div class="social-icon" style="background-image: url(http://img.deusm.com/darkreading/facebook-icon.png); margin: 0;">
+                            <a href="https://www.facebook.com/darkreadingcom" title="Facebook" target="_blank"><img src="http://img.deusm.com/images/spacer.gif" width="16" height="16" style="border: 0;"></a>
+                        </div>
+                    </div>
+                    <nav id="second-level-nav" style="float: left;">
+                        <div class="second-level-nav-item"><a class="white color-link smaller" href="/authors.asp" title="Authors"
+                        >Authors</a></div>
+                        <div class="second-level-nav-item"><a class="white color-link smaller" href="/archives.asp?section_id=316" title="Slideshows"
+                        >Slideshows</a></div>
+                        <div class="second-level-nav-item"><a class="white color-link smaller" href="/videos.asp" title="Video"
+                        >Video</a></div>
+                        <div class="second-level-nav-item"><a class="white color-link smaller" href="http://www.informationweek.com/whitepaper" title="Tech library"
+                        >Tech Library</a></div>
+                        <div class="second-level-nav-item"><a class="white color-link smaller" href="/lecture-calendar.asp" title="White Papers" target="_blank">University</a></div>
+                        <div class="second-level-nav-item"><a class="white color-link smaller" href="/dr-radio.asp" title="Radio"
+                        >Radio</a></div>
+                        <div class="second-level-nav-item"><a class="white color-link smaller" href="/document.asp?doc_id=1127669" title="Calendar"
+                        >Calendar</a></div>
+                        <div class="second-level-nav-item"><a class="white color-link smaller" href="/black-hat.asp" title="Black Hat"
+                        >Black Hat News</a></div>
+                    </nav>
+
+                </div>
+            </div>
+            <div class="divsplitter" style="height: 1px;"></div>
+        </div>
+        <div class="divsplitter" style="height: 3px; background: #000000;"></div>
+        <div id="second-level" class="column sixteen" style="/* border-bottom: 3px solid #dd1a22; */background: url(http://img.deusm.com/darkreading/reb-border.png) repeat-x;padding: 4px 0 0 0;/* width: 1000px; */"></div><div id="third-level" class="column sixteen">
+        <nav id="third-level-nav">
+            <div id="inside_analytics" name="inside_analytics" class="navbuttonbuttonhasmenu nav-item analytics
+		">
+                <a href="/security-analytics.asp" class="color-link" title="Analytics">Analytics</a></div>
+            <div class="navbuttonbuttonhasmenu nav-item attacks-breaches
+		">
+                <a href="/attacks-breaches.asp" class="color-link" title="Attacks / Breaches">Attacks / Breaches</a></div>
+            <div id="inside_app_sec" name="inside_app_sec" class="navbuttonbuttonhasmenu nav-item app-sec
+		">
+                <a href="/application-security.asp" class="color-link" title="App Sec">App Sec</a></div>
+            <div class="navbuttonbuttonhasmenu nav-item carrier-people
+		">
+                <a href="/careers-and-people.asp" class="color-link" title="Careers & People">Careers & People</a></div>
+            <div class="navbuttonbuttonhasmenu nav-item cloud
+		">
+                <a href="/cloud-security.asp" class="color-link" title="Cloud">Cloud</a></div>
+            <div id="inside_endpoint" name="inside_endpoint" class="navbuttonbuttonhasmenu nav-item endpoint
+		">
+                <a href="/endpoint-security.asp" class="color-link" title="Endpoint">Endpoint</a></div>
+            <div class="navbuttonbuttonhasmenu nav-item IOT
+		">
+                <a href="/IoT.asp" class="color-link" title="IoT">IoT</a></div>
+            <div class="navbuttonbuttonhasmenu nav-item mobile
+		">
+                <a href="/mobile-security.asp" class="color-link" title="Mobile">Mobile</a></div>
+            <div id="inside_operations" name="inside_operations" class="navbuttonbuttonhasmenu nav-item operations
+		">
+                <a href="/operations.asp" class="color-link" title="Operations">Operations</a></div>
+            <div class="navbuttonbuttonhasmenu nav-item perimeter
+		">
+                <a href="/network-perimeter-security.asp" class="color-link" title="Perimeter">Perimeter</a></div>
+            <div id="inside_risk" name="inside_risk" class="navbuttonbuttonhasmenu nav-item risk
+		">
+                <a href="/risk-management.asp" class="color-link" title="Risk">Risk</a></div>
+            <div class="navbuttonbuttonhasmenu nav-item thread-inteligence
+		">
+                <a href="/threat-intelligence.asp" class="color-link" title="Threat Intelligence">Threat Intelligence</a></div>
+            <div id="inside_vulns_threats" name="inside_vulns_threats" class="navbuttonbuttonhasmenu nav-item vulns-threats
+		 theSelectedNav">
+                <a href="/vulnerabilities-threats.asp" class="color-link" title="Vulns / Threats">Vulns / Threats</a></div>
+        </nav>
+    </div><div style="clear:both"></div>
+
+
+
+        <div class="divsplitter" style="height: 1.666em;"></div>
+        <div id="sitecontentcol_top" name="sitecontentcol_top"></div>
+
+        <div class="site-padding test">
+            <div style="border-bottom: 1px dotted #aaa;"><span class="red mediumlarge allcaps"><a href="/vulnerabilities-threats.asp">Vulnerabilities / Threats</a></span>
+                <div style="float: right; text-align: right;"><!-- Beginning Sync AdSlot  -->
+                    <div id='div-gpt-ad-961777897907396673-9'>
+                        <script type='text/javascript'>
+  googletag.display('div-gpt-ad-961777897907396673-9');
+ </script>
+                    </div>
+                    <!-- End AdSlot -->
+                </div>
+                <div class="divsplitter" style="height: 1em;"></div></div>
+            <div class="divsplitter" style="height: 1.666666em;"></div>
+        </div>
+        <!--
+        <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/">
+        <rdf:Description rdf:about="http://www.darkreading.com/vulnerabilities---threats/look-but-dont-touch-one-key-to-better-ics-security--/d/d-id/1328987" dc:identifier="http://www.darkreading.com/vulnerabilities---threats/look-but-dont-touch-one-key-to-better-ics-security--/d/d-id/1328987" dc:title="Look, But Don&apos;t Touch: One Key to Better ICS Security  "
+        trackback:ping="http://www.darkreading.com/trackback/trackback.asp?doc_id=1328987" />
+        </rdf:RDF>
+         -->
+        <link rel="pingback" href="http://www.darkreading.com/xmlrpc.asp" /><!--truevaluetop--><div id="thedoctop" name="thedoctop" class="column left-main"><div><div id="aside-main" class="column"><div id="aside-inner" style="padding-right: 1.666em;"><div style="clear: both; width: 100%;"><div style="width: 100%;"></div><div class="divsplitter" style="height: .1em;"></div><span class="smaller gray">6/26/2017<br />09:00 AM</span></div><div class="divsplitter" style="height: 1em; border-bottom: 1px dotted #aaa;"></div><div class="divsplitter" style="height: 1.25em;"></div><div class="author-info-block" style="clear: both;"><div style="clear: both;"><img src="http://img.deusm.com/enterpriseefficiency/Sara-Peters-125x125.jpg" class="img-thumb" alt="Sara Peters" /></div><div class="divsplitter" style="height: 1em;"></div><div style="clear: both;"><span class="smaller blue"><a class="color-link" href="/author-bio.asp?author_id=524" title="Sara Peters, Senior Editor at Dark Reading">Sara Peters</a><br /></span><span class="smaller gray">News</span></div></div><div class="divsplitter" style="height: 1em;"></div><div class="author-info-block" style="width: 7.75em;"><span class="smaller gray">Connect Directly</span><div class="divsplitter" style="height: .5em;"></div><div style="float: left; margin-right: .583333em; margin-bottom: .583333em; width: 1.5em; height: 1.5em;"><a href="https://twitter.com/sarapeters" title="Twitter" target="_blank"><img src="http://img.deusm.com/informationweek/editor-TW.png" alt="Twitter" style="border: 0; padding: 0; margin: 0; width: 1.5em; height: 1.5em;"></a></div><div style="float: left; margin-right: .583333em; margin-bottom: .583333em; width: 1.5em; height: 1.5em;"><a href="/rss_simple.asp?f_auth=524" title="RSS" target="_blank"><img src="http://img.deusm.com/informationweek/editor-RSS.png" alt="RSS" style="border: 0; padding: 0; margin: 0; width: 1.5em; height: 1.5em;"></a></div><div style="float: left; margin-right: .583333em; margin-bottom: .583333em; width: 1.5em; height: 1.5em;"><a href="/cdn-cgi/l/email-protection#b2c1d3c0d39cc2d7c6d7c0c1f2c7d0df9cd1dddf" title="E-Mail"><img src="http://img.deusm.com/informationweek/editor-email.png" alt="E-Mail" style="border: 0; padding: 0; margin: 0; width: 1.5em; height: 1.5em;"></a></div></div><div class="divsplitter" style="height: 1em; border-bottom: 1px dotted #aaa;"></div><div class="divsplitter" style="height: 1em;"></div><div class="author-info-block" style="float: left;"><img src="http://img.deusm.com/darkreading/DR-comment.png" style="float: left; width: 1em; height: .916666em; margin-top: .333em; margin-right: .5em;" /><span class="smallest red allcaps"><a href="#msgs" title="Comments">1 Comment</a><br /></span><span class="smallest allcaps"><a href="/vulnerabilities---threats/look-but-dont-touch-one-key-to-better-ics-security--/d/d-id/1328987?#msgs" title="Post a Comment">Comment Now</a></span></div><div class="divsplitter" style="height: 1em; border-bottom: 1px dotted #aaa;"></div><div class="divsplitter" style="height: 1em;"></div><div class="author-info-block" name="ratebox_element_1930712" id="ratebox_element_1930712" style="overflow: hidden;"><div style="width: auto;"><div><span class="blue smallest"><a href="#" onClick="login(''); return false;"><u>Login</u></a></span></div><div style="clear: both; height: 1px;"></div><div tyle="display: block; clear: both; width: 100%;"><div style="float: left; width: 28px;" align="left"><div><img src="http://img.deusm.com/darkreading/thumbs-up.png" style="width: 1.416666em; height: 2em;" border="0" /></div><div><span class="smallest red">50%</span></div></div><div style="float: left; width: 28px;" align="right"><div><img src="http://img.deusm.com/informationweek/thumbs-down.png" style="width: 1.416666em; height: 2em;" border="0" /></div><div><span class="smallest gray">50%</span></div></div><div class="divsplitter" style="height: 0px;"></div><div><span class="blue small" style="line-height: 12px;"></span></div></div></div></div>
+        <div class="divsplitter" style="height: 1em;"></div><div style=""><div>
+            <div style="float: left; margin-right: 5px;"><div class="fb-like" data-href="http://www.darkreading.com/vulnerabilities---threats/look-but-dont-touch-one-key-to-better-ics-security--/d/d-id/1328987" data-width="87" data-layout="button_count" data-show-faces="false" data-send="false"></div></div>
+            <div style="float: left;"><a href="http://twitter.com/share" class="twitter-share-button"  data-via="DarkReading"  data-url="http://www.darkreading.com/vulnerabilities---threats/look-but-dont-touch-one-key-to-better-ics-security--/d/d-id/1328987" data-count="horizontal" data-counturl="http://www.darkreading.com/vulnerabilities---threats/look-but-dont-touch-one-key-to-better-ics-security--/d/d-id/1328987">Tweet</a><script type="text/javascript" src="https://platform.twitter.com/widgets.js"></script></div>
+            <div style="float: left; margin-right: 5px;"><script type="text/javascript" src="https://platform.linkedin.com/in.js"></script><script type="in/share" data-url="http://www.darkreading.com/vulnerabilities---threats/look-but-dont-touch-one-key-to-better-ics-security--/d/d-id/1328987" data-counter="right"></script></div>
+            <div style="float: left; margin-right: 5px; width: 90px; overflow: hidden;"><g:plusone size="medium"></g:plusone>
+                <script type="text/javascript">
+//<!--
+(function() {
+var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+po.src = 'https://apis.google.com/js/plusone.js';
+var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+})();
+//-->
+</script></div>
+        </div></div>
+    </div></div>
+        <div id="article-main"><header><h1 class="larger blue">Look, But Don't Touch: One Key to Better ICS Security  </h1></header><div class="divsplitter" style="height: 1.5em;"></div><span class="strong black" style="font-size: 1.083333em;">Better visibility is essential to improving the cybersecurity of industrial control systems and critical infrastructure, but the OT-IT cultural divide must be united.</span><div class="divsplitter" style="height: 1.5em;"></div><p class="" style="margin-top: 0;">How do we fix industrial control systems cybersecurity?&nbsp;</p>
+            <p>Experts say better visibility is essential to improving ICS/SCADA security. But infosec teams will never gain that visibility until they stop trying to observe ICS environments through the eyes of IT professionals. &nbsp;</p>
+            <p>There are fundamental differences in IT and OT (operational technology) gear, processes, and people, say experts. &nbsp;&nbsp;</p>
+            <p>"Overall, IT has no idea what goes into operating an OT environment," says Paul Brager, senior staff product security leader, cybersecurity and risk, for GE Oil and Gas.</p>
+            <p>"The success of the Internet has made computer people kind of smug," says Chris Blask, chair of the ICS-ISAC and global director of industrial control systems for Unisys. Industrial workers, however, he says, "know how society works," like what keeps raw sewage out of your drinking water supply.&nbsp;</p>
+            <p>So while cybersecurity professionals worry about nation-states knocking out the power grid with ICS malware attacks, OT engineers know that their generating stations and production lines can be disrupted by much more than hackers. They're so aware of this that they adhere to extensive process safety management controls, hazard analysis, change management, emergency response, incident investigation rules, and more, to deal with such threats early and swiftly.</p>
+            <p>The introduction of anything new to the operational environment - a new pump, a software patch, an upgrade, a new security tool - is approached with caution, because any disruption in availability or integrity could have irreversible, expensive, even dangerous physical impacts.</p>
+            <p>It isn't just the worst-case scenarios of sustained blackouts, broken dams, nuclear meltdowns, and poisoned public water systems, either: it's economic impacts as well. If part of a chemical plant's system malfunctions or goes offline during a production run even very briefly because an insufficiently tested software patch misbehaves once it's released into the live environment, the chemicals could be corrupted. "That might be $100,000 of product that they dump," Brager says.&nbsp;</p>
+            <p>"No CEO is going to sign something that says 'Okay we're going to stop extracting oil from the ground for a week,'" to fix something that doesn't appear to be broken, like an unsupported operating system, explains Galina Antova, co-founder of OT security firm Claroty and former global head of industrial security services for Siemens. Convincing them that cybersecurity is a threat at all, much less one worth spending money on, is a challenge, she says.&nbsp;</p>
+            <p>Enterprise IT environments will withstand more iteration and downtime than OT environments.&nbsp;If the OT environment appears to be stable, operational and efficient, then why make a change that might make it unstable?&nbsp;</p>
+            <p>Many of the physical and cyber-physical systems in use today have been in use "literally for generations,"&nbsp;explains Eddie Habibi, CEO of PAS.</p>
+            <p>As these experts say, the attitude is generally&nbsp;<em>If it ain't broke, don't fix it.&nbsp;</em>So infosec professional's challenge therefore is: to convince the OT side of the house that something<em> is</em> broken and then to fix it without breaking it further. And that takes a lighter touch than infosec pros and their tools are used to. &nbsp;</p>
+            <p><strong>Seeing What No One Else can See &nbsp;</strong></p>
+            <p>As Blask says, ICS is "the system put in place to provide visibility into physical processes. The one thing that they don't have visibility into is the [ICS] system itself."&nbsp;</p>
+            <p>"Visibility is a big deal. And we typically don't have a lot of visibility down there," on the cyberphysical systems says Brager. When something goes wrong, "You don't necessarily know if it's a cyber thing or a human thing."&nbsp;</p>
+            <p>Unfortunately, says Habibi, "These systems are not easily discoverable." As he explains, industrial environments are often a heterogenous conglomerate of highly complex, proprietary systems, communicating on different protocols, requiring specialized expertise to run.</p>
+            <p>Brager adds, many of these systems are no longer supported and the vendors may no longer exist.&nbsp;Many of them only communicate on one protocol, if they communicate at all.&nbsp;</p>
+            <p><img src="http://img.deusm.com/darkreading/2017/05/1328998/BH-Show-Image-2017-Untitled.png" alt="" width="93" height="52" style="float: left;" /> <strong>Black Hat USA returns to the fabulous Mandalay Bay in Las Vegas, Nevada, July 22-27, 2017. Click for information on the <a href="https://www.blackhat.com/us-17/" target="_blank">conference schedule</a>&nbsp;and <a href="https://blackhat.tech.ubm.com/usa/2017/" target="_blank">to register.</a></strong></p>
+            <p>"It continues to get worse," says Habibi, "because people continue to add automation."</p>
+            <p>This IT-OT "convergence" adds more sensors, more I/O cards, more endpoints, more protocols, more interconnections, and more complexity to an environment, making the picture even murkier.</p>
+            <p>"Unless you can visually see [an asset]," says Brager, "it's really hard to interrogate it ... But if you don't know which ones you have, you don't know how vulnerable you are."</p>
+            <p>Plus, he notes, a significant amount of industrial environments are generally managed by third parties with privileged access. Documentation - who runs what, where - is the last thing done, if it's done at all, says Brager.</p>
+            <p>However, calling these third-party contractors and managed service providers and asking them for a manual count would be "worse than doing nothing," says Habibi, because of the scale of the challenge.&nbsp;</p>
+            <p><strong>How to Do it</strong></p>
+            <p>According to Brager, whenever terms like "sniffing" or "actively interrogating" are suggested by security teams or companies, "the people in those plants get real nervous."</p>
+            <p>What may seem like a very gentle gesture to an enterprise IT manager, he explains, may be seen as a dangerous intrusion to an operational engineer. The industrial processes cannot tolerate new latency that might be introduced and if some mechanical system is damaged and cannot be recovered, it will need to be replaced. &nbsp;</p>
+            <p>"If you say, 'we're going to install an agent,' they'll say 'No you <em>won't</em> install an agent,'" says Brager.&nbsp;</p>
+            <p>That doesn't change the fact that improved visibility is necessary. Without it, attackers hiding in plain sight may be a greater threat than some OT teams realize -- because attackers may be better at achieving visibility than operators are.</p>
+            <p>Take the <a href="http://www.darkreading.com/threat-intelligence/first-malware-designed-solely-for-electric-grids-caused-2016-ukraine-outage/d/d-id/1329114" target="_blank">CrashOverride/Industroyer malware</a>, which researchers discovered was responsible for the December 2016 attacks on the Ukrainian power grid. It's designed to map, target, and attack grid operations by exploiting ICS communication protocols. The malware actually employs those protocols just the way they were designed so that it flies under the radar.</p>
+            <p>ICS security team's goal, therefore, says Antova, is "improving visibility in a passive way. ... This is something I can do that the engineers will allow me to do without impacting their processes." It also provides the most benefit for minimum investment, she says.</p>
+            <p>Habibi urges the same practice. Passively take stock of all the components in an environment, then check them all for vulnerabilities, present that information to the operator, and allow them to act (or not). "You want to fix those broken windows and broken locks," he says, "Then implement a very tight change management process."</p>
+            <p>But, Brager cautions, test products carefully, because some vendors that promise "passive monitoring" are less passive than they claim.</p>
+            <p>As ICS relates to safety processes and change management, it's is an opportunity for OT and IT groups to come together.&nbsp;</p>
+            <p>"A lot of this comes down to having manners," says Blask. "What you don't do is what security teams often do, is say 'your baby is ugly.' ... And then they complain to their friends why they don't get invited to the meetings anymore."</p>
+            <p><strong>Related Content:</strong></p>
+            <ul>
+                <li><a href="http://www.darkreading.com/threat-intelligence/first-malware-designed-solely-for-electric-grids-caused-2016-ukraine-outage/d/d-id/1329114" target="_blank"><strong>First Malware Designed Solely for Electric Grids Caused 2016 Ukraine Outage</strong></a></li>
+                <li><a href="http://www.darkreading.com/threat-intelligence/3000-industrial-plants-per-year-infected-with-malware-/d/d-id/1328444" target="_blank"><strong>3,000 Industrial Plants Per Year Infected With Malware</strong></a></li>
+                <li><a href="http://www.darkreading.com/threat-intelligence/rethinking-vulnerability-disclosures-in-industrial-control-systems/a/d-id/1327986" target="_blank"><strong>Rethinking Vulnerability Disclosure in Industrial Control Systems</strong></a></li>
+                <li><a href="http://www.darkreading.com/careers-and-people/20-cybersecurity-startups-to-watch-in-2017/d/d-id/1328251" target="_blank"><strong>20 Cybersecurity Start-ups To Watch in 2017</strong></a></li>
+            </ul>
+            <span class="italic">Sara Peters is Senior Editor at Dark Reading and formerly the editor-in-chief of Enterprise Efficiency.&nbsp;Prior that she was senior editor for the Computer Security Institute, writing and speaking about virtualization, identity management, cybersecurity law, and a myriad ... <a href="/author-bio.asp?author_id=524">View Full Bio</a></span></p><div class="divsplitter" style="height: 1.25em;"></div><div class="divsplitter" style="height: .666em;"></div><div style="float: left; margin-right: 2px;"><span class="smaller blue allcaps"><a href="#msgs">Comment</a> &nbsp;|&nbsp;</span></div><div style="float: left; margin-right: 2px;"><span class="smaller blue allcaps"><a href="email.asp" onclick="window.open('/email.asp?url='+encodeURIComponent(thispage_sharelink)+'&title='+encodeURIComponent(document.title),'',''); return false;">Email This</a> &nbsp;|&nbsp;</span></div><div style="float: left; margin-right: 2px;"><span class="smaller blue allcaps"><a href="/vulnerabilities---threats/look-but-dont-touch-one-key-to-better-ics-security--/d/d-id/1328987?print=yes">Print</a> &nbsp;|&nbsp;</span></div><div style="float: left; margin-right: 2px;"><span class="smaller blue allcaps"><a href="/rss_simple.asp">RSS</a></span></div><div class="divsplitter" style="height: .666em;"></div><div class="divsplitter" style="height: 4px; background: #aaa;"></div><div class="divsplitter" style="height: .666em;"></div><div id="more-insights"><span class="smaller strong red allcaps">More Insights</span></div><div class="divsplitter" style="height: 0.25em;"></div><div class="more-insights-item"><span class="small strong darkgray">Webcasts</span><div class="divsplitter" style="height: 0.25em;"></div><div style="margin-bottom: .5em;" xmlns:a10="http://www.w3.org/2005/Atom">
+                <div style="float: left; width: 5px; height: 5px; margin-top: 6px; margin-right: 5px; background: url(http://img.deusm.com/informationweek/bullet.png) no-repeat;"></div>
+                <div style="overflow: hidden;"><span class="blue smaller"><a target="new" href="http://www.allanalytics.com/radio.asp?doc_id=282560&amp;cid=smartbox_techweb_webcast_8.500000755">AI, Machine Learning &amp; The Future of News</a></span></div>
+            </div>
+                <div style="margin-bottom: .5em;" xmlns:a10="http://www.w3.org/2005/Atom">
+                    <div style="float: left; width: 5px; height: 5px; margin-top: 6px; margin-right: 5px; background: url(http://img.deusm.com/informationweek/bullet.png) no-repeat;"></div>
+                    <div style="overflow: hidden;"><span class="blue smaller"><a target="new" href="https://webinar.darkreading.com/2869?keycode=sbx&amp;cid=smartbox_techweb_webcast_8.500000747">The Real Impact of a Data Security Breach</a></span></div>
+                </div>
+                <span class="blue strong smallest allcaps"><a href="/webinar_upcoming.asp" title="More Webcasts">More Webcasts</a></span></div><div class="more-insights-item"><span class="small strong darkgray">White Papers</span><div class="divsplitter" style="height: 0.25em;"></div><div style="margin-bottom: .5em;" xmlns:a10="http://www.w3.org/2005/Atom">
+                <div style="float: left; width: 5px; height: 5px; margin-top: 6px; margin-right: 5px; background: url(http://img.deusm.com/informationweek/bullet.png) no-repeat;"></div>
+                <div style="overflow: hidden;"><span class="blue smaller"><a target="new" href="https://registrations.darkreading.com/Security_July2017?cid=smartbox_techweb_whitepaper_14.500002908">8 Most Overlooked Security Threats</a></span></div>
+            </div>
+                <div style="margin-bottom: .5em;" xmlns:a10="http://www.w3.org/2005/Atom">
+                    <div style="float: left; width: 5px; height: 5px; margin-top: 6px; margin-right: 5px; background: url(http://img.deusm.com/informationweek/bullet.png) no-repeat;"></div>
+                    <div style="overflow: hidden;"><span class="blue smaller"><a target="new" href="http://www.informationweek.com/whitepaper/network-and-systems-management/it-leadership/how-do-you-select-a-9-1-1-solution-for-your-enterprise-learn-what-you-need-to-know-and-need-to-ask-to-get-it-right./390223?cid=smartbox_techweb_whitepaper_14.500002893">9-1-1 Enterprise Solutions: What You NEED to Know to Get it Right!</a></span></div>
+                </div>
+                <span class="blue strong smallest allcaps"><a href="http://www.informationweek.com/whitepaper/Security" title="More White Papers">More White Papers</a></span></div><div class="more-insights-item" style="margin-right: 0;"><span class="small strong darkgray">Reports</span><div class="divsplitter" style="height: 0.25em;"></div><div style="margin-bottom: .5em;" xmlns:a10="http://www.w3.org/2005/Atom">
+                <div style="float: left; width: 5px; height: 5px; margin-top: 6px; margin-right: 5px; background: url(http://img.deusm.com/informationweek/bullet.png) no-repeat;"></div>
+                <div style="overflow: hidden;"><span class="blue smaller"><a target="new" href="http://www.informationweek.com/whitepaper/network-and-perimeter-security/security-management-and-analytics/how-data-breaches-affect-the-enterprise/390563?cid=smartbox_techweb_analytics_7.300005734">The Impact of a Security Breach 2017</a></span></div>
+            </div>
+                <div style="margin-bottom: .5em;" xmlns:a10="http://www.w3.org/2005/Atom">
+                    <div style="float: left; width: 5px; height: 5px; margin-top: 6px; margin-right: 5px; background: url(http://img.deusm.com/informationweek/bullet.png) no-repeat;"></div>
+                    <div style="overflow: hidden;"><span class="blue smaller"><a target="new" href="http://www.informationweek.com/whitepaper/security-management-and-analytics/security-monitoring/the-dark-reading-security-spending-survey/390213?cid=smartbox_techweb_analytics_7.300005731">[Dark Reading] Security Spending Survey</a></span></div>
+                </div>
+                <span class="blue strong smallest allcaps"><a href="http://reports.informationweek.com/search?search=security/" title="More Reports">More Reports</a></span></div><div class="divsplitter" style="height: .666em;"></div><div class="divsplitter" style="height: 4px; background: #aaa;"></div><div class="divsplitter" style="height: 1.666em;"></div></div></div><!-- Beginning Sync AdSlot  -->
+        <div id='div-gpt-ad-961777897907396673-16'>
+            <script type='text/javascript'>
+  googletag.display('div-gpt-ad-961777897907396673-16');
+ </script>
+        </div>
+        <!-- End AdSlot -->
+        <!-- Beginning Sync AdSlot  -->
+        <div id='div-gpt-ad-961777897907396673-17'>
+            <script type='text/javascript'>
+  googletag.display('div-gpt-ad-961777897907396673-17');
+ </script>
+        </div>
+        <!-- End AdSlot -->
+
+        <div id="comments-spacer" class="column"><img src="http://img.deusm.com/images/spacer.gif" style="width: auto; border: 0;" /></div>
+        <div id="comments-main">
+            <!-- Mobile IMU Script Here -->
+            <script type='text/javascript'>
+  if (document.documentElement.clientWidth <= 767){
+  document.write('<div id="div-gpt-ad-961777897907396673-8" class="responsive_imu"><center>');
+  	googletag.display('div-gpt-ad-961777897907396673-8');
+  document.write('</center><div class="divsplitter" style="height: 1.666666em;"></div></div>');
+  }
+ </script>
+            <!-- End: Mobile IMU Script Here -->
+            <!-- Mobile IMU Script Here -->
+            <script type='text/javascript'>
+  if (document.documentElement.clientWidth <= 767){
+  document.write('<div id="div-gpt-ad-961777897907396673-4" class="responsive_imu"><center>');
+  	googletag.display('div-gpt-ad-961777897907396673-4');
+  document.write('</center><div class="divsplitter" style="height: 1.666666em;"></div></div>');
+  }
+ </script>
+            <!-- End: Mobile IMU Script Here -->
+
+            <span class="red large allcaps"><a name="msgs">Comments</a></span>
+
+            <div style="float: right; text-align: right;">
+                <div class="divsplitter" style="height: 0.666666em;"></div>
+
+                <span class="smaller blue allcaps">
+<b>Newest First</b> &nbsp;|&nbsp; <a href="https://www.darkreading.com/vulnerabilities---threats/look-but-dont-touch-one-key-to-better-ics-security--/d/d-id/1328987?piddl_msgorder=asc#msgs">Oldest First</a> &nbsp;|&nbsp; <a href="https://www.darkreading.com/vulnerabilities---threats/look-but-dont-touch-one-key-to-better-ics-security--/d/d-id/1328987?piddl_msgorder=thrd#msgs">Threaded View</a></span></div>
+            <div class="divsplitter" style="height: 0.833333em; border-bottom: 3px solid #de1922;"></div>
+            <div class="divsplitter" style="height: 2px; border-bottom: 1px solid #de1922;"></div>
+
+
+            <!-- start of msgqueue -->
+            <div>
+                <div name="msgchatparticipantslistlink" id="msgchatparticipantslistlink" align="right"></div>
+                <div class="divsplitter" style="height: 1px;"></div>
+            </div>
+            <div name="msgchatparticipantslistholder" id="msgchatparticipantslistholder" class="menudropdown" style="width: 150px; padding: 0;">
+                <div name="msgchatparticipantslist" id="msgchatparticipantslist" style="height: 200px; margin: 5px; overflow-x: hidden; overflow-y: auto;"></div>
+                <div style="margin-bottom: 5px;" align="right"><span class="smallest"><a href="Javascript:ShowMenu('msgchatparticipantslistholder',-9000,38);">[close this box]</a></span></div>
+            </div>
+
+            <div id="msgqueue" name="msgqueue">
+                <div id="msgqueue_topdiv" name="msgqueue_topdiv"></div>
+                <div class="divsplitter" style="height: 0.833333em;"></div><div style="">
+                <div id="singlefullmsg_328580" name="singlefullmsg_328580" style="">
+                    <div class="comments-main">
+                        <div style="background-color: #ebebeb;"><div class="divsplitter" style="height: .833333em;"></div>
+                            <div style="float: left;">
+                                <a name="msg_328580" href="/profile.asp?piddl_userid=108528"><img class="img-thumb" src="http://img.deusm.com/darkreading/DR-user.jpg" width="73" height="73" border="0" style="margin: 0 1.666em  .833333em .833333em;" align="left" alt="jweiss950"/></a>
+                            </div>
+                            <div style="overflow: hidden;">
+                                <div name="ratebox_element_1931459" id="ratebox_element_1931459" style="float: right; margin: 0 .833333em 1.25em 1.25em;"><div style="float: right" ><div style="width: auto;"><div><span class="blue smallest"><a href="#" onClick="login(''); return false;"><u>Login</u></a></span></div><div style="clear: both; height: 1px;"></div><div tyle="display: block; clear: both; width: 100%;"><div style="float: left; width: 28px;" align="left"><div><img src="http://img.deusm.com/darkreading/thumbs-up.png" style="width: 1.416666em; height: 2em;" border="0" /></div><div><span class="smallest red">50%</span></div></div><div style="float: left; width: 28px;" align="right"><div><img src="http://img.deusm.com/informationweek/thumbs-down.png" style="width: 1.416666em; height: 2em;" border="0" /></div><div><span class="smallest gray">50%</span></div></div><div class="divsplitter" style="height: 0px;"></div><div><span class="blue small" style="line-height: 12px;"></span></div></div></div></div></div>
+                                <div style="overflow: hidden;"><span class="smaller strong black"><a href="/profile.asp?piddl_userid=108528">jweiss950</a>,<br /></span>
+                                    <span class="smaller black">User Rank: Apprentice<br />7/2/2017 | 1:05:19 AM
+</span></div>
+                            </div>
+                            <div class="divsplitter" style="height: .833333em;"></div>
+                            <div style="background-color: #f8f8f8; padding: 0 .833333em;">
+                                <div class="divsplitter" style="height: .833333em;"></div>
+                                <span class="smaller black strong">Look, But Don't Touch: One Key to Better ICS Security <br /></span>
+                                <div class="comment-body"><span class="smaller black">As a doctor, if you don't trust your temperature and blood pressure readings, you cannot make a diagnosis.<br />
+<br />Currently, many people equate network anomaly detection (malware) to cyber security. Moreover, many people associate network anomalies to physical process anomalies. However because of the lack of authenticated, secured process sensing (e.g., pressure, level, flow, temperature, voltage, current, radiation, etc.), it is not possible to correlate physical process anomalies (e.g., changes in boiler temperature, pipe pressure, tank level, voltage, etc.) to network anomaly detection (e.g., malware, network packet compromise, etc.). Since network monitoring programs can only interrogate network packets, any changes to process sensing before they become packets can NOT be detected by network monitoring solutions. The lack of correlating network anomalies to process anomalies has led to self-inflicted denial-of-service disruptions.<br />
+<br />The solution to this glaring gap in control system cyber security due to insecure process sensing is to detect changes in process sensing BEFORE the sensor information goes through the serial-to-Ethernet converters. Issues caused by the compromise of the sensors before the serial-to-Ethernet converters would NOT be identified through network monitoring. This is important as it is possible to compromise the sensor output before the serial-to-Ethernet converters particularly as these converters have been hacked in the U.S. and Ukraine to deliver the Black Energy malware.<br />
+<br />Possible impacts of compromised sensor data include the inability to reach a setpoint (e.g., safety valves or protective relays not opening damaging equipment), inadvertently reaching a setpoint (e.g., plant shutdowns or electric outages), providing misleading information to the HMI (e.g., having the operator take the wrong actions), or compromising controllers or actuators, etc. June 13, 2017, I gave a presentation on "The Implications of the Ukrainian Cyber Attacks to Nuclear Plants" to the American Nuclear Society in San Francisco which explicitly addressed these issues.<br />
+<br />I believe that having an informed decision as to when to shut down a physical process occurs when you have a view of the actual process via the raw process sensing. This is because the raw process sensing will indicate a process change regardless if the change is from unintentional or malicious reasons. Moreover, viewing the raw process is independent of network cyber considerations. Given how sophisticated hackers are able to bypass cyber security protections such as CrashOverride, viewing the raw process becomes even more important.<br />
+<br />&nbsp;Joe Weiss</span></div><div class="divsplitter" style="height: .833333em;"></div></div></div>
+                        <div class="divsplitter" style="height: .25em;"></div>
+                        <div><span class="blue smallest allcaps loginLinks"><a href="#" onClick="login('/message.asp?piddl_fieldsmode=new&piddl_replymsgid=328580&piddl_msgtopicid=5&piddl_msgthreadid=29083'); return false;">Reply</a> &nbsp;|&nbsp; <a href="#" onClick="login('/message.asp?piddl_fieldsmode=new&piddl_msgtopicid=5&piddl_msgthreadid=29083'); return false;">Post Message</a> &nbsp;|&nbsp; <a href="/messages.asp?piddl_msgthreadid=29083&piddl_msgid=328580#msg_328580">Messages List</a> &nbsp;|&nbsp; <a href="#"  onClick="login('/message.asp?piddl_fieldsmode=new&piddl_msgtopicid=6'); return false;">Start a Board</a></span></div>
+                        <div class="divsplitter" style="height: .25em;"></div>
+                    </div></div></div>
+
+            </div>
+            <!-- end of msgqueue -->
+
+            <div id="hidden_msgqueue" name="hidden_msgqueue" style="position: absolute; top: 500px; left: -1000px;">
+                <div id="hidden_msgqueue_topdiv" name="hidden_msgqueue_topdiv"></div>
+            </div>
+
+
+        </div>
+        <div id="nomsgheader" name="nomsgheader" style="display: none;"></div></div>
+
+        <section id="right-column" class="column right-main">
+            <div class="ad-imu"><!-- Beginning Sync AdSlot  -->
+                <script type='text/javascript'>
+  if (document.documentElement.clientWidth > 767){
+  document.write('<div id="div-gpt-ad-961777897907396673-8">');
+  googletag.display('div-gpt-ad-961777897907396673-8');
+  document.write('</div>');
+  }
+ </script>
+                <!-- End AdSlot -->
+                <div class="divsplitter" style="height: 1.666em;"></div></div>
+            <div class="ad-imu "><!-- Beginning Sync AdSlot  -->
+                <script type='text/javascript'>
+  if (document.documentElement.clientWidth > 767){
+  document.write('<div id="div-gpt-ad-961777897907396673-4">');
+  googletag.display('div-gpt-ad-961777897907396673-4');
+  document.write('</div>');
+  }
+ </script>
+                <!-- End AdSlot -->
+                <div class="divsplitter" style="height: 1.666em;"></div></div>
+
+            <section class="column sixteen">
+                <div id="newsletter-icon"><img src="http://img.deusm.com/informationweek/NL-icon.png" alt="Register for Dark Reading Newsletters" /></div>
+                <div id="newsletter-signup">
+                    <a class="allcaps red" href="
+		/newsletter-signup?_mc=we_x_iwr_x_x_iw_x_x-Art&cid=we_x_iwr_x_x_iw_x_x-Art
+		">Subscribe to Newsletters</a>
+                </div>
+                <div class="divsplitter" style="height: 1.666em;"></div>
+            </section>
+            <div class="ad-imu"><!-- Beginning Sync AdSlot  -->
+                <div id='div-gpt-ad-961777897907396673-13'>
+                    <script type='text/javascript'>
+  googletag.display('div-gpt-ad-961777897907396673-13');
+ </script>
+                </div>
+                <!-- End AdSlot -->
+                <div class="divsplitter" style="height: 1.666em;"></div></div>
+
+            <section class="column sixteen">
+                <div style="height 2.5em; float: left; overflow: hidden; position: relative; top: 1px;">
+                    <div class="divsplitter" style="height: 3px; background: #000;"></div>
+                    <div class="divsplitter" style="height: 2px;"></div>
+                    <div class="divsplitter" style="height: 1px; background: #000;"></div>
+                    <div id="midcol_liveevents_button" name="midcol_liveevents_button" style="float: left;" class="theNonSelectedTab hidden red roboto-bold medium allcaps">
+                        <div class="divsplitter" style="height: .333333em;"></div>
+                        <img src="http://img.deusm.com/images/spacer.gif" style="width: .833333em; height: 1px; border: 0;" />
+                        <a href="Javascript:Toggleliveeventswebinars('events');" title="Live Events">Live Events</a>
+                        <img src="http://img.deusm.com/images/spacer.gif" style="width: .833333em; height: 1px; border: 0;" />
+                        <div class="divsplitter" style="height: .25em;"></div>
+                    </div>
+                    <div id="midcol_webinars_button" name="midcol_webinars_button" style="float: left; border-right: 1px solid #aaa;" class="theSelectedTab darkgray roboto-bold medium allcaps">
+                        <div class="divsplitter" style="height: .333333em;"></div>
+                        <img src="http://img.deusm.com/images/spacer.gif" style="width: .833333em; height: 1px; border: 0;" />
+                        <a href="Javascript:Toggleliveeventswebinars('webinars');" title="Webinars">Webinars</a>
+                        <img src="http://img.deusm.com/images/spacer.gif" style="width: .833333em; height: 1px; border: 0;" />
+                        <div class="divsplitter" style="height: .25em;"></div>
+                    </div>
+                </div>
+                <div class="divsplitter" style="height: 0;"></div>
+                <div id="midcol_liveevents" name="midcol_liveevents" class="hidden" >
+                    <div class="rhc-element-main">
+                        <div class="divsplitter" style="height: .916666em;"></div>
+                        <div style="position: relative; margin:0 0.916666em;">
+                            <div style="float: left; width: 10.666em;">
+                                <img src="http://img.deusm.com/darkreading/ubm-tech.png" style="width: 3.583em; height: 5.583em; border: 0;" />
+                                <div class="divsplitter" style="height: 1.25em;"></div>
+                                <span class="allcaps blue smallest"><a href="/document.asp?doc_id=1127669" title="More UBM Tech Live Events">More UBM Tech<br/>Live Events</a></span>
+                            </div>
+                            <div style="overflow: hidden;">
+
+                            </div>
+                        </div>
+
+                        <div class="divsplitter" style="height: .833333em;"></div>
+                    </div>
+                </div>
+                <div id="midcol_webinars" name="midcol_webinars" class="display" >
+                    <div class="rhc-element-main">
+                        <div class="divsplitter" style="height: .916666em;"></div>
+                        <div style="margin:0 0.916666em;">
+                            <span class="red strong smaller" xmlns:a10="http://www.w3.org/2005/Atom"><a target="new" href="https://webinar.informationweek.com/2876?keycode=sbx&amp;cid=smartbox_techweb_webcast_8.500000754">Managing Multiple Clouds: Best Practices</a></span><br xmlns:a10="http://www.w3.org/2005/Atom"><div class="divsplitter" style="height: 1em;" xmlns:a10="http://www.w3.org/2005/Atom"></div><span class="red strong smaller" xmlns:a10="http://www.w3.org/2005/Atom"><a target="new" href="https://webinar.darkreading.com/2877?keycode=sbx&amp;cid=smartbox_techweb_webcast_8.500000751">New Security Technologies: Advice &amp; Best Practices on Selecting The Right One</a></span><br xmlns:a10="http://www.w3.org/2005/Atom"><div class="divsplitter" style="height: 1em;" xmlns:a10="http://www.w3.org/2005/Atom"></div><span class="red strong smaller" xmlns:a10="http://www.w3.org/2005/Atom"><a target="new" href="https://webinar.darkreading.com/2869?keycode=sbx&amp;cid=smartbox_techweb_webcast_8.500000747">The Real Impact of a Data Security Breach</a></span><br xmlns:a10="http://www.w3.org/2005/Atom"><div class="divsplitter" style="height: 1em;" xmlns:a10="http://www.w3.org/2005/Atom"></div>
+
+                        </div>
+                        <div class="divsplitter" style="height: 1px; border-bottom: 1px dotted #aaa;"><img src="http://img.deusm.com/images/spacer.gif" height="1" border="0"></div>
+                        <div style="float: left; width: 25.916666em; margin:0 0.916666em;">
+                            <div class="divsplitter" style="height: .416666em;"></div>
+                            <span class="allcaps blue smallest"><a href="/webinar_archives.asp">Webinar Archives</a> </span>
+                            <div class="divsplitter" style="height: .333333em;"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="divsplitter" style="height: 1.666em;"></div>
+            </section>
+
+            <script language="Javascript">
+function Toggleliveeventswebinars(theTab) {
+    if (theTab == 'webinars') {
+        $('#midcol_liveevents').hide();
+        $('#midcol_webinars').show();
+        $('#midcol_liveevents_button').removeClass('red theSelectedTab').addClass('darkgray theNonSelectedTab');
+        $('#midcol_webinars_button').addClass('red theSelectedTab').removeClass('darkgray theNonSelectedTab');
+    } else {
+        $('#midcol_liveevents').show();
+        $('#midcol_webinars').hide();
+        $('#midcol_webinars_button').removeClass('red theSelectedTab').addClass('darkgray theNonSelectedTab');
+        $('#midcol_liveevents_button').addClass('red theSelectedTab').removeClass('darkgray theNonSelectedTab');
+    }
+}
+</script>
+
+            <section class = "column sixteen">
+                <div class="divsplitter" style="height: 3px; background: #000;"></div>
+                <div class="divsplitter" style="height: 2px;"></div>
+                <div class="divsplitter" style="height: 1px; background: #000;"></div>
+                <div class="divsplitter" style="height: .5em;"></div>
+                <div style="float: left; width: 12.5em;"><span class="red roboto-bold section-header allcaps">White Papers</span></div>
+                <div class="divsplitter" style="height: .583333em;"></div>
+                <div class="rhc-element-main">
+                    <div class="divsplitter" style="height: .916666em;"></div>
+                    <div style="margin:0 0.916666em;">
+                        <div xmlns:a10="http://www.w3.org/2005/Atom">
+                            <div style="float: left; width: 7px; height: 7px; margin-top: 3px; margin-right: 5px; background-color: #5d1210;"></div><span class="darkblue smaller strong"><a class="notd" target="new" href="https://registrations.darkreading.com/Security_July2017?cid=smartbox_techweb_whitepaper_14.500002908">8 Most Overlooked Security Threats</a></span><div class="divsplitter" style="height: .833333em;"></div>
+                        </div>
+                        <div xmlns:a10="http://www.w3.org/2005/Atom">
+                            <div style="float: left; width: 7px; height: 7px; margin-top: 3px; margin-right: 5px; background-color: #5d1210;"></div><span class="darkblue smaller strong"><a class="notd" target="new" href="http://www.informationweek.com/whitepaper/network-and-systems-management/it-leadership/how-do-you-select-a-9-1-1-solution-for-your-enterprise-learn-what-you-need-to-know-and-need-to-ask-to-get-it-right./390223?cid=smartbox_techweb_whitepaper_14.500002893">9-1-1 Enterprise Solutions: What You NEED to Know to Get it Right!</a></span><div class="divsplitter" style="height: .833333em;"></div>
+                        </div>
+                        <div xmlns:a10="http://www.w3.org/2005/Atom">
+                            <div style="float: left; width: 7px; height: 7px; margin-top: 3px; margin-right: 5px; background-color: #5d1210;"></div><span class="darkblue smaller strong"><a class="notd" target="new" href="http://www.allanalytics.com/lg_redirect.asp?piddl_lgid_docid=282331&amp;cid=smartbox_techweb_whitepaper_14.500002761">Modernizing Your Analytics Environment</a></span><div class="divsplitter" style="height: .833333em;"></div>
+                        </div>
+                        <div xmlns:a10="http://www.w3.org/2005/Atom">
+                            <div style="float: left; width: 7px; height: 7px; margin-top: 3px; margin-right: 5px; background-color: #5d1210;"></div><span class="darkblue smaller strong"><a class="notd" target="new" href="http://www.informationweek.com/whitepaper/networking/network-and-systems-management/pandora-drives-superior-network-performance/390233?cid=smartbox_techweb_whitepaper_14.500002903">Pandora Drives Superior Network Performance</a></span><div class="divsplitter" style="height: .833333em;"></div>
+                        </div>
+                        <div xmlns:a10="http://www.w3.org/2005/Atom">
+                            <div style="float: left; width: 7px; height: 7px; margin-top: 3px; margin-right: 5px; background-color: #5d1210;"></div><span class="darkblue smaller strong"><a class="notd" target="new" href="http://www.informationweek.com/whitepaper/cybersecurity/security-monitoring/cybersecurity-dissonance-security-gap-between-perception-and-reality/390003?cid=smartbox_techweb_whitepaper_14.500002885">Cybersecurity Dissonance: Security Gap Between Perception &amp; Reality</a></span><div class="divsplitter" style="height: .833333em;"></div>
+                        </div>
+
+                    </div>
+                    <div class="divsplitter" style="height: .02em;"></div>
+                    <div style="height: 1px; border-bottom: 1px dotted #aaa;"><img src="http://img.deusm.com/images/spacer.gif" height="1" border="0"></div>
+                    <div style="float: left; width: 25.916666em; margin:0 0.916666em;">
+                        <div class="divsplitter" style="height: .416666em;"></div>
+                        <span class="allcaps blue smallest"><a href="http://www.informationweek.com/whitepaper/Security" title="More White Papers">More White Papers</a></span>
+                        <div class="divsplitter" style="height: .333333em;"></div>
+                    </div>
+                </div>
+                <div class="divsplitter" style="height: 1.666em;"></div>
+            </section>
+            <div class="ad-imu"><!-- Beginning Sync AdSlot  -->
+                <div id='div-gpt-ad-961777897907396673-5'>
+                    <script type='text/javascript'>
+  googletag.display('div-gpt-ad-961777897907396673-5');
+ </script>
+                </div>
+                <!-- End AdSlot -->
+                <div class="divsplitter" style="height: 1.666em;"></div></div>
+
+
+            <section class="column sixteen">
+                <div class="divsplitter" style="height: 3px; background: #000;"></div>
+                <div class="divsplitter" style="height: 2px;"></div>
+                <div class="divsplitter" style="height: 1px; background: #000;"></div>
+                <div class="divsplitter" style="height: .5em;"></div>
+                <div><span class="red roboto-bold section-header allcaps">Video</span></div>
+                <div class="divsplitter" style="height: .583333em;"></div>
+                <div class="rhc-element-main">
+                    <div class="divsplitter" style="height: 1em;"></div>
+                    <script language="Javascript">
+
+var video_reportsSliderHandler = new LRSliderHandler();
+
+video_reportsSliderHandler.thisSliderElementName = 'video_reportsSliderHandler';
+video_reportsSliderHandler.sliderElementCount = 6;
+video_reportsSliderHandler.sliderElementSize = 290 + 2;
+video_reportsSliderHandler.sliderObjectViewsize = 1;
+video_reportsSliderHandler.sliderRightLimit = video_reportsSliderHandler.sliderElementSize * ((video_reportsSliderHandler.sliderElementCount - video_reportsSliderHandler.sliderObjectViewsize) * -1) + 1;
+video_reportsSliderHandler.currentSliderElement = 1;
+video_reportsSliderHandler.sliderObjectId = 'video_reports_outside';
+video_reportsSliderHandler.sliderDoSlide = false;
+
+var video_reportsLeftArrowButtonMouseoutImgSrc = 'http://img.deusm.com/darkreading/video-arrow_left_off.gif';
+var video_reportsRightArrowButtonMouseoutImgSrc = 'http://img.deusm.com/darkreading/video-arrow_right_on.gif';
+
+video_reportsSliderHandler.LRSliderNavGraphicsHandlerSlideLeft = function() {
+    // change the input box value
+    //GetObject('video_reports_navform_selector').value = this.currentSliderElement;
+    // now deal with the images
+
+    var currentImage = GetObject('video_reports_rightarrowbutton');
+    // if we're at currentSliderElement < sliderElementCount make sure the right button is active
+    if (this.currentSliderElement < this.sliderElementCount) {
+        currentImage.src = 'http://img.deusm.com/darkreading/vidoe-arrow-red-right.jpg';
+    } else {
+        currentImage.src = 'http://img.deusm.com/darkreading/video-arrow_left_off.gif';
+    }
+    video_reportsRightArrowButtonMouseoutImgSrc = currentImage.src;
+
+    // if sliding left, change when currentSliderElement gets to 1
+    currentImage = GetObject('video_reports_leftarrowbutton');
+    if (this.currentSliderElement == 1) {
+        currentImage.src = 'http://img.deusm.com/darkreading/video-arrow_left_off.gif';
+    } else {
+        currentImage.src = 'http://img.deusm.com/darkreading/vidoe-arrow-red-left.jpg';
+    }
+    video_reportsLeftArrowButtonMouseoutImgSrc = currentImage.src;
+
+}
+
+video_reportsSliderHandler.LRSliderNavGraphicsHandlerSlideRight = function() {
+    // change the input box value
+    //GetObject('video_reports_navform_selector').value = this.currentSliderElement;
+    // now deal with the images
+
+    var currentImage = GetObject('video_reports_leftarrowbutton');
+    // if we're at currentSliderElement > 1 make sure the left button is active
+    if (this.currentSliderElement > 1) {
+        currentImage.src = 'http://img.deusm.com/darkreading/vidoe-arrow-red-left.jpg';
+    } else {
+        currentImage.src = 'http://img.deusm.com/darkreading/video-arrow_left_off.gif';
+    }
+    video_reportsLeftArrowButtonMouseoutImgSrc = currentImage.src;
+
+    currentImage = GetObject('video_reports_rightarrowbutton');
+    // sliding right, change when currentSliderElement gets to this.sliderElementCount
+    if (this.currentSliderElement == this.sliderElementCount) {
+        currentImage.src = 'http://img.deusm.com/darkreading/video-arrow_right_off.gif';
+    } else {
+        currentImage.src = 'http://img.deusm.com/darkreading/vidoe-arrow-red-right.jpg';
+    }
+    video_reportsRightArrowButtonMouseoutImgSrc = currentImage.src;
+}
+
+</script>
+
+
+                    <div id="videorhc-main" style="px; height: 122px; background-color: #fff;">
+
+
+                        <!-- left nav //-->
+                        <div class="video-arrowbutton-main" style="margin-right: .416666em;">
+                            <a href="Javascript: video_reportsSliderHandler.LRSliderSlideLeft(1);" onmouseout="MM_swapImage('video_reports_leftarrowbutton','',video_reportsLeftArrowButtonMouseoutImgSrc,1)" onmouseover="MM_swapImage('video_reports_leftarrowbutton','','http://img.deusm.com/darkreading/video-arrow_left_off.gif',1)"><img name="video_reports_leftarrowbutton" id="video_reports_leftarrowbutton" src="http://img.deusm.com/darkreading/video-arrow_left_off.gif" /></a>
+                        </div>
+                        <!-- end left nav -->
+
+
+                        <!-- video content -->
+                        <div class="main-video-content" id="LRSlider_Content_video_reports" name="LRSlider_Content_video_reports" style="width: 290px; display: block; float: left;">
+                            <div style="">
+                                <div style="height: 164px;">
+                                    <div id="video_reports_scrollyparent" name="video_reports_scrollyparent" style="position: absolute;">
+                                        <div id="video_reports_border" name="video_reports_border" style="position: relative; top: 0px; left: 0px; width: 290px; height: 164px; overflow: hidden;">
+                                            <div id="video_reports_window" name="video_reports_window" style="position: relative; top: 0px; left: 0px; clip: rect(0px 290px 162px 0px); overflow: hidden;">
+                                                <div id="video_reports_outside" name="video_reports_outside" style="position: relative; top: 1px; left: 1px; width: 1812px; height: 160px; z-index: 2;">
+                                                    <div id="video_reports_vid_1328193" name="video_reports_vid_1328193" style="width: 12.166666em; float: left; height: 13.75em;">
+                                                        <div style="width: 11.916666em; margin-right: .75em;">
+                                                            <div style="width: 11.916666em; height: 13.75em; overflow: hidden;">
+                                                                <div style="width: 10.75em; height: 7.833333em; padding: .416666em; background-color: #FFFFFF; text-align: center; border: 1px solid #ABABAB;">
+                                                                    <a href="/nss-labs-talks-operationalizing-security/v/d-id/1328193" ><img id="video_reports_vid_1328193_thumb" name="video_reports_vid_1328193_thumb" onmouseover="video_reports_vid_1328193_thumb_mouseoverFunction()" onmouseout="video_reports_vid_1328193_thumb_mouseoutFunction()" src="http://brightcove.vo.llnwd.net/e1/pd/1568176135/1568176135_5326320860001_5326315296001-th.jpg?pubId=1568176135" width="129" height="94" border="0"></a>
+                                                                </div>
+                                                                <div class="divsplitter" style="height: .833333em;"></div>
+                                                                <div style="height: 2.5em; overflow: hidden;"><span class="black smaller strong"><a href="/nss-labs-talks-operationalizing-security/v/d-id/1328193">NSS Labs Talks Operationalizing Security</a></span><div class="divsplitter" style="height: 4px;"></div>
+                                                                </div>
+                                                                <div>
+                                                                    <div style="float: left; margin-right: 2px;"><span class="allcaps red smallest strong"><a href="/nss-labs-talks-operationalizing-security/v/d-id/1328193#msgs" class=" "><img src="http://img.deusm.com/informationweek/comment.png" width="12" height="11" style="float: left; margin-right: 4px; margin-top: 2px; position:relative; top: .2em;" />1 Comments</a></span></div></div>
+                                                                <div class="divsplitter" style="height: 0px;"></div>
+                                                            </div></div></div>
+                                                    <div id="video_reports_vid_1328185" name="video_reports_vid_1328185" style="width: 12.166666em; float: left; height: 13.75em;">
+                                                        <div style="width: 11.916666em; margin-right: .75em;">
+                                                            <div style="width: 11.916666em; height: 13.75em; overflow: hidden;">
+                                                                <div style="width: 10.75em; height: 7.833333em; padding: .416666em; background-color: #FFFFFF; text-align: center; border: 1px solid #ABABAB;">
+                                                                    <a href="/exhibitor-spotlight-recorded-future---rsa-2017/v/d-id/1328185" ><img id="video_reports_vid_1328185_thumb" name="video_reports_vid_1328185_thumb" onmouseover="video_reports_vid_1328185_thumb_mouseoverFunction()" onmouseout="video_reports_vid_1328185_thumb_mouseoutFunction()" src="http://brightcove.vo.llnwd.net/e1/pd/1568176135/1568176135_5354066097001_5354054172001-th.jpg?pubId=1568176135" width="129" height="94" border="0"></a>
+                                                                </div>
+                                                                <div class="divsplitter" style="height: .833333em;"></div>
+                                                                <div style="height: 2.5em; overflow: hidden;"><span class="black smaller strong"><a href="/exhibitor-spotlight-recorded-future---rsa-2017/v/d-id/1328185">Exhibitor Spotlight: Recorded Future @ ...</a></span><div class="divsplitter" style="height: 4px;"></div>
+                                                                </div>
+                                                                <div>
+                                                                    <div style="float: left; margin-right: 2px;"><span class="allcaps red smallest strong"><a href="/exhibitor-spotlight-recorded-future---rsa-2017/v/d-id/1328185#msgs" class=" "><img src="http://img.deusm.com/informationweek/comment.png" width="12" height="11" style="float: left; margin-right: 4px; margin-top: 2px; position:relative; top: .2em;" />1 Comments</a></span></div></div>
+                                                                <div class="divsplitter" style="height: 0px;"></div>
+                                                            </div></div></div>
+                                                    <div id="video_reports_vid_1328195" name="video_reports_vid_1328195" style="width: 12.166666em; float: left; height: 13.75em;">
+                                                        <div style="width: 11.916666em; margin-right: .75em;">
+                                                            <div style="width: 11.916666em; height: 13.75em; overflow: hidden;">
+                                                                <div style="width: 10.75em; height: 7.833333em; padding: .416666em; background-color: #FFFFFF; text-align: center; border: 1px solid #ABABAB;">
+                                                                    <a href="/mimecast-tackles-email-bound-risks/v/d-id/1328195" ><img id="video_reports_vid_1328195_thumb" name="video_reports_vid_1328195_thumb" onmouseover="video_reports_vid_1328195_thumb_mouseoverFunction()" onmouseout="video_reports_vid_1328195_thumb_mouseoutFunction()" src="http://brightcove.vo.llnwd.net/e1/pd/1568176135/1568176135_5358079827001_5358074450001-th.jpg?pubId=1568176135" width="129" height="94" border="0"></a>
+                                                                </div>
+                                                                <div class="divsplitter" style="height: .833333em;"></div>
+                                                                <div style="height: 2.5em; overflow: hidden;"><span class="black smaller strong"><a href="/mimecast-tackles-email-bound-risks/v/d-id/1328195">Mimecast Tackles Email-Bound Risks</a></span><div class="divsplitter" style="height: 4px;"></div>
+                                                                </div>
+                                                                <div>
+                                                                    <div style="float: left; margin-right: 2px;"><span class="allcaps red smallest strong"><a href="/mimecast-tackles-email-bound-risks/v/d-id/1328195#msgs" class=" "><img src="http://img.deusm.com/informationweek/comment.png" width="12" height="11" style="float: left; margin-right: 4px; margin-top: 2px; position:relative; top: .2em;" />0 Comments</a></span></div></div>
+                                                                <div class="divsplitter" style="height: 0px;"></div>
+                                                            </div></div></div>
+                                                    <div id="video_reports_vid_1328196" name="video_reports_vid_1328196" style="width: 12.166666em; float: left; height: 13.75em;">
+                                                        <div style="width: 11.916666em; margin-right: .75em;">
+                                                            <div style="width: 11.916666em; height: 13.75em; overflow: hidden;">
+                                                                <div style="width: 10.75em; height: 7.833333em; padding: .416666em; background-color: #FFFFFF; text-align: center; border: 1px solid #ABABAB;">
+                                                                    <a href="/raytheon-foreground-security-talks-proactive-risk-based-security/v/d-id/1328196" ><img id="video_reports_vid_1328196_thumb" name="video_reports_vid_1328196_thumb" onmouseover="video_reports_vid_1328196_thumb_mouseoverFunction()" onmouseout="video_reports_vid_1328196_thumb_mouseoutFunction()" src="http://brightcove.vo.llnwd.net/e1/pd/1568176135/1568176135_5362454782001_5362453614001-th.jpg?pubId=1568176135" width="129" height="94" border="0"></a>
+                                                                </div>
+                                                                <div class="divsplitter" style="height: .833333em;"></div>
+                                                                <div style="height: 2.5em; overflow: hidden;"><span class="black smaller strong"><a href="/raytheon-foreground-security-talks-proactive-risk-based-security/v/d-id/1328196">Raytheon Foreground Security Talks ...</a></span><div class="divsplitter" style="height: 4px;"></div>
+                                                                </div>
+                                                                <div>
+                                                                    <div style="float: left; margin-right: 2px;"><span class="allcaps red smallest strong"><a href="/raytheon-foreground-security-talks-proactive-risk-based-security/v/d-id/1328196#msgs" class=" "><img src="http://img.deusm.com/informationweek/comment.png" width="12" height="11" style="float: left; margin-right: 4px; margin-top: 2px; position:relative; top: .2em;" />0 Comments</a></span></div></div>
+                                                                <div class="divsplitter" style="height: 0px;"></div>
+                                                            </div></div></div>
+                                                    <div id="video_reports_vid_1328190" name="video_reports_vid_1328190" style="width: 12.166666em; float: left; height: 13.75em;">
+                                                        <div style="width: 11.916666em; margin-right: .75em;">
+                                                            <div style="width: 11.916666em; height: 13.75em; overflow: hidden;">
+                                                                <div style="width: 10.75em; height: 7.833333em; padding: .416666em; background-color: #FFFFFF; text-align: center; border: 1px solid #ABABAB;">
+                                                                    <a href="/cylance-talks-third-party-testing/v/d-id/1328190" ><img id="video_reports_vid_1328190_thumb" name="video_reports_vid_1328190_thumb" onmouseover="video_reports_vid_1328190_thumb_mouseoverFunction()" onmouseout="video_reports_vid_1328190_thumb_mouseoutFunction()" src="http://brightcove.vo.llnwd.net/e1/pd/1568176135/1568176135_5331660452001_5331629901001-th.jpg?pubId=1568176135" width="129" height="94" border="0"></a>
+                                                                </div>
+                                                                <div class="divsplitter" style="height: .833333em;"></div>
+                                                                <div style="height: 2.5em; overflow: hidden;"><span class="black smaller strong"><a href="/cylance-talks-third-party-testing/v/d-id/1328190">Cylance Talks Third-Party Testing</a></span><div class="divsplitter" style="height: 4px;"></div>
+                                                                </div>
+                                                                <div>
+                                                                    <div style="float: left; margin-right: 2px;"><span class="allcaps red smallest strong"><a href="/cylance-talks-third-party-testing/v/d-id/1328190#msgs" class=" "><img src="http://img.deusm.com/informationweek/comment.png" width="12" height="11" style="float: left; margin-right: 4px; margin-top: 2px; position:relative; top: .2em;" />0 Comments</a></span></div></div>
+                                                                <div class="divsplitter" style="height: 0px;"></div>
+                                                            </div></div></div>
+                                                    <div id="video_reports_vid_1328192" name="video_reports_vid_1328192" style="width: 12.166666em; float: left; height: 13.75em;">
+                                                        <div style="width: 11.916666em; margin-right: .75em;">
+                                                            <div style="width: 11.916666em; height: 13.75em; overflow: hidden;">
+                                                                <div style="width: 10.75em; height: 7.833333em; padding: .416666em; background-color: #FFFFFF; text-align: center; border: 1px solid #ABABAB;">
+                                                                    <a href="/ca-technologies-views-on-how-machine-learning-is-powering-the-next-generation-of-security/v/d-id/1328192" ><img id="video_reports_vid_1328192_thumb" name="video_reports_vid_1328192_thumb" onmouseover="video_reports_vid_1328192_thumb_mouseoverFunction()" onmouseout="video_reports_vid_1328192_thumb_mouseoutFunction()" src="http://brightcove.vo.llnwd.net/e1/pd/1568176135/1568176135_5332810043001_5326255195001-th.jpg?pubId=1568176135" width="129" height="94" border="0"></a>
+                                                                </div>
+                                                                <div class="divsplitter" style="height: .833333em;"></div>
+                                                                <div style="height: 2.5em; overflow: hidden;"><span class="black smaller strong"><a href="/ca-technologies-views-on-how-machine-learning-is-powering-the-next-generation-of-security/v/d-id/1328192">CA Technologies Views On How Machine ...</a></span><div class="divsplitter" style="height: 4px;"></div>
+                                                                </div>
+                                                                <div>
+                                                                    <div style="float: left; margin-right: 2px;"><span class="allcaps red smallest strong"><a href="/ca-technologies-views-on-how-machine-learning-is-powering-the-next-generation-of-security/v/d-id/1328192#msgs" class=" "><img src="http://img.deusm.com/informationweek/comment.png" width="12" height="11" style="float: left; margin-right: 4px; margin-top: 2px; position:relative; top: .2em;" />0 Comments</a></span></div></div>
+                                                                <div class="divsplitter" style="height: 0px;"></div>
+                                                            </div></div></div>
+                                                    <div id="video_reports_vid_1328194" name="video_reports_vid_1328194" style="width: 12.166666em; float: left; height: 13.75em;">
+                                                        <div style="width: 11.916666em; margin-right: .75em;">
+                                                            <div style="width: 11.916666em; height: 13.75em; overflow: hidden;">
+                                                                <div style="width: 10.75em; height: 7.833333em; padding: .416666em; background-color: #FFFFFF; text-align: center; border: 1px solid #ABABAB;">
+                                                                    <a href="/juniper-discusses-the-new-network-and-how-to-secure-it/v/d-id/1328194" ><img id="video_reports_vid_1328194_thumb" name="video_reports_vid_1328194_thumb" onmouseover="video_reports_vid_1328194_thumb_mouseoverFunction()" onmouseout="video_reports_vid_1328194_thumb_mouseoutFunction()" src="http://brightcove.vo.llnwd.net/e1/pd/1568176135/1568176135_5326401250001_5326382990001-th.jpg?pubId=1568176135" width="129" height="94" border="0"></a>
+                                                                </div>
+                                                                <div class="divsplitter" style="height: .833333em;"></div>
+                                                                <div style="height: 2.5em; overflow: hidden;"><span class="black smaller strong"><a href="/juniper-discusses-the-new-network-and-how-to-secure-it/v/d-id/1328194">Juniper Discusses The New Network & How ...</a></span><div class="divsplitter" style="height: 4px;"></div>
+                                                                </div>
+                                                                <div>
+                                                                    <div style="float: left; margin-right: 2px;"><span class="allcaps red smallest strong"><a href="/juniper-discusses-the-new-network-and-how-to-secure-it/v/d-id/1328194#msgs" class=" "><img src="http://img.deusm.com/informationweek/comment.png" width="12" height="11" style="float: left; margin-right: 4px; margin-top: 2px; position:relative; top: .2em;" />0 Comments</a></span></div></div>
+                                                                <div class="divsplitter" style="height: 0px;"></div>
+                                                            </div></div></div>
+                                                    <div id="video_reports_vid_1328165" name="video_reports_vid_1328165" style="width: 12.166666em; float: left; height: 13.75em;">
+                                                        <div style="width: 11.916666em; margin-right: .75em;">
+                                                            <div style="width: 11.916666em; height: 13.75em; overflow: hidden;">
+                                                                <div style="width: 10.75em; height: 7.833333em; padding: .416666em; background-color: #FFFFFF; text-align: center; border: 1px solid #ABABAB;">
+                                                                    <a href="/veracode-tackles-app-sec-and-the-pace-of-devops/v/d-id/1328165" ><img id="video_reports_vid_1328165_thumb" name="video_reports_vid_1328165_thumb" onmouseover="video_reports_vid_1328165_thumb_mouseoverFunction()" onmouseout="video_reports_vid_1328165_thumb_mouseoutFunction()" src="http://brightcove.vo.llnwd.net/e1/pd/1568176135/1568176135_5331642506001_5331636507001-th.jpg?pubId=1568176135" width="129" height="94" border="0"></a>
+                                                                </div>
+                                                                <div class="divsplitter" style="height: .833333em;"></div>
+                                                                <div style="height: 2.5em; overflow: hidden;"><span class="black smaller strong"><a href="/veracode-tackles-app-sec-and-the-pace-of-devops/v/d-id/1328165">Veracode Tackles App Sec & The Pace Of DevOps</a></span><div class="divsplitter" style="height: 4px;"></div>
+                                                                </div>
+                                                                <div>
+                                                                    <div style="float: left; margin-right: 2px;"><span class="allcaps red smallest strong"><a href="/veracode-tackles-app-sec-and-the-pace-of-devops/v/d-id/1328165#msgs" class=" "><img src="http://img.deusm.com/informationweek/comment.png" width="12" height="11" style="float: left; margin-right: 4px; margin-top: 2px; position:relative; top: .2em;" />0 Comments</a></span></div></div>
+                                                                <div class="divsplitter" style="height: 0px;"></div>
+                                                            </div></div></div>
+                                                    <div id="video_reports_vid_1328164" name="video_reports_vid_1328164" style="width: 12.166666em; float: left; height: 13.75em;">
+                                                        <div style="width: 11.916666em; margin-right: .75em;">
+                                                            <div style="width: 11.916666em; height: 13.75em; overflow: hidden;">
+                                                                <div style="width: 10.75em; height: 7.833333em; padding: .416666em; background-color: #FFFFFF; text-align: center; border: 1px solid #ABABAB;">
+                                                                    <a href="/anomali-talks-threat-intelligence-and-info-sharing/v/d-id/1328164" ><img id="video_reports_vid_1328164_thumb" name="video_reports_vid_1328164_thumb" onmouseover="video_reports_vid_1328164_thumb_mouseoverFunction()" onmouseout="video_reports_vid_1328164_thumb_mouseoutFunction()" src="http://brightcove.vo.llnwd.net/e1/pd/1568176135/1568176135_5331595471001_5331582078001-th.jpg?pubId=1568176135" width="129" height="94" border="0"></a>
+                                                                </div>
+                                                                <div class="divsplitter" style="height: .833333em;"></div>
+                                                                <div style="height: 2.5em; overflow: hidden;"><span class="black smaller strong"><a href="/anomali-talks-threat-intelligence-and-info-sharing/v/d-id/1328164">Anomali Talks Threat Intelligence & Info ...</a></span><div class="divsplitter" style="height: 4px;"></div>
+                                                                </div>
+                                                                <div>
+                                                                    <div style="float: left; margin-right: 2px;"><span class="allcaps red smallest strong"><a href="/anomali-talks-threat-intelligence-and-info-sharing/v/d-id/1328164#msgs" class=" "><img src="http://img.deusm.com/informationweek/comment.png" width="12" height="11" style="float: left; margin-right: 4px; margin-top: 2px; position:relative; top: .2em;" />0 Comments</a></span></div></div>
+                                                                <div class="divsplitter" style="height: 0px;"></div>
+                                                            </div></div></div>
+                                                    <div id="video_reports_vid_1328163" name="video_reports_vid_1328163" style="width: 12.166666em; float: left; height: 13.75em;">
+                                                        <div style="width: 11.916666em; margin-right: .75em;">
+                                                            <div style="width: 11.916666em; height: 13.75em; overflow: hidden;">
+                                                                <div style="width: 10.75em; height: 7.833333em; padding: .416666em; background-color: #FFFFFF; text-align: center; border: 1px solid #ABABAB;">
+                                                                    <a href="/deloitte-tackles-identity-management/v/d-id/1328163" ><img id="video_reports_vid_1328163_thumb" name="video_reports_vid_1328163_thumb" onmouseover="video_reports_vid_1328163_thumb_mouseoverFunction()" onmouseout="video_reports_vid_1328163_thumb_mouseoutFunction()" src="http://brightcove.vo.llnwd.net/e1/pd/1568176135/1568176135_5331608259001_5331607709001-th.jpg?pubId=1568176135" width="129" height="94" border="0"></a>
+                                                                </div>
+                                                                <div class="divsplitter" style="height: .833333em;"></div>
+                                                                <div style="height: 2.5em; overflow: hidden;"><span class="black smaller strong"><a href="/deloitte-tackles-identity-management/v/d-id/1328163">Deloitte Tackles Identity Management</a></span><div class="divsplitter" style="height: 4px;"></div>
+                                                                </div>
+                                                                <div>
+                                                                    <div style="float: left; margin-right: 2px;"><span class="allcaps red smallest strong"><a href="/deloitte-tackles-identity-management/v/d-id/1328163#msgs" class=" "><img src="http://img.deusm.com/informationweek/comment.png" width="12" height="11" style="float: left; margin-right: 4px; margin-top: 2px; position:relative; top: .2em;" />1 Comments</a></span></div></div>
+                                                                <div class="divsplitter" style="height: 0px;"></div>
+                                                            </div></div></div>
+                                                    <div id="video_reports_vid_1328162" name="video_reports_vid_1328162" style="width: 12.166666em; float: left; height: 13.75em;">
+                                                        <div style="width: 11.916666em; margin-right: .75em;">
+                                                            <div style="width: 11.916666em; height: 13.75em; overflow: hidden;">
+                                                                <div style="width: 10.75em; height: 7.833333em; padding: .416666em; background-color: #FFFFFF; text-align: center; border: 1px solid #ABABAB;">
+                                                                    <a href="/bae-systems-cyber-defense-monitor-study-digs-into-defense/v/d-id/1328162" ><img id="video_reports_vid_1328162_thumb" name="video_reports_vid_1328162_thumb" onmouseover="video_reports_vid_1328162_thumb_mouseoverFunction()" onmouseout="video_reports_vid_1328162_thumb_mouseoutFunction()" src="http://brightcove.vo.llnwd.net/e1/pd/1568176135/1568176135_5358896129001_5358882904001-th.jpg?pubId=1568176135" width="129" height="94" border="0"></a>
+                                                                </div>
+                                                                <div class="divsplitter" style="height: .833333em;"></div>
+                                                                <div style="height: 2.5em; overflow: hidden;"><span class="black smaller strong"><a href="/bae-systems-cyber-defense-monitor-study-digs-into-defense/v/d-id/1328162">BAE Systems' Cyber Defense Monitor Study ...</a></span><div class="divsplitter" style="height: 4px;"></div>
+                                                                </div>
+                                                                <div>
+                                                                    <div style="float: left; margin-right: 2px;"><span class="allcaps red smallest strong"><a href="/bae-systems-cyber-defense-monitor-study-digs-into-defense/v/d-id/1328162#msgs" class=" "><img src="http://img.deusm.com/informationweek/comment.png" width="12" height="11" style="float: left; margin-right: 4px; margin-top: 2px; position:relative; top: .2em;" />0 Comments</a></span></div></div>
+                                                                <div class="divsplitter" style="height: 0px;"></div>
+                                                            </div></div></div>
+                                                    <div id="video_reports_vid_1328045" name="video_reports_vid_1328045" style="width: 12.166666em; float: left; height: 13.75em;">
+                                                        <div style="width: 11.916666em; margin-right: .75em;">
+                                                            <div style="width: 11.916666em; height: 13.75em; overflow: hidden;">
+                                                                <div style="width: 10.75em; height: 7.833333em; padding: .416666em; background-color: #FFFFFF; text-align: center; border: 1px solid #ABABAB;">
+                                                                    <a href="/analytics/how-to-handle-threats-when-short-staffed-/v/d-id/1328045" ><img id="video_reports_vid_1328045_thumb" name="video_reports_vid_1328045_thumb" onmouseover="video_reports_vid_1328045_thumb_mouseoverFunction()" onmouseout="video_reports_vid_1328045_thumb_mouseoutFunction()" src="http://brightcove.vo.llnwd.net/e1/pd/1568176135/1568176135_5309317619001_5309308570001-th.jpg?pubId=1568176135" width="129" height="94" border="0"></a>
+                                                                </div>
+                                                                <div class="divsplitter" style="height: .833333em;"></div>
+                                                                <div style="height: 2.5em; overflow: hidden;"><span class="black smaller strong"><a href="/analytics/how-to-handle-threats-when-short-staffed-/v/d-id/1328045">How to Handle Threats When Short-Staffed </a></span><div class="divsplitter" style="height: 4px;"></div>
+                                                                </div>
+                                                                <div>
+                                                                    <div style="float: left; margin-right: 2px;"><span class="allcaps red smallest strong"><a href="/analytics/how-to-handle-threats-when-short-staffed-/v/d-id/1328045#msgs" class=" "><img src="http://img.deusm.com/informationweek/comment.png" width="12" height="11" style="float: left; margin-right: 4px; margin-top: 2px; position:relative; top: .2em;" />0 Comments</a></span></div></div>
+                                                                <div class="divsplitter" style="height: 0px;"></div>
+                                                            </div></div></div>
+
+
+                                                    <div class="divsplitter" style="height: 1px;"></div>
+                                                </div></div></div></div></div>
+                                <div class="divsplitter" style="height: 1px;"></div>
+                            </div>
+                        </div>
+                        <!-- end video content -->
+
+
+                        <!-- right nav //-->
+                        <div class="video-arrowbutton-main" style="margin-left: .416666em;">
+                            <a href="Javascript: video_reportsSliderHandler.LRSliderSlideRight(1);" onmouseout="MM_swapImage('video_reports_rightarrowbutton','',video_reportsRightArrowButtonMouseoutImgSrc,1)" onmouseover="MM_swapImage('video_reports_rightarrowbutton','','http://img.deusm.com/darkreading/video-arrow_right_off.gif',1)"><img name="video_reports_rightarrowbutton" id="video_reports_rightarrowbutton" src="http://img.deusm.com/darkreading/video-arrow_right_on.gif" /></a></div>
+                        <!-- end right nav -->
+
+
+                        <div class="divsplitter" style="height: 0px;"></div>
+                    </div>
+
+                    <script language="Javascript">
+video_reportsSliderHandler.LRSliderSlide(1);
+</script>
+
+
+                    <div class="divsplitter" style="height: .833333em;"></div>
+                    <div style="height: 1px; border-bottom: 1px dotted #aaa;"><img src="http://img.deusm.com/images/spacer.gif" height="1" border="0"></div>
+                    <div style="float: left; width: 25.916666em; margin:0 0.916666em;">
+                        <div class="divsplitter" style="height: .416666em;"></div><span class="allcaps blue smallest"><a href="/archives.asp?videoblogs=yes">All Videos</a> </span><div class="divsplitter" style="height: .333333em;"></div>
+                    </div>
+
+                </div>
+                <div class="divsplitter" style="height: 1.666em;"></div>
+            </section>
+
+            <section class="column sixteen">
+                <div class="divsplitter" style="height: 3px; background: #000;"></div>
+                <div class="divsplitter" style="height: 2px;"></div>
+                <div class="divsplitter" style="height: 1px; background: #000;"></div>
+                <div class="divsplitter" style="height: .5em;"></div>
+
+                <span class="red roboto-bold section-header allcaps">Cartoon Contest</span>
+
+                <div class="divsplitter" style="height: .583333em;"></div>
+                <div class="rhc-element-main">
+                    <div class="divsplitter" style="height: .916666em;"></div>
+                    <div style="margin:0 0.916666em;">
+
+<span>Write a Caption, Win a Starbucks Card! <a class="darkblue notd" href="/endpoint/name-that-toon-screen-sharing/d/d-id/1328755" title="Dark Reading - Caption Contest">Click Here</a>
+<div class="divsplitter" style="height: .5em;"></div>
+
+            <a href="/endpoint/name-that-toon-screen-sharing/d/d-id/1328755" title="Name That Toon: Screen Sharing"><img class="img-rhc" src="http://img.deusm.com/darkreading/2017/04/1328755/Cartoon-Contest-unicorn.jpg" title="Name That Toon: Screen Sharing" /></a>
+            <div class="divsplitter" style="height: .5em;"></div>
+            <span class="black smaller"><b>Latest Comment: </b><a href="/endpoint/name-that-toon-screen-sharing/d/d-id/1328755#msgs">Execute candymountain.sh&nbsp;as the root user, Charlie!</a></span>
+            <div class="divsplitter" style="height: .833333em;"></div>
+                    </div>
+                    <div style="height: 1px; border-bottom: 1px dotted #aaa;"><img src="http://img.deusm.com/images/spacer.gif" height="1" border="0"></div>
+                    <div style="float: left; width: 25.916666em; margin:0 0.916666em;">
+                        <div class="divsplitter" style="height: .416666em;"></div>
+                        <span class="allcaps blue smallest"><a href="/archives.asp?section_id=329">Cartoon Archive</a></span>
+                        <div class="divsplitter" style="height: .333333em;"></div>
+                    </div>
+                </div>
+                <div class="divsplitter" style="height: 1.666em;"></div>
+            </section>
+
+            <section class="column sixteen">
+                <div class="divsplitter" style="height: 3px; background: #000;"></div>
+                <div class="divsplitter" style="height: 2px;"></div>
+                <div class="divsplitter" style="height: 1px; background: #000;"></div>
+                <div class="divsplitter" style="height: .5em;"></div>
+                <div style="float: left; width: 12.5em;"><span class="red roboto-bold section-header allcaps">Current Issue</span></div>
+
+                <div class="divsplitter" style="height: .583333em;"></div>
+                <div class="rhc-element-main">
+                    <div class="divsplitter" style="height: .916666em;"></div>
+                    <div xmlns:a10="http://www.w3.org/2005/Atom">
+                        <div style="float: left; margin: 0 0.916666em;"><img src="http://thewallstreetwiki.com/_art/DRTD_April2017_CoverImage.jpg" class="img-rhc"><div class="divsplitter" style="height: .416666em;"></div><span class="red strong mediumlarge"><a target="new" href="//www.darkreading.com/drdigital/20170419td?cid=smartbox_techweb_drdigital_20170419td">Security Operations and IT Operations: Finding the Path to Collaboration</a></span><div class="divsplitter" style="height: .416666em;"></div><span class="black smaller">A wide gulf has emerged between SOC and NOC teams that's keeping both of them from assuring the confidentiality, integrity, and availability of IT systems. Here's how experts think it should be bridged.</span><div class="divsplitter" style="height: .833333em;"></div>
+                            <div style="float: left; margin-right: .833333em; width: 13.916666em; height: 2.5em; text-align: center; background-color: #f1f2f2; border: 1px solid #aaa;">
+                                <div class="divsplitter" style="height: .666em;"></div><span class="red allcaps smaller strong"><a target="new" href="//www.darkreading.com/drdigital/20170419td?cid=smartbox_techweb_drdigital_20170419td">Download This Issue!</a></span></div>
+                            <div style="float: left; width: 10.583333em; height: 2.5em; text-align: center; background-color: #f1f2f2; border: 1px solid #aaa;">
+                                <div class="divsplitter" style="height: .666em;"></div><span class="red allcaps smaller strong"><a href="//www.darkreading.com/digitalsubscription?itc=MP_DR_DI_DRDIGSUB_CRNT" title="Subscribe">Subscribe Now!</a></span></div>
+                        </div>
+                    </div>
+
+                    <div class="divsplitter" style="height: .833333em;"></div>
+                    <div style="height: 1px; border-bottom: 1px dotted #aaa;"><img src="http://img.deusm.com/images/spacer.gif" height="1" border="0"></div>
+                    <div style="float: left; width: 25.916666em; margin:0 0.916666em;">
+                        <div class="divsplitter" style="height: .416666em;"></div>
+                        <span class="allcaps blue smallest"><a href="/backissue-archives.asp">Back Issues</a> | <a href="/mustreads.asp">Must Reads</a></span>
+                        <div class="divsplitter" style="height: .333333em;"></div>
+                    </div>
+                </div>
+                <div class="divsplitter" style="height: 1.666em;"></div>
+            </section>
+            <div class="ad-imu"><!-- Beginning Sync AdSlot  -->
+                <div id='div-gpt-ad-961777897907396673-11'>
+                    <script type='text/javascript'>
+  googletag.display('div-gpt-ad-961777897907396673-11');
+ </script>
+                </div>
+                <!-- End AdSlot -->
+                <div class="divsplitter" style="height: 1.666em;"></div></div>
+
+            <section class="column sixteen thepoll-main">
+                <div class="divsplitter" style="height: 3px; background: #000;"></div>
+                <div class="divsplitter" style="height: 2px;"></div>
+                <div class="divsplitter" style="height: 1px; background: #000;"></div>
+                <div class="divsplitter" style="height: .583333em;"></div>
+                <div style="float: left; width: 12.5em;">
+                    <span class="red roboto-bold mediumsmall allcaps">Flash Poll</span>
+                </div>
+                <div class="divsplitter" style="height: .583333em;"></div>
+                <div class="rhc-element-main">
+                    <div style="margin:0 0.916666em;">
+                        <div id="surveydiv_96" name="surveydiv_96" style="width: 100%; margin-left: 0px; margin-right: 0px;"></div>
+                    </div>
+                    <div class="divsplitter" style="height: .02px;"></div>
+                    <div style="height: 1px; border-bottom: 1px dotted #aaa;"><img src="http://img.deusm.com/images/spacer.gif" height="1" border="0"></div>
+                    <div style="float: left; width: 25.916666em; margin:0 0.916666em;">
+                        <div class="divsplitter" style="height: .416666em;"></div>
+                        <span class="allcaps blue smallest"><a href="/archives.asp?section_id=308" title="All Polls">All Polls</a></span>
+                        <div class="divsplitter" style="height: .333333em;"></div>
+                    </div>
+                    <script language="Javascript" src="/survey_jspage.asp?survey_id=96&cbust=10852"></script>
+                </div>
+                <div class="divsplitter" style="height: 1.666em;"></div>
+            </section>
+
+
+            <section class = "column sixteen">
+
+
+                <div style="height 2.5em; float: left; overflow: hidden; position: relative; top: 1px;">
+                    <div class="divsplitter" style="height: 3px; background: #000;"></div>
+                    <div class="divsplitter" style="height: 2px;"></div>
+                    <div class="divsplitter" style="height: 1px; background: #000;"></div>
+
+
+                    <div id="midcol_reports_button" name="midcol_reports_button" style="float: left; border-right: 1px solid #aaa;" class="theSelectedTab red roboto-bold medium allcaps">
+
+                        <div class="divsplitter" style="height: .333333em;"></div>
+                        <img src="http://img.deusm.com/images/spacer.gif" style="width: .833333em;" height="1" border="0">
+                        <a href="Javascript:Togglereportsinfographics('reports');">Reports</a>
+                        <img src="http://img.deusm.com/images/spacer.gif" style="width: .833333em;" height="1" border="0">
+                        <div class="divsplitter" style="height: .25em;"></div>
+                    </div>
+
+                </div>
+                <div class="divsplitter" style="height: 0px;"></div>
+
+                <div id="midcol_reports" name="midcol_reports" style="display: block;">
+                    <div class="rhc-element-main">
+                        <div class="divsplitter" style="height: .916666em;"></div>
+                        <div style="float: left; margin:0 0.916666em;">
+                            <a href="http://www.informationweek.com/whitepaper/cybersecurity/risk-management-security/[strategic-security-report]-assessing-cybersecurity-risk/390613?cid=mp_rptbx&_mc=mp_rptbx"><img src="https://dsimg.ubm-us.net/asset/390613/528673/Rapid7-Report.png" class="img-rhc" alt="[Strategic Security Report] Assessing Cybersecurity Risk"/></a>
+                            <div class="divsplitter" style="height: .416666em;"></div>
+                            <span class="red strong mediumlarge"><a href="http://www.informationweek.com/whitepaper/cybersecurity/risk-management-security/[strategic-security-report]-assessing-cybersecurity-risk/390613?cid=mp_rptbx&_mc=mp_rptbx">[Strategic Security Report] Assessing Cybersecurity Risk</a></span>
+                            <div class="divsplitter" style="height: .416666em;"></div>
+                            <span class="black smaller">As cyber attackers become more sophisticated and enterprise defenses become more complex, many enterprises are faced with a complicated question: what is the risk of an IT security breach? This report delivers insight on how today's enterprises evaluate the risks they face. This report also offers a look at security professionals' concerns about a wide variety of threats, including cloud security, mobile security, and the Internet of Things. </span>
+                            <div class="divsplitter" style="height: .833333em;"></div>
+                            <div style="float: left; width: 11.666666em; height: 2.5em; text-align: center; background-color: #f1f2f2; border: 1px solid #aaa;">
+                                <div class="divsplitter" style="height: .666666em;"></div>
+                                <span class="red allcaps smaller strong"><a href="http://www.informationweek.com/whitepaper/cybersecurity/risk-management-security/[strategic-security-report]-assessing-cybersecurity-risk/390613?cid=mp_rptbx&_mc=mp_rptbx">Download Now!</a></span>
+                            </div>
+                        </div>
+                        <div class="divsplitter" style="height: .833333em;"></div>
+                        <div style="height: 1px; border-bottom: 1px dotted #aaa;"><img src="http://img.deusm.com/images/spacer.gif" height="1" border="0"></div>
+
+
+                        <div style="float: left; width: 25.916666em; margin:0 0.916666em;">
+                            <div class="divsplitter" style="height: .416666em;"></div>
+                            <div style="float: left; width: 18.75em; padding-right: .25em">
+
+                                <span class="blue smaller"><a href="http://www.informationweek.com/whitepaper/network-and-perimeter-security/security-management-and-analytics/how-data-breaches-affect-the-enterprise/390563?cid=mp_rptbx&_mc=mp_rptbx">The Impact of a Security Breach 2017</a></span>
+                            </div>
+                            <div style="float: left; width: 6.91666em;">
+                                <div style="float: left; width: 1.25em; position:relative; top: .25em;"><img src="http://img.deusm.com/darkreading/DR-comment.png" style="width:1em;" border="0"></div>
+                                <div style="float: left;">
+                                    <span class="allcaps red smallest strong"><a href="http://www.informationweek.com/whitepaper/network-and-perimeter-security/security-management-and-analytics/how-data-breaches-affect-the-enterprise/390563?cid=mp_rptbx&_mc=mp_rptbx&#msgs">0 comments</a></span></div>
+
+                            </div>
+                            <div class="divsplitter" style="height: .333333em;"></div>
+                            <div class="divsplitter" style="height: .02px;"></div>
+                            <div style="height: 1px; border-bottom: 1px dotted #aaa;"><img src="http://img.deusm.com/images/spacer.gif" height="1" border="0"></div>
+                        </div>
+
+                        <div style="float: left; width: 25.916666em; margin:0 0.916666em;">
+                            <div class="divsplitter" style="height: .416666em;"></div>
+                            <div style="float: left; width: 18.75em; padding-right: .25em">
+
+                                <span class="blue smaller"><a href="http://www.informationweek.com/whitepaper/cybersecurity/security-monitoring/%5bstrategic-security-report%5d-how-enterprises-are-attacking-the-cybersecurity-challenge/390403?cid=mp_rptbx&_mc=mp_rptbx">[Strategic Security Report] How Enterprises Are Attacking the IT Security Problem</a></span>
+                            </div>
+                            <div style="float: left; width: 6.91666em;">
+                                <div style="float: left; width: 1.25em; position:relative; top: .25em;"><img src="http://img.deusm.com/darkreading/DR-comment.png" style="width:1em;" border="0"></div>
+                                <div style="float: left;">
+                                    <span class="allcaps red smallest strong"><a href="http://www.informationweek.com/whitepaper/cybersecurity/security-monitoring/%5bstrategic-security-report%5d-how-enterprises-are-attacking-the-cybersecurity-challenge/390403?cid=mp_rptbx&_mc=mp_rptbx&#msgs">0 comments</a></span></div>
+
+                            </div>
+                            <div class="divsplitter" style="height: .333333em;"></div>
+                            <div class="divsplitter" style="height: .02px;"></div>
+                            <div style="height: 1px; border-bottom: 1px dotted #aaa;"><img src="http://img.deusm.com/images/spacer.gif" height="1" border="0"></div>
+                        </div>
+
+                        <div style="float: left; width: 25.916666em; margin:0 0.916666em;">
+                            <div class="divsplitter" style="height: .416666em;"></div>
+                            <div style="float: left; width: 18.75em; padding-right: .25em">
+
+                                <span class="blue smaller"><a href="http://www.informationweek.com/whitepaper/security-platforms/security-monitoring/secure-application-development-new-best-practices/385633?cid=mp_reptbx&_mc=mp_reptbx">New Best Practices for Secure App Development</a></span>
+                            </div>
+                            <div style="float: left; width: 6.91666em;">
+                                <div style="float: left; width: 1.25em; position:relative; top: .25em;"><img src="http://img.deusm.com/darkreading/DR-comment.png" style="width:1em;" border="0"></div>
+                                <div style="float: left;">
+                                    <span class="allcaps red smallest strong"><a href="http://www.informationweek.com/whitepaper/security-platforms/security-monitoring/secure-application-development-new-best-practices/385633?cid=mp_reptbx&_mc=mp_reptbx&#msgs">0 comments</a></span></div>
+
+                            </div>
+                            <div class="divsplitter" style="height: .333333em;"></div>
+                            <div class="divsplitter" style="height: .02px;"></div>
+                            <div style="height: 1px; border-bottom: 1px dotted #aaa;"><img src="http://img.deusm.com/images/spacer.gif" height="1" border="0"></div>
+                        </div>
+
+
+                        <div style="float: left; width: 25.916666em; margin:0 0.916666em;">
+                            <div class="divsplitter" style="height: .416666em;"></div>
+                            <span class="allcaps blue smallest"><a href="/archives.asp?section_id=315">More Reports</a> </span>
+                            <div class="divsplitter" style="height: .333333em;"></div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </section>
+            <div class="divsplitter" style="height: 1.666em;"></div>
+
+
+            <div style="height 2.5em; float: left; overflow: hidden; position: relative; top: 1px;">
+                <div class="divsplitter" style="height: 3px; background: #000;"></div>
+                <div class="divsplitter" style="height: 2px;"></div>
+                <div class="divsplitter" style="height: 1px; background: #000;"></div>
+            </div>
+            <div class="divsplitter" style="height: 0px;"></div>
+
+            <section class="column sixteen">
+                <div class="divsplitter" style="height: 3px; background: #000;"></div>
+                <div class="divsplitter" style="height: 2px;"></div>
+                <div class="divsplitter" style="height: 1px; background: #000;"></div>
+                <div class="divsplitter" style="height: .5em;"></div>
+                <div style="float: left; width: 2.5em;">
+                    <img src="http://img.deusm.com/informationweek/camera-24x16.png" style="width: 2em; height: 1.333333em; border: 0;" >
+                </div>
+                <div style="float: left; width: 12.5em;">
+                    <span class="red roboto-bold section-header allcaps">Slideshows</span>
+                </div>
+                <div class="divsplitter" style="height: .583333em;"></div>
+                <div class="rhc-element-main">
+                    <div class="divsplitter" style="height: .916666em;"></div>
+                    <div style="margin: 0 0.916666em;">
+                        <a href="/careers-and-people/desperately-seeking-security-6-skills-most-in-demand/d/d-id/1329309" title="Desperately Seeking Security: 6 Skills Most In Demand"><img class="img-rhc" src="http://img.deusm.com/darkreading/2017/07/1329309/01-gap.jpeg" alt="Desperately Seeking Security: 6 Skills Most In Demand" /></a>
+                        <div class="divsplitter" style="height: .583333em;"></div>
+                        <span class="red strong mediumlarge"><a href="/careers-and-people/desperately-seeking-security-6-skills-most-in-demand/d/d-id/1329309">Desperately Seeking Security: 6 Skills Most In Demand</a></span>
+                        <div class="divsplitter" style="height: .6667em;"></div>
+                        <div style="float: left; width: 1.25em; position:relative; top: .25em;"><img src="http://img.deusm.com/darkreading/DR-comment.png" style="width:1em;" border="0"></div>
+                        <div style="float: left;">
+                            <span class="allcaps red smallest strong"><a href="/careers-and-people/desperately-seeking-security-6-skills-most-in-demand/d/d-id/1329309?#msgs">1 comments</a></span>
+                            <span class="allcaps blue smallest"> | <a class="allcaps blue" href="/careers-and-people/desperately-seeking-security-6-skills-most-in-demand/d/d-id/1329309?#msgs">Read</a> | <a class="allcaps blue" href="/careers-and-people/desperately-seeking-security-6-skills-most-in-demand/d/d-id/1329309?#msgs">Post a Comment</a></span></div>
+                        <div class="divsplitter" style="height: .666667em;"></div>
+                    </div>
+                    <div class="divsplitter" style="height: .02px;"></div>
+                    <div style="height: 1px; border-bottom: 1px dotted #aaa;">
+                        <img src="http://img.deusm.com/images/spacer.gif" height="1" border="0">
+                    </div>
+                    <div style="margin:0 0.916666em;">
+                        <div class="divsplitter" style="height: .416666em;"></div>
+                        <span class="blue smaller"><a href="/attacks-breaches/notpetya-how-to-prep-and-respond-if-youre-hit/d/d-id/1329299" title="NotPetya: How to Prep and Respond if You're Hit">NotPetya: How to Prep and Respond if You're Hit</a></span>
+                        <div style="float: right;"><div style="float: left; width: 1.25em; position:relative; top: .25em;"><img src="http://img.deusm.com/darkreading/DR-comment.png" style="width:1em;" border="0"></div>
+                            <div style="float: left;">
+                                <span class="allcaps red smallest strong"><a href="/attacks-breaches/notpetya-how-to-prep-and-respond-if-youre-hit/d/d-id/1329299?#msgs">2</a></span></div></div>
+                        <div class="divsplitter" style="height: .333333em;"></div>
+                    </div>
+                    <div class="divsplitter" style="height: .02px;"></div>
+                    <div style="height: 1px; border-bottom: 1px dotted #aaa;"><img src="http://img.deusm.com/images/spacer.gif" height="1" border="0"></div>
+                    <div style="margin:0 0.916666em;">
+                        <div class="divsplitter" style="height: .416666em;"></div>
+                        <span class="blue smaller"><a href="/endpoint/8-things-every-security-pro-should-know-about-gdpr/d/d-id/1329223" title="8 Things Every Security Pro Should Know About GDPR">8 Things Every Security Pro Should Know About GDPR</a></span>
+                        <div style="float: right;"><div style="float: left; width: 1.25em; position:relative; top: .25em;"><img src="http://img.deusm.com/darkreading/DR-comment.png" style="width:1em;" border="0"></div>
+                            <div style="float: left;">
+                                <span class="allcaps red smallest strong"><a href="/endpoint/8-things-every-security-pro-should-know-about-gdpr/d/d-id/1329223?#msgs">1</a></span></div></div>
+                        <div class="divsplitter" style="height: .333333em;"></div>
+                    </div>
+                    <div class="divsplitter" style="height: .02px;"></div>
+                    <div style="height: 1px; border-bottom: 1px dotted #aaa;"><img src="http://img.deusm.com/images/spacer.gif" height="1" border="0"></div>
+                    <div style="float: left; width: 25.916666em; margin:0 0.916666em;">
+                        <div class="divsplitter" style="height: .416666em;"></div>
+                        <span class="allcaps blue smallest"><a href="/archives.asp?section_id=316" title="More Slideshows">More Slideshows</a></span>
+                        <div class="divsplitter" style="height: .333333em;"></div>
+                    </div>
+                </div>
+                <div class="divsplitter" style="height: 1.666em;"></div>
+            </section>
+
+            <section class="column sixteen">
+                <div class="divsplitter" style="height: 3px; background: #000;"></div>
+                <div class="divsplitter" style="height: 2px;"></div>
+                <div class="divsplitter" style="height: 1px; background: #000;"></div>
+                <div class="divsplitter" style="height: .5em;"></div>
+                <div><span class="red roboto-bold section-header allcaps">Twitter Feed</span></div>
+                <div class="divsplitter" style="height: .583333em;"></div>
+                <div class="rhc-element-main" style="text-align: center;">
+                    <a class="twitter-timeline" data-dnt="true" href="https://twitter.com/search?q=from%3ADarkReading+OR+%40DarkReading+OR+%23DarkReading" data-widget-id="441964414116179968" width="100%" height="400" data-chrome="noheader nofooter" style="margin: 0 auto;">Tweets about "from:DarkReading OR @DarkReading OR #DarkReading"</a>
+                    <script>!function(d,s,id){ var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){ js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs); } }(document,"script","twitter-wjs");</script>
+                </div>
+            </section>
+            <div class="divsplitter" style="height: 1.666em;"></div>
+
+            <section class = "column sixteen">
+                <div class="divsplitter" style="height: 3px; background: #000;"></div>
+                <div class="divsplitter" style="height: 2px;"></div>
+                <div class="divsplitter" style="height: 1px; background: #000;"></div>
+                <div class="divsplitter" style="height: .5em;"></div>
+                <div style="float: left; width: 1.333em; height: 1.416em; margin-right: .75em;">
+                    <img src="http://img.deusm.com/darkreading/DR-bug.png" alt="Dark Reading - Bug Report" style="width: 100%; height: auto; border: 0;" />
+                </div>
+                <span class="red roboto-bold section-header allcaps">Bug Report</span>
+                <div class="divsplitter" style="height: .583333em;"></div>
+                <div class="rhc-element-main">
+                    <div class="divsplitter" style="height: .916666em;"></div>
+                    <div style="margin:0 0.916666em;">
+                        <span class="allcaps black smaller">Enterprise Vulnerabilities</span><br />
+                        <span class="black smaller">From DHS/US-CERT's National Vulnerability Database</span>
+                        <div class="divsplitter" style="height: .833333em;"></div>
+                        <div>
+                            <div style="float: left; width: 7px; height: 7px; margin-top: 3px; margin-right: 5px; background-color: #5d1210;"></div><span class="darkblue smaller strong"><a target="new" href="http://nvd.nist.gov/nvd.cfm?cvename=CVE-2017-0290">CVE-2017-0290</a></span><div style="margin-left: 1em;"><span class="allcaps blue smallest">Published: 2017-05-09<br></span><span class="black smaller">NScript in mpengine in Microsoft Malware Protection Engine with Engine Version before 1.1.13704.0, as used in Windows Defender and other products, allows remote attackers to execute arbitrary code or cause a denial of service (type confusion and application crash) via crafted JavaScript code within ...<br><br></span></div>
+                            <div style="float: left; width: 7px; height: 7px; margin-top: 3px; margin-right: 5px; background-color: #5d1210;"></div><span class="darkblue smaller strong"><a target="new" href="http://nvd.nist.gov/nvd.cfm?cvename=CVE-2016-10369">CVE-2016-10369</a></span><div style="margin-left: 1em;"><span class="allcaps blue smallest">Published: 2017-05-08<br></span><span class="black smaller">unixsocket.c in lxterminal through 0.3.0 insecurely uses /tmp for a socket file, allowing a local user to cause a denial of service (preventing terminal launch), or possibly have other impact (bypassing terminal access control).<br><br></span></div>
+                            <div style="float: left; width: 7px; height: 7px; margin-top: 3px; margin-right: 5px; background-color: #5d1210;"></div><span class="darkblue smaller strong"><a target="new" href="http://nvd.nist.gov/nvd.cfm?cvename=CVE-2016-8202">CVE-2016-8202</a></span><div style="margin-left: 1em;"><span class="allcaps blue smallest">Published: 2017-05-08<br></span><span class="black smaller">A privilege escalation vulnerability in Brocade Fibre Channel SAN products running Brocade Fabric OS (FOS) releases earlier than v7.4.1d and v8.0.1b could allow an authenticated attacker to elevate the privileges of user accounts accessing the system via command line interface. With affected version...<br><br></span></div>
+                            <div style="float: left; width: 7px; height: 7px; margin-top: 3px; margin-right: 5px; background-color: #5d1210;"></div><span class="darkblue smaller strong"><a target="new" href="http://nvd.nist.gov/nvd.cfm?cvename=CVE-2016-8209">CVE-2016-8209</a></span><div style="margin-left: 1em;"><span class="allcaps blue smallest">Published: 2017-05-08<br></span><span class="black smaller">Improper checks for unusual or exceptional conditions in Brocade NetIron 05.8.00 and later releases up to and including 06.1.00, when the Management Module is continuously scanned on port 22, may allow attackers to cause a denial of service (crash and reload) of the management module.<br><br></span></div>
+                            <div style="float: left; width: 7px; height: 7px; margin-top: 3px; margin-right: 5px; background-color: #5d1210;"></div><span class="darkblue smaller strong"><a target="new" href="http://nvd.nist.gov/nvd.cfm?cvename=CVE-2017-0890">CVE-2017-0890</a></span><div style="margin-left: 1em;"><span class="allcaps blue smallest">Published: 2017-05-08<br></span><span class="black smaller">Nextcloud Server before 11.0.3 is vulnerable to an inadequate escaping leading to a XSS vulnerability in the search module. To be exploitable a user has to write or paste malicious content into the search dialogue.<br><br></span></div>
+                        </div>
+
+                    </div>
+                    <div class="divsplitter" style="height: .833em;"></div>
+                </div>
+                <div class="divsplitter" style="height: 1.666em;"></div>
+            </section>
+
+
+            <section class = "column sixteen">
+                <div class="divsplitter" style="height: 3px; background: #000;"></div>
+                <div class="divsplitter" style="height: 2px;"></div>
+                <div class="divsplitter" style="height: 1px; background: #000;"></div>
+                <div class="divsplitter" style="height: .5em;"></div>
+                <span class="red roboto-bold section-header allcaps">Dark Reading Radio</span>
+                <div class="divsplitter" style="height: .583333em;"></div>
+                <div class="rhc-element-main">
+                    <div class="divsplitter" style="height: .916666em;"></div>
+                    <div style="float: left; margin:0 0.916666em;">
+                        <span class="black smaller">Archived Dark Reading Radio</span>
+                        <div class="divsplitter" style="height: .25em;"></div>
+                        <div><span class="blue strong mediumlarge"><a href="/radio.asp?webinar_id=300">The Coolest Hacks of 2016</a></span></div>
+                        <div><span class="">In past years, security researchers have discovered ways to hack cars, medical devices, automated teller machines, and many other targets. Dark Reading Executive Editor Kelly Jackson Higgins hosts researcher Samy Kamkar and Levi Gundert, vice president of threat intelligence at Recorded Future, to discuss some of 2016's most unusual and creative hacks by white hats, and what these new vulnerabilities might mean for the coming year.</span></div>
+                    </div>
+                    <div class="divsplitter" style="height: .833333em;"></div>
+                    <div style="height: 1px; border-bottom: 1px dotted #aaa;"><img src="http://img.deusm.com/images/spacer.gif" height="1" border="0"></div>
+
+                    <div style="float: left; width: 25.916666em; margin:0 0.916666em;">
+                        <div class="divsplitter" style="height: .416666em;"></div>
+                        <span class="allcaps blue smallest"><a href="/dr-radio.asp">FULL SCHEDULE</a>&nbsp;|&nbsp;<a href="/dr-radio-archives.asp">ARCHIVED SHOWS</a></span>
+                        <div class="divsplitter" style="height: .333333em;"></div>
+                    </div>
+                    <div style="float: left; width: 13px; height: 1px;"><img src="http://img.deusm.com/images/spacer.gif" width="13" height="1" border="0"></div>
+                </div>
+                <div class="divsplitter" style="height: 1.666em;"></div>
+            </section>
+            <div align="center"><!-- Beginning Sync AdSlot  -->
+                <div id='div-gpt-ad-961777897907396673-10'>
+                    <script type='text/javascript'>
+  googletag.display('div-gpt-ad-961777897907396673-10');
+ </script>
+                </div>
+                <!-- End AdSlot -->
+            </div>
+            <!-- div id='div-gpt-ad-961777897907396673-15'>
+    <script type='text/javascript'>
+    googletag.display('div-gpt-ad-961777897907396673-15');
+    </script>
+    </div -->
+
+        </section>
+        <div class="divsplitter" style="height: 1.5em;"></div>
+        <!--truevaluetop-->
+
+        <!--<div class="ad-leaderboard" style="margin: 0 auto;">-->
+
+        <!--</div>-->
+        <div class="divsplitter" style="height: 1.5em;"></div>
+        <footer class="site-padding">
+            <div class="divsplitter" style="height: 1.416em;"></div>
+            <div style="overflow: hidden;">
+                <div id="footer-logo">
+                    <img src="http://img.deusm.com/darkreading/dr-footer-logo-new.jpg" alt="Information Week" style="border: 0; width: 22.166em; height: 3.333em;" />
+                </div>
+                <!--<div id="ubm-deusm-footer">
+                    <img src="http://img.deusm.com/darkreading/deusm-logo-footer.png" alt="UBM DeusM" style="border: 0;" />
+                </div>-->
+            </div>
+            <div class="divsplitter" style="height: 1.416em;"></div>
+            <div style="float: left; margin-right: 5em;">
+                    <span class="white allcaps strong smaller" style="line-height: 21px;"><a href="/document.asp?doc_id=1113937" title="About Us" class="color-link">About Us</a><br />
+                    <a href="/document.asp?doc_id=1113937#contact" title="Contact Us" class="color-link">Contact Us</a><br />
+                    <a href="/sitemap" title="Sitemap" class="color-link">Sitemap</a><br />
+                    <a href="http://www.wrightsreprints.com/reprints/?magid=2202" title="Reprints" target="_blank" class="color-link">Reprints</a></span>
+            </div>
+            <div style="float: left;">
+                    <span class="white allcaps strong smaller" style="line-height: 21px;"><a href="http://twitter.com/DarkReading" title="Twitter" class="color-link" target="_blank">Twitter</a><br />
+                    <a href="https://www.facebook.com/darkreadingcom" title="Facebook" class="color-link" target="_blank">Facebook</a><br />
+                    <a href="http://www.linkedin.com/groups?home=&gid=3193466&trk=anet_ug_hm" title="LinkedIn" class="color-link" target="_blank">LinkedIn</a><br />
+                    <a href="https://plus.google.com/+darkreading " title="Google+" class="color-link" target="_blank">Google+</a><br />
+                    <a href="/rss_feeds.asp" title="RSS" class="color-link">RSS</a></span>
+            </div>
+            <div class="divsplitter" style="height: 1.833333em;"></div>
+        </footer>
+        <link rel="stylesheet" type="text/css" href="//twimgs.com/nojitter/css/footergreyblack.css" /><!-- BEGIN GREY FOOTER --><div align="center"><div id="footergreyresponsive"><div id="top"><!--GREY FOOTER LEFT SIDE --><div id="left"><a href="http://www.ubmtechweb.com/" target="_blank"><img src="http://img.deusm.com/images/UBM_Logo_PMS669.png" width="88" height="111" border="0" alt="UBM Tech"></a></div><!-- / GREY FOOTER LEFT SIDE --><!-- GREY FOOTER rightlinks SIDE --><div id="rightlinksnew"><div id="tech-brands" class="list-div"><ul class="first-list"><li class="footer_title">Technology Group</li> <li><a href="http://www.blackhat.com/" target="_blank">Black Hat</a></li><li><a href="http://contentmarketinginstitute.com/" target="_blank">Content Marketing Institute</a></li><li><a href="http://www.contentmarketingworld.com/" target="_blank">Content Marketing World </a></li><li><a href="https://www.darkreading.com/" target="_blank">Dark Reading</a></li></ul><ul><li><a href="http://www.enterpriseconnect.com/" target="_blank">Enterprise Connect</a></li><li><a href="http://www.servicemanagementfusion.com/" target="_blank">Fusion</a></li><li><a href="http://www.gdconf.com/" target="_blank">GDC</a></li><li><a href="http://www.gamasutra.com/" target="_blank">Gamasutra</a></li></ul><ul><li><a href="http://www.thinkhdi.com/" target="_blank">HDI</a></li><li><a href="http://www.icmi.com/" target="_blank">ICMI</a></li><li><a href="http://www.informationweek.com/" target="_blank">InformationWeek</a></li><li><a href="http://www.interop.com" target="_blank">Interop ITX</a></li></ul><ul class="last-list"><li><a href="http://www.networkcomputing.com/" target="_blank">Network Computing</a></li><li><a href="http://www.nojitter.com/" target="_blank">No Jitter</a></li><li><a href="http://www.vrdconf.com/" target="_blank">VRDC</a></li></ul></div><div class="list-div" id="communities-served"><ul class="first-list"><li class="footer_title">COMMUNITIES SERVED</li><li><a href="http://tech.ubm.com/community-brands/content-marketing-2/" target="_blank">Content Marketing</a></li><li><a href="http://tech.ubm.com/community-brands/enterprise-it/" target="_blank">Enterprise IT</a></li><li><a href="http://tech.ubm.com/community-brands/enterprise-communications/" target="_blank">Enterprise Communications</a></li><li><a href="http://tech.ubm.com/community-brands/game-and-app-developers/" target="_blank">Game Development</a></li><li><a href="http://tech.ubm.com/community-brands/information-security/" target="_blank">Information Security</a></li><li><a href="http://tech.ubm.com/community-brands/technical-service-and-support/" target="_blank">IT Services & Support</a></li></ul></div><div class="list-div" id="working-with-us"><ul class="first-list"><li class="footer_title">WORKING WITH US</li><li><a href="http://createyournextcustomer.techweb.com/contact-us/" target="_blank">Advertising Contacts</a></li><li><a href="http://events.ubm.com/?company=10" target="_blank">Event Calendar</a></li><li><a href="http://createyournextcustomer.techweb.com/" target="_blank">Tech Marketing</a></li><li><a href="http://createyournextcustomer.techweb.com/" target="_blank">Solutions</a></li><li><a href="http://tech.ubm.com/contact-us/" target="_blank">Contact Us</a></li><li><a href="http://wrightsmedia.com/sites/ubm/index.cfm" target="_blank">Licensing</a></li></ul></div></div><!-- / GREY FOOTER rightlinks --></div><!-- / end top --><div style="clear:both;"></div><!-- // to clear the right and left evenly // --><div id="bottom"><ul class="blue"><li><a href="http://legal.us.ubm.com/terms-of-service/" target="_blank" class="blue">Terms of Service</a></li><li><a href="http://legal.us.ubm.com/privacy-policy/" target="_blank" class="blue">Privacy Statement</a></li><li><a href="http://reg.ubmamevents.com/UBMLegalEntities" target="_blank" class="blue">Legal Entities</a></li><li>Copyright &#169; 2017 UBM, All rights reserved</li></ul></div></div><!-- / END footergrey --></div><!-- / END align="center" --><br /><br /><!-- / END GREY FOOTER -->
+        <SCRIPT TYPE='text/javascript' LANGUAGE='JavaScript' SRC='//twimgs.com/informationweek/elqNow/elqCfg.js'></SCRIPT><SCRIPT TYPE='text/javascript' LANGUAGE='JavaScript' SRC='//twimgs.com/informationweek/elqNow/elqImg.js'></SCRIPT>
+
+        <script type='text/javascript' LANGUAGE='JavaScript' src='//twimgs.com/nojitter/js/dev_adBlockerTrack.js'></script>
+
+    </div>
+</div>
+
+<!-- omniture -->
+<script language="JavaScript" type="text/javascript" src="https://i.ubm-us.net/shared/omniture/h_s_code_remote.js"></script>
+<script language="JavaScript">
+<!--
+s.pageName='darkreading.com Vulnerabilities / Threats Sara Peters Look, But Don\'t Touch: One Key to Better ICS Security  ';
+s.hier1='Dark Reading|Vulnerabilities / Threats';
+s.server='';
+s.channel='';
+s.pageType='';
+s.prop1='';
+s.prop2='1328987';
+s.prop3='Dark Reading | 1328987 | Look, But Don\'t Touch: One Key to Better ICS Security  ';
+s.prop4='Look, But Don\'t Touch: One Key to Better ICS Security  ';
+s.prop5='Vulnerabilities / Threats - Vulnerabilities / Threats';
+s.prop6='';
+s.prop7='Sara Peters';
+s.prop8='162.158.50.66 | Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.115 Safari/537.36';
+s.prop9='';
+s.prop10='';
+s.prop11='News Analysis';
+s.prop12='';
+s.prop13='';
+s.prop14='';
+s.prop15='';
+s.prop16='';
+s.prop17='';
+s.prop19='Un-Registered';
+s.prop20='20170626';
+
+/* E-commerce Variables */
+s.campaign='';
+s.state='';
+s.zip='';
+s.events='';
+s.products='';
+s.purchaseID='';
+s.eVar1='';
+s.eVar2='';
+s.eVar3='';
+s.eVar4='';
+s.eVar5='';
+s.eVar7='';
+s.eVar17='';
+s.eVar23='';
+/************* DO NOT ALTER ANYTHING BELOW THIS LINE ! **************/
+var s_code=s.t();if(s_code)document.write(s_code);
+//-->
+</script>
+<script language="JavaScript" type="text/javascript"><!--
+if(navigator.appVersion.indexOf('MSIE')>=0)document.write(unescape('%3C')+'\!-'+'-')
+//-->
+</script>
+<noscript><img src="http://cmp.112.2o7.net/b/ss/cmpglobalvista/1/H.21--NS/0" height="1" width="1" border="0" alt="" /></noscript><!--/DO NOT REMOVE/-->
+
+
+<img src="http://www.darkreading.com/client_pathlog.asp?p=%2Fdarkreading%2Fsection%2F314&f=%2Fdarkreading%2Fsection%2F314%2F1328987&rndserial=27150" border="0" width="1" height="1">
+
+<!-- Beginning Sync AdSlot  -->
+<div id='div-gpt-ad-961777897907396673-12'>
+    <script type='text/javascript'>
+  googletag.display('div-gpt-ad-961777897907396673-12');
+ </script>
+</div>
+<!-- End AdSlot -->
+
+<div name="menu_box_rate" id="menu_box_rate" class="menudropdown">
+    <ul>
+        <form name="rate_menu" id="rate_menu" action="" method="post">
+            <input type="hidden" name="piddl_pageobj" value="">
+            <input type="hidden" name="piddl_contentid" value="">
+            <input type="hidden" name="piddl_rate" value="">
+            <input type="hidden" name="piddl_rating" value="">
+            <input type="hidden" name="piddl_icons" value="">
+            <li><div class="notalink" style="text-align: left; padding-left: 3px; margin-left: 10px;">To rate this item, click on a rating below.</div></li>
+            <li><a style="text-align: left;" href="javascript:RateThis('5');"><img src="http://img.deusm.com/lightreading/lightreading_rating_dot_10x7.gif" width="10" height="7" border="0" style="margin-top: 5px; margin-left: 10px;"><img src="http://img.deusm.com/lightreading/lightreading_rating_dot_10x7.gif" width="10" height="7" border="0" style="margin-top: 5px;"><img src="http://img.deusm.com/lightreading/lightreading_rating_dot_10x7.gif" width="10" height="7" border="0" style="margin-top: 5px;"><img src="http://img.deusm.com/lightreading/lightreading_rating_dot_10x7.gif" width="10" height="7" border="0" style="margin-top: 5px;"><img src="http://img.deusm.com/lightreading/lightreading_rating_dot_10x7.gif" width="10" height="7" border="0" style="margin-top: 5px;"></a></li>
+            <li><a style="text-align: left;" href="javascript:RateThis('4');"><img src="http://img.deusm.com/lightreading/lightreading_rating_dot_10x7.gif" width="10" height="7" border="0" style="margin-top: 5px; margin-left: 10px;"><img src="http://img.deusm.com/lightreading/lightreading_rating_dot_10x7.gif" width="10" height="7" border="0" style="margin-top: 5px;"><img src="http://img.deusm.com/lightreading/lightreading_rating_dot_10x7.gif" width="10" height="7" border="0" style="margin-top: 5px;"><img src="http://img.deusm.com/lightreading/lightreading_rating_dot_10x7.gif" width="10" height="7" border="0" style="margin-top: 5px;"></a></li>
+            <li><a style="text-align: left;" href="javascript:RateThis('3');"><img src="http://img.deusm.com/lightreading/lightreading_rating_dot_10x7.gif" width="10" height="7" border="0" style="margin-top: 5px; margin-left: 10px;"><img src="http://img.deusm.com/lightreading/lightreading_rating_dot_10x7.gif" width="10" height="7" border="0" style="margin-top: 5px;"><img src="http://img.deusm.com/lightreading/lightreading_rating_dot_10x7.gif" width="10" height="7" border="0" style="margin-top: 5px;"></a></li>
+            <li><a style="text-align: left;" href="javascript:RateThis('2');"><img src="http://img.deusm.com/lightreading/lightreading_rating_dot_10x7.gif" width="10" height="7" border="0" style="margin-top: 5px; margin-left: 10px;"><img src="http://img.deusm.com/lightreading/lightreading_rating_dot_10x7.gif" width="10" height="7" border="0" style="margin-top: 5px;"></a></li>
+            <li><a style="text-align: left;" href="javascript:RateThis('1');"><img src="http://img.deusm.com/lightreading/lightreading_rating_dot_10x7.gif" width="10" height="7" border="0" style="margin-top: 5px; margin-left: 10px;"></a></li>
+            <li><a style="font-size: 10px; text-align: right; padding-right: 8px;" href="Javascript:HideRateMenu();">[close this box]</a></li>
+        </form>
+    </ul>
+</div>
+
+<div name="menu_box_save" id="menu_box_save" class="menudropdown" style="width: 200px;">
+    <ul>
+        <li><div class="notalink" style="text-align: left;">&nbsp;</div></li>
+        <li><div class="notalink" style="text-align: left;">To save this item to your list of favorite Dark Reading content so you can find it later in your Profile page, click the "Save It" button next to the item.</div></li>
+        <li><div class="notalink" style="text-align: left;">&nbsp;</div></li>
+    </ul>
+</div>
+
+<script language="JavaScript">
+<!--
+var thispage_sharelink = document.location.href
+//-->
+</script>
+<div id="menu_box_share" class="menudropdown">
+    <ul>
+        <li><div class="notalink" style="text-align: left;">If you found this interesting or useful, please use the links to the services below to share it with other readers.  You will need a free account with each service to share an item via that service.</div></li>
+        <li><a style="text-align: left;" href="http://twitter.com/share/?text=&url=%3Ff%5Fsrc%3Dthissite%5Ftweetlink" target="_blank"><img src="http://img.lightreading.com/icons/twitter_intevol_18x18.gif" width="18" height="18" border="0" style="border: 1px solid #000000;;"> Tweet This</a>
+
+        <li><a style="font-size: 10px; text-align: right; padding-right: 8px;" href="Javascript:ShowMenu('menu_box_share','-500','38');">[close this box]</a></li>
+
+    </ul>
+</div>
+
+<script type="text/javascript" src="https://ins.techweb.com/beacon/js/beacon-min.js"></script>
+<script type="text/javascript">
+	var beacon = new UBM.Beacon({environment: 'p', apiKey: 'bfb712d4d19ed922a019f653ef0d27df3e8dac70570cb4ba0be8b5d8c49e00ac'});
+	beacon.pageview();
+
+	feathr_account_id = "5772dda68e8027153edc8f4f";
+	(function() {
+		var loadBoomer = function() {
+			if (!/complete|loaded/.test(document.readyState)) {
+				setTimeout(loadBoomer, 10);
+				return
+			}
+			var scr = document.createElement("script");
+			scr.src = "//cdn.feathr.co/js/boomerang.min.js";
+			scr.async = true;
+			__feathr_loaded = true;
+			(document.getElementsByTagName('head')[0] || document.getElementsByTagName('script')[0].parentNode).appendChild(scr);
+		};
+		if (/complete|loaded/.test(document.readyState)) {
+			setTimeout(loadBoomer, 10);
+		} else if (window.addEventListener) {
+			window.addEventListener('load', loadBoomer, false);
+		} else {
+			window.attachEvent('onload', loadBoomer)
+		}
+	}());
+</script>
+
+
+<div style="display: none;">
+    <img src="http://img.deusm.com/images/spacer.gif">
+</div>
+
+<script type="text/javascript">
+adroll_adv_id = "TQSV74R4GVCSJITSZC2MCP";
+adroll_pix_id = "ACPJ7LN56VBITNNAUDPDMG";
+(function () {
+var oldonload = window.onload;
+window.onload = function(){
+   __adroll_loaded=true;
+   var scr = document.createElement("script");
+   var host = (("https:" == document.location.protocol) ? "https://s.adroll.com" : "http://a.adroll.com");
+   scr.setAttribute('async', 'true');
+   scr.type = "text/javascript";
+   scr.src = host + "/j/roundtrip.js";
+   ((document.getElementsByTagName('head') || [null])[0] ||
+    document.getElementsByTagName('script')[0].parentNode).appendChild(scr);
+   if(oldonload){ oldonload() }};
+}());
+</script>
+
+<script type="text/javascript">
+adroll_segments = "darkreading_vulnerabilities_threats"
+</script>
+
+
+<script>/* <![CDATA[ */(function(d,s,a,i,j,r,l,m,t){try{l=d.getElementsByTagName('a');t=d.createElement('textarea');for(i=0;l.length-i;i++){try{a=l[i].href;s=a.indexOf('/cdn-cgi/l/email-protection');m=a.length;if(a&&s>-1&&m>28){j=28+s;s='';if(j<m){r='0x'+a.substr(j,2)|0;for(j+=2;j<m&&a.charAt(j)!='X';j+=2)s+='%'+('0'+('0x'+a.substr(j,2)^r).toString(16)).slice(-2);j++;s=decodeURIComponent(s)+a.substr(j,m-j)}t.innerHTML=s.replace(/</g,'&lt;').replace(/\>/g,'&gt;');l[i].href='mailto:'+t.value}}catch(e){}}}catch(e){}})(document);/* ]]> */</script></body>
+</html>
