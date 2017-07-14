@@ -434,7 +434,8 @@ public class ArticleTextExtractor {
         res.setLanguage(extractLanguage(doc));
 
         // get author information
-        res.setRawAuthorName(extractAuthorName(doc));
+        res.setRawAuthorName(AuthorUtils.extractAuthor(doc));
+        //res.setRawAuthorName(extractAuthorName(doc));
         res.setAuthorName(AuthorUtils.cleanup(res.getRawAuthorName()));
         res.setAuthorDescription(extractAuthorDescription(doc, res.getAuthorName()));
 

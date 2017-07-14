@@ -330,7 +330,7 @@ public class ArticleTextExtractorTest {
         assertEquals("Wall St. Gains as Earnings Cheer Traders", res.getTitle());
         assertTrue(res.getText(), res.getText().startsWith("Stocks took another modest step further into record territory Wednesday after several companies reported profits that were stronger than expected."));
         assertTrue(res.getText(), res.getText().endsWith("and the dollar rose to 106.96 Japanese yen from 106.11 yen."));
-        assertEquals("The Associated Press", res.getAuthorName());
+        assertEquals("THE ASSOCIATED PRESS", res.getAuthorName());
         assertEquals("THE ASSOCIATED PRESS", res.getAuthorDescription());
         compareDates("2016-07-20", res.getDate());
     }
@@ -345,7 +345,7 @@ public class ArticleTextExtractorTest {
         assertEquals("In Firing Comey, Did Trump Unleash the Next Deep Throat?", res.getTitle());
         assertTrue(res.getText(), res.getText().startsWith("Once again, Donald Trump has done something that no president before him dared to do."));
         assertTrue(res.getText(), res.getText().endsWith("the presidency itself — never fully recovered."));
-        assertEquals("Beverly Gage", res.getAuthorName());
+        assertEquals("BEVERLY GAGE", res.getAuthorName());
         assertEquals("Beverly Gage is a professor of American political history at Yale. She is the author of “The Day Wall Street Exploded: A Story of America in Its First Age of Terror” and is writing a biography of the former F.B.I. director J. Edgar Hoover.", res.getAuthorDescription());
         compareDates("2017-05-10 00:00:00", res.getDate());
     }
