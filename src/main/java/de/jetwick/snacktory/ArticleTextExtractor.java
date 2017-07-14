@@ -194,7 +194,8 @@ public class ArticleTextExtractor {
                 ".hidden"
             ));
         aMap.put("teenvogue.com", Arrays.asList(
-                ".rendition-social-outer"
+                ".rendition-social-outer",
+                "cite"
             ));
         aMap.put("philly.com", Arrays.asList(
                 "[class=pad-and-half--top cb]"
@@ -248,7 +249,8 @@ public class ArticleTextExtractor {
                 "div.article-text"
         ));
         aMap.put("teenvogue.com", Arrays.asList(
-                "div.listicle-wrapper"
+                "div.listicle-wrapper",
+                "noscript[data-reactid]"
         ));
         aMap.put("popsugar.com", Arrays.asList(
                 ".shoppable-container"
@@ -256,6 +258,11 @@ public class ArticleTextExtractor {
 
         BEST_ELEMENT_PER_DOMAIN = Collections.unmodifiableMap(aMap);
     }
+
+    private static Set<String> REQUIRE_NOSCRIPTS = new HashSet<String>() {{
+        add("teenvogue.com");
+        add("www.teenvogue.com");
+    }};
 
     // Define custom rules to select css nodes per domain in the OutputFormatter
     // TODO: Load this from yaml/settings file
@@ -266,6 +273,11 @@ public class ArticleTextExtractor {
         OutputFormatter formatter = new OutputFormatter();
         formatter.setNodesToKeepCssSelector("p, ol, em, ul, li, h2");
         aMap.put("drimble.nl",  formatter);
+
+        formatter = new OutputFormatter(30, 30);
+        formatter.setNodesToKeepCssSelector("p, ol, em, ul, li, h2");
+        aMap.put("teenvogue.com",  formatter);
+        aMap.put("www.teenvogue.com",  formatter);
 
         formatter = new OutputFormatter(OutputFormatter.MIN_FIRST_PARAGRAPH_TEXT, 25);
         aMap.put("publicnet.co.uk",  formatter);
@@ -465,7 +477,7 @@ public class ArticleTextExtractor {
 
         // now remove the clutter (first try to remove any scripts)
         if (cleanScripts) {
-            removeScriptsAndStyles(doc);
+            removeScriptsAndStyles(doc, res.getDomain());
         }
         // Always remove unlikely candidates
         stripUnlikelyCandidates(doc);
@@ -3172,14 +3184,17 @@ public class ArticleTextExtractor {
         return OUTPUT_FORMATTER_PER_DOMAIN.get(domainName);
     }
 
-    private void removeScriptsAndStyles(Document doc) {
+    private void removeScriptsAndStyles(Document doc, String domain) {
         Elements scripts = doc.getElementsByTag("script");
         for (Element item : scripts) {
             item.remove();
         }
-        Elements noscripts = doc.getElementsByTag("noscript");
-        for (Element item : noscripts) {
-            item.remove();
+
+        if (! REQUIRE_NOSCRIPTS.contains(domain)) {
+            Elements noscripts = doc.getElementsByTag("noscript");
+            for (Element item : noscripts) {
+                item.remove();
+            }
         }
 
         Elements styles = doc.getElementsByTag("style");

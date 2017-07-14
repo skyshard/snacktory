@@ -3345,7 +3345,7 @@ public class ArticleTextExtractorTest {
         assertEquals("https://www.ft.com/content/d0a5c460-5044-11e7-a1f2-db19572361bb", res.getCanonicalUrl());
         assertEquals("Has Western-style democracy become too expensive for capitalism?", res.getTitle());
         assertTrue(res.getText(), res.getText().startsWith("Much ink has been spilled on the significance of 2016’s one-two populist punches as thrown by Brexit then Trump."));
-        assertTrue(res.getText(), res.getText().endsWith("Michael Power, Strategist, Investec Asset Management Michael Power, Strategist, Investec Asset Management"));
+        assertTrue(res.getText(), res.getText().endsWith("Michael Power, Strategist, Investec Asset Management"));
         assertEquals("Michael Power", res.getAuthorName());
         assertEquals("by: Michael Power, Investec", res.getAuthorDescription());
         compareDates("2017-06-14 03:00:32", res.getDate());
@@ -3627,6 +3627,27 @@ public class ArticleTextExtractorTest {
         assertEquals("MotleyFool", res.getAuthorName());
         assertEquals(res.getAuthorName(), res.getAuthorDescription());
         compareDates("2017-07-04 02:46:00", res.getDate());
+    }
+
+    @Test
+    public void testTeenVogueSlideshow() throws Exception {
+        // http://www.teenvogue.com/gallery/graduation-2017-gift-guide
+        JResult res = new JResult();
+        res.setUrl("http://www.teenvogue.com/gallery/graduation-2017-gift-guide");
+        res = extractor.extractContent(res, c.streamToString(getClass().getResourceAsStream("teenvogue.html")));
+        assertEquals("http://www.teenvogue.com/gallery/graduation-2017-gift-guide", res.getCanonicalUrl());
+        assertEquals("27 Perfect Graduation 2017 Gift Ideas", res.getTitle());
+        assertTrue(res.getText(), res.getText().startsWith("My Cinema Light Box Light Box, $50. ban.dō"));
+        // Slide 5
+        assertTrue(res.getText(), res.getText().contains("Dyson Pure Cool Link™ Air Purifier & Fan, $520. dyson.com Keep cool and healthy with this all-in-one (and really sleek) fan and air purifier."));
+        // Slide 10
+        assertTrue(res.getText(), res.getText().contains("The Emily & Meritt Relax Neon Light, $129. pbteen.com Light up your dorm room or new apartment with this whimsical light that’ll also remind you to, well, relax from time to time."));
+        // Slide 19
+        assertTrue(res.getText(), res.getText().contains("NaxArt World Watercolor Map 2 Wall Tapestry, $30-$75. allposters.com A bold wall tapestry is quite possibly one of the easiest ways to transform a room."));
+        assertTrue(res.getText(), res.getText().endsWith("so you don’t have to take your eyes off the road when you’re driving to and from school or around town."));
+        assertEquals("Emma Sarran Webster", res.getAuthorName());
+        assertEquals(res.getAuthorName(), res.getAuthorDescription());
+        compareDates("2017-06-06 05:35:00", res.getDate());
     }
 
     public static void compareDates(String expectedDateString, Date actual) {
