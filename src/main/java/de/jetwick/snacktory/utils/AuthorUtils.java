@@ -1,13 +1,17 @@
 package de.jetwick.snacktory.utils;
 
+import com.google.common.cache.Weigher;
 import de.jetwick.snacktory.SHelper;
-import org.apache.commons.lang.WordUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.jsoup.nodes.*;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.nodes.Node;
+import org.jsoup.nodes.TextNode;
 import org.jsoup.select.Elements;
 
 import java.util.*;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 /**
  * @author Abhishek Mulay
@@ -40,7 +44,7 @@ final public class AuthorUtils {
             // Remove month names if any
             Pattern.compile("\\s+" + DateUtils.MMM_PATTERN + "\\s+"),
             // Remove the Suffixes
-            Pattern.compile("((\\|| - |, ).*)"),
+            //Pattern.compile("((\\|| - |, ).*)"),
             // Remove any sequence of numbers
             Pattern.compile("(\\d+)"),
             // Remove any arbitrary special symbol "whitespace followed by special symbol followed by whitespace"
@@ -55,13 +59,14 @@ final public class AuthorUtils {
     private static final Pattern HIGHLY_POSITIVE = createRegexPattern(
             "autor|author|author[\\-_]*name|article[\\-_]*author[\\-_]*name|author[\\-_]*card|story[\\-_]*author|" +
                     "author[\\-_]*link|date[\\-_]*author|author[\\-_]*date|byline|byline[\\-_]*name|byLine[\\-_]Tag|" +
-                    "contrib[\\-_]*byline"
+                    "contrib[\\-_]*byline|vcard|profile"
     );
     private static final Pattern POSITIVE = createRegexPattern(
-            "address|time[\\-_]date|post[\\-_]*date|source|news[\\-_]*post[\\-_]*source|meta[\\-_]*author|author[\\-_]*meta|writer|submitted|creator|about[\\-_]*reporter"
+            "address|time[\\-_]date|post[\\-_]*date|source|news[\\-_]*post[\\-_]*source|meta[\\-_]*author|" +
+                    "author[\\-_]*meta|writer|submitted|creator|about[\\-_]*reporter|profile-data|posted"
     );
     private static final Pattern SET_TO_REMOVE = createRegexPattern(
-            "related[\\-_]*post(s)?|sidenav|navigation|feedback[\\-_]*prompt|related[\\-_]*combined[\\-_]*coverage|visually[\\-_]*hidden|page-footer|" +
+            "no_print|related[\\-_]*post(s)?|sidenav|navigation|feedback[\\-_]*prompt|related[\\-_]*combined[\\-_]*coverage|visually[\\-_]*hidden|page-footer|" +
                     "ad[\\-_]*topjobs|slideshow[\\-_]*overlay[\\-_]*data|next[\\-_]*post[\\-_]*thumbnails|video[\\-_]*desc|related[\\-_]*links|widget popular" +
                     "|^widget marketplace$|^widget ad panel$|slideshowOverlay|^share-twitter$|^share-facebook$|dont_miss_container|" +
                     "^share-google-plus-1$|^inline-list tags$|^tag_title$|article_meta comments|^related-news$|^recomended$|" +
@@ -73,6 +78,7 @@ final public class AuthorUtils {
     private static Integer HIGHLY_POSITIVE_CLASS_WEIGHT = 300;
     private static Integer HIGHLY_POSITIVE_ID_WEIGHT = 200;
     private static Integer POSITIVE_WEIGHT = 200;
+
     private AuthorUtils() {
     }
 
@@ -90,7 +96,7 @@ final public class AuthorUtils {
         for (Pattern pattern : DateUtils.DATE_PATTERNS) {
             cleanAuthorName = new StringBuffer(pattern.matcher(cleanAuthorName.toString()).replaceAll(""));
         }
-        cleanAuthorName =  new StringBuffer(Pattern.compile("(\\s|^)+" + DateUtils.MMM_PATTERN + "(\\s|$)+").matcher(cleanAuthorName).replaceAll(" "));
+        cleanAuthorName = new StringBuffer(Pattern.compile("(\\s|^)+" + DateUtils.MMM_PATTERN + "(\\s|$)+").matcher(cleanAuthorName).replaceAll(" "));
 
         // Remove common prefixes, suffixes, symbols, etc
         for (Pattern pattern : IGNORE_AUTHOR_PARTS) {
@@ -119,16 +125,38 @@ final public class AuthorUtils {
         return false;
     }
 
+    private static Integer getWeight(Element element) {
+        return element.hasAttr("weight") ?
+                Integer.parseInt(element.attr("weight")) :
+                0;
+    }
+
     public static Integer specialCases(Element element) {
         Integer weight = 0;
 
         final Pattern ITEMPROP = createRegexPattern("person|name|author|creator");
 
-        if (element.hasAttr("itemprop")) {
+        if (element.hasAttr("itemprop") && getWeight(element) == 0) {
             if (ITEMPROP.matcher(element.attr("itemprop")).find()) {
-                weight += 450;
+                weight = 250;
+
+                for (Element childElement : element.select("*")) {
+                    if (childElement.hasAttr("itemprop") && ITEMPROP.matcher(childElement.attr("itemprop")).find()) {
+                        childElement.attr("weight", "300");
+                    }
+                    weight += 200;
+                }
+            }
+        } else {
+            long count = element.childNodes().stream()
+                    .filter(childNode -> childNode.hasAttr("itemprop") && ITEMPROP.matcher(childNode.attr("itemprop")).find())
+                    .collect(Collectors.counting());
+
+            if (count > 1) {
+                weight = ((int)count) * 200 + 450;
             }
         }
+
 
         if (element.tagName().equals("a") && element.attr("href").contains("/author")) {
             weight += 30;
@@ -169,14 +197,27 @@ final public class AuthorUtils {
 
     public static String extractAuthor(Document document) {
 
+        TreeSet<Element> sortedResultOnWeight = new TreeSet<>(
+                new Comparator<Element>() {
+                    @Override
+                    public int compare(Element e1, Element e2) {
+                        Integer e1Weight = Integer.parseInt(e1.attr("weight"));
+                        Integer e2Weight = Integer.parseInt(e2.attr("weight"));
+                        if (e1Weight > e2Weight) {
+                            return -1;
+                        }
+
+                        if (e1Weight < e2Weight) {
+                            return 1;
+                        }
+                        return 0;
+                    }
+                }
+        );
+
         document = document.clone();
 
         String authorName = "";
-        Set<String> HIGHLY_POSITIVE_TAGS = new HashSet<String>() {{
-            add("meta");
-        }};
-        PriorityQueue<QueueElement> priorityQueue = new PriorityQueue<>();
-        PriorityQueue<QueueElement> priorityQueueMeta = new PriorityQueue<>();
 
         for (Element element : document.select("*")) {
             if (SET_TO_REMOVE.matcher(element.className()).find()) {
@@ -185,27 +226,15 @@ final public class AuthorUtils {
         }
 
         // Extract from Metadata
-
-
         for (Element element : document.select("*")) {
 
             if (element.tagName().equals("meta")) {
                 continue;
             }
 
-//            if (HIGHLY_POSITIVE_TAGS.contains(element.tagName())) {
-//                if (META_NAME.matcher(element.attr("name")).find()) {
-//                    element.attr("weight", "350");
-//                    priorityQueueMeta.add(new QueueElement(element));
-//                    continue;
-//                }
-//
-//                if (META_NAME.matcher(element.attr("property")).find()) {
-//                    element.attr("weight", "350");
-//                    priorityQueueMeta.add(new QueueElement(element));
-//                    continue;
-//                }
-//            }
+            if (StringUtils.isBlank(element.text())) {
+                continue;
+            }
 
             Integer weight = specialCases(element);
 
@@ -213,81 +242,47 @@ final public class AuthorUtils {
 
             weight += positiveCases(element);
 
-            Integer parentWeight = 0;
-            if (element.parent() != null && element.parent().hasAttr("weight")) {
-                parentWeight = Integer.parseInt(element.parent().attr("weight"));
-            }
-            weight += parentWeight;
+//            Integer parentWeight = 0;
+//            if (element.parent() != null && element.parent().hasAttr("weight")) {
+//                parentWeight = Integer.parseInt(element.parent().attr("weight"));
+//            }
+//            //weight += parentWeight / 4;
 
             if (weight > 0) {
                 element.attr("weight", weight.toString());
-                priorityQueue.add(new QueueElement(element));
+                sortedResultOnWeight.add(element);
             }
         }
 
-
-        if (!priorityQueue.isEmpty()) {
-
-            Set<QueueElement> treeSet = new TreeSet<QueueElement>();
-            treeSet.addAll(priorityQueue);
-
+        if (!sortedResultOnWeight.isEmpty()) {
 
             int iterations = 0;
-            while (StringUtils.isBlank(authorName) && !priorityQueue.isEmpty() && iterations < 3) {
-                Element probableAuthorNameElement = priorityQueue.remove().getElement();
+            Iterator<Element> iterator = sortedResultOnWeight.iterator();
+            while (StringUtils.isBlank(authorName) && iterator.hasNext() && iterations < 3) {
+                Element probableAuthorNameElement = iterator.next();
                 authorName = extractText(probableAuthorNameElement);
 
-                if (StringUtils.isNotEmpty(authorName)) {
-
-                    if (StringUtils.isNotEmpty(authorName)) {
-                        if (authorName.split(" ").length > 1) {
-                            return authorName.replaceAll("\\s+", " ").trim();
-                        }
-                    }
+                if (sanityCheck(authorName)) {
+                    return authorName.replaceAll("\\s+", " ").trim();
                 }
                 authorName = "";
                 iterations++;
-
-//                while (iterations < 3 &&
-//                        !priorityQueue.isEmpty() &&
-//                        probableAuthorNameElement.attr("weight").equals(priorityQueue.peek().getElement().attr("weight"))) {
-//
-//                    probableAuthorNameElement = priorityQueue.remove().getElement();
-//                    String additionalAuthorName = extractText(probableAuthorNameElement);
-//
-//                    if (! authorName.contains(additionalAuthorName)) {
-//                        authorName = authorName + " " + additionalAuthorName;
-//                    }
-//
-//                    iterations ++;
-//                }
-
             }
-
         }
 
-
-        String text = "";
         Elements elements = document.select("meta[property*=author], meta[property*=creator]");
         if (elements != null && elements.size() > 0) {
 
             for (Element element : elements) {
                 if (element.hasAttr("content")) {
-                    text = element.attr("content");
-
-                    if (StringUtils.isNotEmpty(text)) {
-                        if (text.split(" ").length > 1) {
-                            return text;
-                        }
+                    authorName = element.attr("content");
+                    if (sanityCheck(authorName)) {
+                        return authorName;
                     }
                 }
             }
         }
-
-
         return authorName;
-
-
     }
 
     private static void nodeToText(Node node, StringBuffer text) {
@@ -298,57 +293,27 @@ final public class AuthorUtils {
 
         for (Node childNode : node.childNodes()) {
 
-            if (childNode instanceof TextNode) {
+            if (childNode instanceof TextNode && nodesToExtract.contains(childNode.parent().nodeName())) {
                 if (text.length() != 0) {
                     text.append(" ");
                 }
                 text.append(((TextNode) childNode).text());
             } else {
-                if (nodesToExtractSet.contains(childNode.nodeName())) {
+                //if (nodesToExtractSet.contains(childNode.nodeName()) ) {
                     nodeToText(childNode, text);
-                }
+                //}
             }
         }
     }
 
     private static String extractText(Element element) {
 
-        String textNodes = "p, span, em, h1, h2, h3, h4, a, li";
-        Set<String> textNodesSet = new HashSet<>();
-
         if (element.tagName() == "meta") {
             return element.attr("content");
         }
 
-
         StringBuffer textBuffer = new StringBuffer();
         nodeToText(element, textBuffer);
-
-
-//        String text = "";
-//        if (textNodesSet.contains(element.tagName())) {
-//            text = element.text();
-//        }
-//
-//
-//
-//        if(StringUtils.isBlank(text)) {
-//
-//            PriorityQueue<QueueElement> childElements = new PriorityQueue<>();
-//            element.select(textNodes)
-//                    .stream()
-//                    .filter(childElement -> childElement.hasAttr("weight"))
-//                    .forEach(childElement -> childElements.add(new QueueElement(childElement)));
-//
-//            text = "";
-//            while (StringUtils.isBlank(text) && !childElements.isEmpty()) {
-//                text = SHelper.innerTrim(childElements.remove().getElement().text());
-//            }
-//
-//            if (StringUtils.isBlank(text)) {
-//                text = element.ownText();
-//            }
-//        }
         return textBuffer.toString();
     }
 
@@ -356,41 +321,7 @@ final public class AuthorUtils {
         return Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
     }
 
-    public static void main(String[] args) {
-
-
-    }
-
-    static private class QueueElement implements Comparable<QueueElement> {
-
-        Element element;
-
-        public QueueElement(Element element) {
-            this.element = element;
-        }
-
-        public Element getElement() {
-            return element;
-        }
-
-        public QueueElement setElement(Element element) {
-            this.element = element;
-            return this;
-        }
-
-        @Override
-        public int compareTo(QueueElement other) {
-            Integer thisWeight = Integer.parseInt(this.element.attr("weight"));
-            Integer otherWeight = Integer.parseInt(other.element.attr("weight"));
-            if (thisWeight > otherWeight) {
-                return -1;
-            }
-            return 1;
-        }
-
-        @Override
-        public String toString() {
-            return element.text();
-        }
+    private static boolean sanityCheck(String authorName) {
+        return StringUtils.isNotBlank(authorName) && authorName.split(" ").length > 1;
     }
 }

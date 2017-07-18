@@ -330,7 +330,7 @@ public class ArticleTextExtractorTest {
         assertEquals("Wall St. Gains as Earnings Cheer Traders", res.getTitle());
         assertTrue(res.getText(), res.getText().startsWith("Stocks took another modest step further into record territory Wednesday after several companies reported profits that were stronger than expected."));
         assertTrue(res.getText(), res.getText().endsWith("and the dollar rose to 106.96 Japanese yen from 106.11 yen."));
-        assertEquals("The Associated Press".toLowerCase(), res.getAuthorName().toLowerCase());
+        assertEquals("The Associated Press", res.getAuthorName());
         assertEquals("THE ASSOCIATED PRESS", res.getAuthorDescription());
         compareDates("2016-07-20", res.getDate());
     }
@@ -345,7 +345,7 @@ public class ArticleTextExtractorTest {
         assertEquals("In Firing Comey, Did Trump Unleash the Next Deep Throat?", res.getTitle());
         assertTrue(res.getText(), res.getText().startsWith("Once again, Donald Trump has done something that no president before him dared to do."));
         assertTrue(res.getText(), res.getText().endsWith("the presidency itself — never fully recovered."));
-        assertEquals("Beverly Gage".toLowerCase(), res.getAuthorName().toLowerCase());
+        assertEquals("Beverly Gage", res.getAuthorName());
         assertEquals("Beverly Gage is a professor of American political history at Yale. She is the author of “The Day Wall Street Exploded: A Story of America in Its First Age of Terror” and is writing a biography of the former F.B.I. director J. Edgar Hoover.", res.getAuthorDescription());
         compareDates("2017-05-10 00:00:00", res.getDate());
     }
@@ -2311,7 +2311,7 @@ public class ArticleTextExtractorTest {
         assertTrue(res.getText(), res.getText().startsWith("Which cloud is best for building new applications?"));
         assertTrue(res.getText(), res.getText().endsWith("Those end up being the driving factors for choosing providers."));
         assertFalse(res.getText(), res.getText().contains("Little Girl"));
-        assertEquals("Brandon Butler", res.getAuthorName());
+        assertEquals(res.getAuthorName(), "Brandon Butler");
         compareDates("2015-03-17 17:47:00", res.getDate());
     }
 
@@ -2817,7 +2817,7 @@ public class ArticleTextExtractorTest {
         assertEquals("https://www.mediapost.com/publications/article/297175/never-mind-alexa-why-ai-obsession-echoes-past-hyp.html", res.getCanonicalUrl());
         assertEquals("Never Mind Alexa: Why AI Obsession Echoes Past Hype Cycles 03/16/2017", res.getTitle());
         assertTrue(res.getText(), res.getText().startsWith("For a moment in early 2013, it looked like Google Glass was going to change everything."));
-        assertEquals("David Honig".toLowerCase(), res.getAuthorName().toLowerCase());
+        assertEquals("David Honig", res.getAuthorName());
         assertEquals("DAVID HONIG, Vice President Strategy, Corporate Partnerships, Dynamic Signal", res.getAuthorDescription());
     }
 
@@ -2987,8 +2987,8 @@ public class ArticleTextExtractorTest {
         assertEquals("http://www.delish.com/cooking/g2668/spring-asparagus-dishes/", res.getCanonicalUrl());
         assertEquals("50+ Easy Asparagus Recipes - Best Ways to Cook Asparagus", res.getTitle());
         assertEquals(res.getDescription(), res.getText());
-        assertEquals("Sienna Fantozzi", res.getAuthorName());
-        assertEquals("Sienna Fantozzi", res.getAuthorDescription());
+        assertEquals("Sienna Fantozzi and Greg Safarian", res.getAuthorName());
+        assertEquals("", res.getAuthorDescription());
         compareDates("2017-05-09 07:59:00", res.getDate());
     }
 
