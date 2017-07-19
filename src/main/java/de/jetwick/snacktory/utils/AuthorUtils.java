@@ -1,6 +1,5 @@
 package de.jetwick.snacktory.utils;
 
-import com.google.common.cache.Weigher;
 import de.jetwick.snacktory.SHelper;
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.nodes.Document;
@@ -66,7 +65,7 @@ final public class AuthorUtils {
                     "author[\\-_]*meta|writer|submitted|creator|about[\\-_]*reporter|profile-data|posted"
     );
     private static final Pattern SET_TO_REMOVE = createRegexPattern(
-            "no_print|related[\\-_]*post(s)?|sidenav|navigation|feedback[\\-_]*prompt|related[\\-_]*combined[\\-_]*coverage|visually[\\-_]*hidden|page-footer|" +
+            "tooltip|no_print|related[\\-_]*post(s)?|sidenav|navigation|feedback[\\-_]*prompt|related[\\-_]*combined[\\-_]*coverage|visually[\\-_]*hidden|page-footer|" +
                     "ad[\\-_]*topjobs|slideshow[\\-_]*overlay[\\-_]*data|next[\\-_]*post[\\-_]*thumbnails|video[\\-_]*desc|related[\\-_]*links|widget popular" +
                     "|^widget marketplace$|^widget ad panel$|slideshowOverlay|^share-twitter$|^share-facebook$|dont_miss_container|" +
                     "^share-google-plus-1$|^inline-list tags$|^tag_title$|article_meta comments|^related-news$|^recomended$|" +
@@ -131,20 +130,28 @@ final public class AuthorUtils {
                 0;
     }
 
+    final static Pattern ITEMPROP = createRegexPattern("person|name|author|creator");
+
     public static Integer specialCases(Element element) {
-        Integer weight = 0;
+        Integer weight = getWeight(element);
 
-        final Pattern ITEMPROP = createRegexPattern("person|name|author|creator");
+        if (element.className().equals("author mobile-scrim hasMenu")) {
+            System.out.println("Test");
+        }
 
-        if (element.hasAttr("itemprop") && getWeight(element) == 0) {
+        if (element.className().equals("name") && element.attr("itemprop").equals("name")) {
+            System.out.println("Test");
+        }
+
+        if (element.hasAttr("itemprop") && weight == 0) {
             if (ITEMPROP.matcher(element.attr("itemprop")).find()) {
                 weight = 250;
 
                 for (Element childElement : element.select("*")) {
                     if (childElement.hasAttr("itemprop") && ITEMPROP.matcher(childElement.attr("itemprop")).find()) {
                         childElement.attr("weight", "300");
+                        weight += 200;
                     }
-                    weight += 200;
                 }
             }
         } else {
@@ -153,12 +160,13 @@ final public class AuthorUtils {
                     .collect(Collectors.counting());
 
             if (count > 1) {
-                weight = ((int)count) * 200 + 450;
+                weight = ((int) count) * 200 + 450;
             }
         }
 
 
-        if (element.tagName().equals("a") && element.attr("href").contains("/author")) {
+        if (element.tagName().equals("a") &&
+                (element.attr("href").contains("/author") || element.attr("href").contains("/profile"))) {
             weight += 30;
         }
 
@@ -195,94 +203,54 @@ final public class AuthorUtils {
         return weight;
     }
 
+    private static void cleanUpDocument(Document document) {
+        document.select("*")
+                .parallelStream()
+                .filter(element -> SET_TO_REMOVE.matcher(element.className()).find())
+                .forEach(element -> element.remove());
+    }
+
     public static String extractAuthor(Document document) {
 
-        TreeSet<Element> sortedResultOnWeight = new TreeSet<>(
-                new Comparator<Element>() {
-                    @Override
-                    public int compare(Element e1, Element e2) {
-                        Integer e1Weight = Integer.parseInt(e1.attr("weight"));
-                        Integer e2Weight = Integer.parseInt(e2.attr("weight"));
-                        if (e1Weight > e2Weight) {
-                            return -1;
-                        }
-
-                        if (e1Weight < e2Weight) {
-                            return 1;
-                        }
-                        return 0;
-                    }
-                }
-        );
+        Comparator<Element> byWeight = (Element e1, Element e2) -> getWeight(e1).compareTo(getWeight(e2));
 
         document = document.clone();
+        cleanUpDocument(document);
 
-        String authorName = "";
+        List<Element> sortedResultOnWeight = document.select("*")
+                .stream()
+                .filter(element -> !element.tagName().equals("meta"))
+                .filter(element -> StringUtils.isNotBlank(element.text()))
+                .map(element -> element.attr("weight", calWeight(element).toString()))
+                .filter(element -> getWeight(element) > 0)
+                .sorted(byWeight.reversed())
+                .limit(3)
+                .collect(Collectors.toList());
 
-        for (Element element : document.select("*")) {
-            if (SET_TO_REMOVE.matcher(element.className()).find()) {
-                element.remove();
-            }
-        }
-
-        // Extract from Metadata
-        for (Element element : document.select("*")) {
-
-            if (element.tagName().equals("meta")) {
-                continue;
-            }
-
-            if (StringUtils.isBlank(element.text())) {
-                continue;
-            }
-
-            Integer weight = specialCases(element);
-
-            weight += highlyPositiveCases(element);
-
-            weight += positiveCases(element);
-
-//            Integer parentWeight = 0;
-//            if (element.parent() != null && element.parent().hasAttr("weight")) {
-//                parentWeight = Integer.parseInt(element.parent().attr("weight"));
-//            }
-//            //weight += parentWeight / 4;
-
-            if (weight > 0) {
-                element.attr("weight", weight.toString());
-                sortedResultOnWeight.add(element);
-            }
-        }
-
-        if (!sortedResultOnWeight.isEmpty()) {
-
-            int iterations = 0;
-            Iterator<Element> iterator = sortedResultOnWeight.iterator();
-            while (StringUtils.isBlank(authorName) && iterator.hasNext() && iterations < 3) {
-                Element probableAuthorNameElement = iterator.next();
-                authorName = extractText(probableAuthorNameElement);
-
-                if (sanityCheck(authorName)) {
-                    return authorName.replaceAll("\\s+", " ").trim();
-                }
-                authorName = "";
-                iterations++;
+        String authorName;
+        for (Element element : sortedResultOnWeight) {
+            authorName = extractText(element);
+            if (sanityCheck(authorName)) {
+                return authorName.replaceAll("\\s+", " ").trim();
             }
         }
 
         Elements elements = document.select("meta[property*=author], meta[property*=creator]");
         if (elements != null && elements.size() > 0) {
-
             for (Element element : elements) {
-                if (element.hasAttr("content")) {
-                    authorName = element.attr("content");
-                    if (sanityCheck(authorName)) {
-                        return authorName;
-                    }
+                authorName = extractText(element);
+                if (sanityCheck(authorName)) {
+                    return authorName;
                 }
             }
         }
-        return authorName;
+        return StringUtils.EMPTY;
+    }
+
+    private static Integer calWeight(Element element) {
+        return specialCases(element)
+                + highlyPositiveCases(element)
+                + positiveCases(element);
     }
 
     private static void nodeToText(Node node, StringBuffer text) {
@@ -292,16 +260,15 @@ final public class AuthorUtils {
         nodesToExtractSet.addAll(Arrays.asList(nodesToExtract.split(", ")));
 
         for (Node childNode : node.childNodes()) {
-
             if (childNode instanceof TextNode && nodesToExtract.contains(childNode.parent().nodeName())) {
-                if (text.length() != 0) {
+                if (text.length() != 0 && !text.toString().endsWith(" ")) {
                     text.append(" ");
                 }
-                text.append(((TextNode) childNode).text());
+                if (StringUtils.isNotBlank(((TextNode) childNode).text())) {
+                    text.append(((TextNode) childNode).text().trim());
+                }
             } else {
-                //if (nodesToExtractSet.contains(childNode.nodeName()) ) {
-                    nodeToText(childNode, text);
-                //}
+                nodeToText(childNode, text);
             }
         }
     }
@@ -311,6 +278,18 @@ final public class AuthorUtils {
         if (element.tagName() == "meta") {
             return element.attr("content");
         }
+
+//        // Item Prop
+//        Set<String> textSet = element.select("[itemprop]").stream()
+//                .filter(childElement -> !childElement.equals(element))
+//                .filter(childElement -> ITEMPROP.matcher(childElement.attr("itemprop")).find())
+//                .map(childElement -> childElement.text())
+//                .collect(Collectors.toSet());
+//
+//
+//        if (textSet.size() > 0) {
+//            return StringUtils.join(textSet, ", ");
+//        }
 
         StringBuffer textBuffer = new StringBuffer();
         nodeToText(element, textBuffer);
