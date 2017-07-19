@@ -7,6 +7,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 import org.jsoup.nodes.TextNode;
 import org.jsoup.select.Elements;
+import sun.reflect.generics.tree.Tree;
 
 import java.util.*;
 import java.util.regex.Pattern;
@@ -62,10 +63,10 @@ final public class AuthorUtils {
     );
     private static final Pattern POSITIVE = createRegexPattern(
             "address|time[\\-_]date|post[\\-_]*date|source|news[\\-_]*post[\\-_]*source|meta[\\-_]*author|" +
-                    "author[\\-_]*meta|writer|submitted|creator|about[\\-_]*reporter|profile-data|posted"
+                    "author[\\-_]*meta|writer|submitted|creator|reporter[\\-_]*name|profile-data|posted"
     );
     private static final Pattern SET_TO_REMOVE = createRegexPattern(
-            "tooltip|no_print|related[\\-_]*post(s)?|sidenav|navigation|feedback[\\-_]*prompt|related[\\-_]*combined[\\-_]*coverage|visually[\\-_]*hidden|page-footer|" +
+            "mobile|tooltip|no_print|related[\\-_]*post(s)?|sidenav|navigation|feedback[\\-_]*prompt|related[\\-_]*combined[\\-_]*coverage|visually[\\-_]*hidden|page-footer|" +
                     "ad[\\-_]*topjobs|slideshow[\\-_]*overlay[\\-_]*data|next[\\-_]*post[\\-_]*thumbnails|video[\\-_]*desc|related[\\-_]*links|widget popular" +
                     "|^widget marketplace$|^widget ad panel$|slideshowOverlay|^share-twitter$|^share-facebook$|dont_miss_container|" +
                     "^share-google-plus-1$|^inline-list tags$|^tag_title$|article_meta comments|^related-news$|^recomended$|" +
@@ -125,23 +126,22 @@ final public class AuthorUtils {
     }
 
     private static Integer getWeight(Element element) {
-        return element.hasAttr("weight") ?
+        return (element != null && element.hasAttr("weight")) ?
                 Integer.parseInt(element.attr("weight")) :
                 0;
     }
+
+    private static Integer getMaxOccurance(Element element) {
+        return (element != null && element.hasAttr("max_occurance")) ?
+                Integer.parseInt(element.attr("max_occurance")) :
+                0;
+    }
+
 
     final static Pattern ITEMPROP = createRegexPattern("person|name|author|creator");
 
     public static Integer specialCases(Element element) {
         Integer weight = getWeight(element);
-
-        if (element.className().equals("author mobile-scrim hasMenu")) {
-            System.out.println("Test");
-        }
-
-        if (element.className().equals("name") && element.attr("itemprop").equals("name")) {
-            System.out.println("Test");
-        }
 
         if (element.hasAttr("itemprop") && weight == 0) {
             if (ITEMPROP.matcher(element.attr("itemprop")).find()) {
@@ -166,7 +166,7 @@ final public class AuthorUtils {
 
 
         if (element.tagName().equals("a") &&
-                (element.attr("href").contains("/author") || element.attr("href").contains("/profile"))) {
+                (element.attr("href").contains("/author") || element.attr("href").contains("/profile") || element.attr("href").contains("/report"))) {
             weight += 30;
         }
 
@@ -212,26 +212,59 @@ final public class AuthorUtils {
 
     public static String extractAuthor(Document document) {
 
-        Comparator<Element> byWeight = (Element e1, Element e2) -> getWeight(e1).compareTo(getWeight(e2));
+        //Comparator<Element> byWeight = (Element e1, Element e2) -> getWeight(e1).compareTo(getWeight(e2));
+        Comparator<Element> byOccurance = (Element e1, Element e2) -> getMaxOccurance(e1).compareTo(getMaxOccurance(e2));
+
+        Comparator byWeight = new Comparator<Element>() {
+            @Override
+            public int compare(Element e1, Element e2) {
+
+                if (getWeight(e1) < getWeight(e2)) {
+                    return 1;
+                }
+
+                if (getWeight(e1) > getWeight(e2)) {
+                    return -1;
+                }
+
+                // @Todo: As of now don't know how to chose better element if weight is equal
+                return 0;
+            }
+        };
 
         document = document.clone();
         cleanUpDocument(document);
 
-        List<Element> sortedResultOnWeight = document.select("*")
-                .stream()
-                .filter(element -> !element.tagName().equals("meta"))
-                .filter(element -> StringUtils.isNotBlank(element.text()))
-                .map(element -> element.attr("weight", calWeight(element).toString()))
-                .filter(element -> getWeight(element) > 0)
-                .sorted(byWeight.reversed())
-                .limit(3)
-                .collect(Collectors.toList());
+        TreeSet<Element> sortedResultByWeight = new TreeSet<>(byWeight);
 
+        for (Element element : document.select("*")) {
+
+            if (element.tagName().equals("meta")) {
+                continue;
+            }
+
+            if (StringUtils.isBlank(element.text())) {
+                continue;
+            }
+
+            element.attr("weight", Integer.toString(calWeight(element)));
+
+            if (getWeight(element) <= 0) {
+                continue;
+            }
+            sortedResultByWeight.add(element);
+        }
+
+        int iterations = 0;
         String authorName;
-        for (Element element : sortedResultOnWeight) {
+        for (Element element : sortedResultByWeight) {
             authorName = extractText(element);
             if (sanityCheck(authorName)) {
                 return authorName.replaceAll("\\s+", " ").trim();
+            }
+
+            if (iterations == 3) {
+                break;
             }
         }
 
