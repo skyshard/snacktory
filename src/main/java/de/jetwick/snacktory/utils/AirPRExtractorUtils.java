@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.*;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
@@ -91,26 +92,34 @@ public class AirPRExtractorUtils {
             ObjectMapper objectMapper = new ObjectMapper();
             objectMapper.configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
-            Entities entities = objectMapper.readValue(responseText, Entities.class);
-            List<String> extractedEntities = entities.getEntities().stream()
-                    .filter(entity -> entity.getType().equals("Person"))
-                    .filter(entity -> text.contains(entity.getRepresentative()))
-                    .map(entity -> entity.getRepresentative())
-                    .map(name ->
-                        CharMatcher.JAVA_UPPER_CASE.matchesAllOf(name) ?
-                            WordUtils.capitalizeFully(name, new char[]{' ', '-'}) :
-                            name
-                    )
-                    //.map(entity -> WordUtils.capitalizeFully(entity.getRepresentative(), new char[]{' ', '-'}) )
-                    .collect(Collectors.toList());
+            final Pattern NAME_PATTERN = Pattern.compile("[^\\w\\.\\-\\' ]+", Pattern.UNICODE_CHARACTER_CLASS);
 
-            if (extractedEntities.isEmpty()) {
-                extractedEntities = entities.getEntities().stream()
+            TreeMap<Integer, String> matchedEntities = new TreeMap<>();
+
+            Entities entities = objectMapper.readValue(responseText, Entities.class);
+            for (NamedEntity entity : entities.getEntities()) {
+                if (entity.getType().equals("Person")) {
+                    String name = entity.getRepresentative();
+                    if (text.contains(name)) {
+                        name = NAME_PATTERN.matcher(name).replaceAll("").trim();
+                        name = CharMatcher.JAVA_UPPER_CASE.matchesAllOf(name) ?
+                                WordUtils.capitalizeFully(name, new char[]{' ', '-'}) :
+                                name;
+                        matchedEntities.put(text.indexOf(name), name);
+                    }
+                }
+            }
+
+            if (!matchedEntities.isEmpty()) {
+                List<String> result = new LinkedList<>();
+                result.addAll(matchedEntities.values());
+                return  result;
+            }
+                List<String> extractedEntities = entities.getEntities().stream()
                         .filter(entity -> entity.getType().equals("Organization"))
                         .filter(entity -> text.contains(entity.getRepresentative()))
                         .map(entity -> entity.getRepresentative())
                         .collect(Collectors.toList());
-            }
 
             return extractedEntities;
 

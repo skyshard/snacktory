@@ -29,6 +29,7 @@ final public class AuthorUtils {
             "/",
             "\\.\\.\\.",    // Ellipsis
             "…",            // Ellipsis
+            "\\|"
     };
 
     public static final String SPECIAL_SYMBOLS_PATTERN = "(" + StringUtils.join(SPECIAL_SYMBOLS, "|") + ")";
@@ -55,6 +56,10 @@ final public class AuthorUtils {
             Pattern.compile(SPECIAL_SYMBOLS_PATTERN + "[\\s]*$"),
     };
 
+    public static final Pattern IGNORE_WORDS = createRegexPattern(
+            "Facebook|Pinterest|Twitter|Linkedin"
+    );
+
     private static final int MAX_AUTHOR_NAME_LENGTH = 255;
     private static final Pattern HIGHLY_POSITIVE = createRegexPattern(
             "autor|author|author[\\-_]*name|article[\\-_]*author[\\-_]*name|author[\\-_]*card|story[\\-_]*author|" +
@@ -63,10 +68,10 @@ final public class AuthorUtils {
     );
     private static final Pattern POSITIVE = createRegexPattern(
             "address|time[\\-_]date|post[\\-_]*date|source|news[\\-_]*post[\\-_]*source|meta[\\-_]*author|" +
-                    "author[\\-_]*meta|writer|submitted|creator|reporter[\\-_]*name|profile-data|posted"
+                    "author[\\-_]*meta|writer|submitted|creator|reporter[\\-_]*name|profile-data|posted|contact"
     );
     private static final Pattern SET_TO_REMOVE = createRegexPattern(
-            "mobile|tooltip|no_print|related[\\-_]*post(s)?|sidenav|navigation|feedback[\\-_]*prompt|related[\\-_]*combined[\\-_]*coverage|visually[\\-_]*hidden|page-footer|" +
+            "tooltip|no_print|related[\\-_]*post(s)?|sidenav|navigation|feedback[\\-_]*prompt|related[\\-_]*combined[\\-_]*coverage|visually[\\-_]*hidden|page-footer|" +
                     "ad[\\-_]*topjobs|slideshow[\\-_]*overlay[\\-_]*data|next[\\-_]*post[\\-_]*thumbnails|video[\\-_]*desc|related[\\-_]*links|widget popular" +
                     "|^widget marketplace$|^widget ad panel$|slideshowOverlay|^share-twitter$|^share-facebook$|dont_miss_container|" +
                     "^share-google-plus-1$|^inline-list tags$|^tag_title$|article_meta comments|^related-news$|^recomended$|" +
@@ -210,7 +215,19 @@ final public class AuthorUtils {
                 .forEach(element -> element.remove());
     }
 
-    public static String extractAuthor(Document document) {
+    public static String extractAuthor(Document document, String domain) {
+
+
+        String siteSpecificRule = Configuration.getInstance().getBestElementForAuthor().get(domain);
+        if (siteSpecificRule != null) {
+           String authorName = document.select(siteSpecificRule).text();
+
+           if (StringUtils.isNotBlank(authorName)) {
+               System.out.println(authorName);
+               return authorName;
+
+           }
+        }
 
         //Comparator<Element> byWeight = (Element e1, Element e2) -> getWeight(e1).compareTo(getWeight(e2));
         Comparator<Element> byOccurance = (Element e1, Element e2) -> getMaxOccurance(e1).compareTo(getMaxOccurance(e2));
@@ -259,6 +276,7 @@ final public class AuthorUtils {
         String authorName;
         for (Element element : sortedResultByWeight) {
             authorName = extractText(element);
+            authorName = IGNORE_WORDS.matcher(authorName).replaceAll("");
             if (sanityCheck(authorName)) {
                 return authorName.replaceAll("\\s+", " ").trim();
             }
@@ -294,8 +312,8 @@ final public class AuthorUtils {
 
         for (Node childNode : node.childNodes()) {
             if (childNode instanceof TextNode && nodesToExtract.contains(childNode.parent().nodeName())) {
-                if (text.length() != 0 && !text.toString().endsWith(" ")) {
-                    text.append(" ");
+                if (text.length() != 0 && !text.toString().endsWith(" | ")) {
+                    text.append(" | ");
                 }
                 if (StringUtils.isNotBlank(((TextNode) childNode).text())) {
                     text.append(((TextNode) childNode).text().trim());
@@ -326,7 +344,7 @@ final public class AuthorUtils {
 
         StringBuffer textBuffer = new StringBuffer();
         nodeToText(element, textBuffer);
-        return textBuffer.toString();
+        return StringUtils.strip(textBuffer.toString().trim(), "|").trim();
     }
 
     private static Pattern createRegexPattern(String regex) {

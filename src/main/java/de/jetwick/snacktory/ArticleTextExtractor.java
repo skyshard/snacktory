@@ -448,7 +448,7 @@ public class ArticleTextExtractor {
         res.setLanguage(extractLanguage(doc));
 
         // get author information
-        String rawAuthorName = AuthorUtils.extractAuthor(doc);
+        String rawAuthorName = AuthorUtils.extractAuthor(doc, res.getTopPrivateDomain());
         res.setRawAuthorName(rawAuthorName);
         res.setAuthorName(AuthorUtils.cleanup(res.getRawAuthorName()));
 

@@ -6,6 +6,7 @@ import org.yaml.snakeyaml.Yaml;
 
 import java.io.InputStream;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Class enables to load the snacktory configuration from external resources
@@ -38,6 +39,8 @@ final public class Configuration {
     private boolean useNamedEntityForAuthorExtraction;
 
     private List<String> nerExclusion;
+
+    private Map<String, String> bestElementForAuthor;
 
     private Configuration() {
     }
@@ -100,5 +103,13 @@ final public class Configuration {
 
     public void setNerExclusion(List<String> nerExclusion) {
         this.nerExclusion = nerExclusion;
+    }
+
+    public Map<String, String> getBestElementForAuthor() {
+        return bestElementForAuthor;
+    }
+
+    public void setBestElementForAuthor(Map<String, String> bestElementForAuthor) {
+        this.bestElementForAuthor = bestElementForAuthor;
     }
 }

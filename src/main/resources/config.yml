@@ -11,3 +11,24 @@ extractorPassword: Hc7kvADwxxsJFvKCtqnm6byWaNRgUrzd
 
 nerExclusion:
   - Destiny Bertucci
+
+bestElementForAuthor:
+  reuters.com: ':containsOwn(reporting by), :containsOwn(reported by), :containsOwn(edited by), :containsOwn(editing by)'
+  upi.com: '#px > div.c_p > div.meta.grey'
+
+  # Need to fix
+  marketingprofs.com: 'span[itemprop=author]'
+  foxnews.com: 'div.meta > div > span > a'
+
+  # Not working - Blank Domain
+  jdsupra.com: '#followPeopleSection > div.follow-people-list.f6.lh-title > div > div > div:nth-child(2) > a'
+  einnews.com: 'p:contains(Media Contact)'
+  adweek.com: 'span[itemprop=author]'
+
+  # Fix this sequence
+  nt4admins.de: 'dl > dd'
+
+
+
+
+
