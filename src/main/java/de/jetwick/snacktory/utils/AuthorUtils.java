@@ -231,9 +231,6 @@ final public class AuthorUtils {
             }
         }
 
-        //Comparator<Element> byWeight = (Element e1, Element e2) -> getWeight(e1).compareTo(getWeight(e2));
-        Comparator<Element> byOccurance = (Element e1, Element e2) -> getMaxOccurance(e1).compareTo(getMaxOccurance(e2));
-
         Comparator byWeight = new Comparator<Element>() {
             @Override
             public int compare(Element e1, Element e2) {
@@ -332,18 +329,6 @@ final public class AuthorUtils {
             return element.attr("content");
         }
 
-//        // Item Prop
-//        Set<String> textSet = element.select("[itemprop]").stream()
-//                .filter(childElement -> !childElement.equals(element))
-//                .filter(childElement -> ITEMPROP.matcher(childElement.attr("itemprop")).find())
-//                .map(childElement -> childElement.text())
-//                .collect(Collectors.toSet());
-//
-//
-//        if (textSet.size() > 0) {
-//            return StringUtils.join(textSet, ", ");
-//        }
-
         StringBuffer textBuffer = new StringBuffer();
         nodeToText(element, textBuffer);
         return StringUtils.strip(textBuffer.toString().trim(), "|").trim();
@@ -356,7 +341,6 @@ final public class AuthorUtils {
     private static boolean sanityCheck(String authorName) {
         return StringUtils.isNotBlank(authorName) && authorName.split(" ").length > 1;
     }
-
 
     /**
      * Extract named entities from the given text
@@ -386,30 +370,50 @@ final public class AuthorUtils {
         return entitiesResponse.getEntities();
     }
 
+    /**
+     * Clean up text using Named Entity Recognition
+     * - Try to match and extract Person Names
+     * - Try to match Organization Names
+     * - Clean up based on regex to get rid of unwanted symbols, suffixes, etc.
+     *
+     * @param text {@link String}
+     * @return {@link String}
+     */
     public static String cleanUpUsingNER(String text) {
+        String authorName;
         if (StringUtils.isBlank(text)) {
+            logger.info("Found empty text. No further processing required.");
             return StringUtils.EMPTY;
         }
 
         if (!Configuration.getInstance().isUseNamedEntityForAuthorExtraction()) {
-            return cleanup(text);
+            logger.info("Use of NER for author extraction is disabled.");
+            authorName = cleanup(text);
+            logger.info("Cleaned up author name: " + authorName);
+            return authorName;
         }
 
+        logger.info("Looking if text has whitelisted named entities.");
         List<String> identifiedNamedEntities = Configuration.getInstance().getNerExclusion().parallelStream()
                 .filter(ne -> text.toLowerCase().contains(ne.toLowerCase()))
                 .collect(Collectors.toList());
 
         if (identifiedNamedEntities.size() > 0) {
-            return StringUtils.join(identifiedNamedEntities, ", ");
+            authorName = StringUtils.join(identifiedNamedEntities, ", ");
+            logger.info("Found whitelisted named entities. Cleaned up author name: " + authorName);
+            return authorName;
         }
 
         List<NamedEntity> namedEntities = extractNamedEntities(text);
         if (namedEntities == null || namedEntities.size() == 0) {
-            return cleanup(text);
+            authorName = cleanup(text);
+            logger.info("Cleaned up author name: " + authorName);
+            return authorName;
         }
 
-        // Lookup for Person Names
         TreeMap<Integer, String> sortedByPosition = new TreeMap<>();
+
+        // Lookup for Person Names
         for (NamedEntity entity : getTopNEntities(namedEntities, EntityType.PERSON, 2)) {
             if (text.contains(entity.getRepresentative())) {
                 sortedByPosition.put(text.indexOf(entity.getRepresentative()), entity.getRepresentative());
@@ -417,11 +421,13 @@ final public class AuthorUtils {
         }
 
         if (sortedByPosition.size() > 0) {
-            return StringUtils.join(cleanUpPersonNames(new LinkedList<String>(sortedByPosition.values())),
+            authorName = StringUtils.join(cleanUpPersonNames(new LinkedList<String>(sortedByPosition.values())),
                     ", ");
+            logger.info("Cleaned up author name: " + authorName);
+            return authorName;
         }
 
-        // Lookup for Organization Names if no Person Name found
+        // Lookup for Organization Names if no Person Name is found
         for (NamedEntity entity : getTopNEntities(namedEntities, EntityType.ORGANIZATION, 1)) {
             if (text.contains(entity.getRepresentative())) {
                 sortedByPosition.put(text.indexOf(entity.getRepresentative()), entity.getRepresentative());
@@ -429,22 +435,32 @@ final public class AuthorUtils {
         }
 
         if (sortedByPosition.size() > 0) {
-            return StringUtils.join(cleanUpOrganizationNames(new LinkedList<String>(sortedByPosition.values())),
+            authorName = StringUtils.join(cleanUpOrganizationNames(new LinkedList<String>(sortedByPosition.values())),
                     ", ");
+            logger.info("Cleaned up author name: " + authorName);
+            return authorName;
         }
 
-        return StringUtils.EMPTY;
+        logger.info("Unable to clean up text : " + text);
+        return text;
     }
+
+    /**
+     * Clean up Person Names with some pre-defined rules
+     * - Convert case (Title case) appropriately
+     * - Remove unwanted text
+     *
+     * @param personNames {@link List<String>}
+     * @return {@link List<String>} - Cleaned up name
+     */
 
     public static List<String> cleanUpPersonNames(List<String> personNames) {
 
         // Generally article contains name in well formed case (Title case), so we don't have to do much here
         // So convert names to title case only if the whole name is in small case or uppercase
-
         final Pattern INVALID_CHARS = Pattern.compile("[^\\w\\.\\-\\' ]+", Pattern.UNICODE_CHARACTER_CLASS);
 
         return personNames.stream()
-                .limit(2)
                 .map(name -> INVALID_CHARS.matcher(name).replaceAll(" "))   // Remove unwanted junk chars
                 .map(name -> name.toUpperCase().equals(name) || name.toLowerCase().matches(name) ?
                         WordUtils.capitalizeFully(name, new char[]{' ', '-', '\''}) :
@@ -452,12 +468,18 @@ final public class AuthorUtils {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Clean up Person Names with some pre-defined rules
+     * - Convert case (Title case) appropriately
+     *
+     * @param organizationNames {@link List<String>}
+     * @return {@link List<String>} - Cleaned up name
+     */
     public static List<String> cleanUpOrganizationNames(List<String> organizationNames) {
 
         // If organization name is single word and in all caps -> Leave as is e.g. CNN, BBC
         // Else convert it to title case
         return organizationNames.stream()
-                .limit(1)
                 .map(name -> {
                             if (name.split("\\s+").length == 1
                                     && name.toUpperCase().equals(name)) {
@@ -482,12 +504,5 @@ final public class AuthorUtils {
                 .sorted(Comparator.comparing(NamedEntity::getSalienceScore).reversed())
                 .limit(n)
                 .collect(Collectors.toList());
-    }
-
-    public static void main(String[] args) {
-
-        //System.out.println(CharMatcher.JAVA_UPPER_CASE.matchesAllOf("ABHISHEKMULAY"));
-        System.out.println(cleanUpUsingNER("***" + "Abhishek Mulay, Mark Luther"));
-        System.out.println(cleanUpUsingNER("*** " + "BBC and Google Inc"));
     }
 }

@@ -3,8 +3,8 @@ defaultTimezone: UTC
 useNamedEntityForAuthorExtraction: true
 
 # AirPR Extractor Configuration
-#extractorBaseUrl: http://extractor.airpr.com/api/
-extractorBaseUrl: http://localhost:8080/api/
+extractorBaseUrl: http://extractor.airpr.com/api/
+#extractorBaseUrl: http://localhost:8080/api/
 extractorEntityPath: entities
 extractorUserName: extractor
 extractorPassword: Hc7kvADwxxsJFvKCtqnm6byWaNRgUrzd
