@@ -8,7 +8,8 @@ import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 import org.jsoup.nodes.TextNode;
 import org.jsoup.select.Elements;
-import sun.reflect.generics.tree.Tree;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.*;
 import java.util.regex.Pattern;
@@ -32,9 +33,7 @@ final public class AuthorUtils {
             "…",            // Ellipsis
             "\\|"
     };
-
     public static final String SPECIAL_SYMBOLS_PATTERN = "(" + StringUtils.join(SPECIAL_SYMBOLS, "|") + ")";
-
     public static final Pattern[] IGNORE_AUTHOR_PARTS = new Pattern[]{
             // Deliberately keeping patterns separate to make is more readable and maintainable
 
@@ -56,11 +55,11 @@ final public class AuthorUtils {
             // Remove any ending special symbols
             Pattern.compile(SPECIAL_SYMBOLS_PATTERN + "[\\s]*$"),
     };
-
     public static final Pattern IGNORE_WORDS = createRegexPattern(
             "Facebook|Pinterest|Twitter|Linkedin"
     );
-
+    final static Pattern ITEMPROP = createRegexPattern("person|name|author|creator");
+    private static final Logger logger = LoggerFactory.getLogger(AuthorUtils.class);
     private static final int MAX_AUTHOR_NAME_LENGTH = 255;
     private static final Pattern HIGHLY_POSITIVE = createRegexPattern(
             "autor|author|author[\\-_]*name|article[\\-_]*author[\\-_]*name|author[\\-_]*card|story[\\-_]*author|" +
@@ -143,9 +142,6 @@ final public class AuthorUtils {
                 0;
     }
 
-
-    final static Pattern ITEMPROP = createRegexPattern("person|name|author|creator");
-
     public static Integer specialCases(Element element) {
         Integer weight = getWeight(element);
 
@@ -222,17 +218,17 @@ final public class AuthorUtils {
 
         String siteSpecificRule = Configuration.getInstance().getBestElementForAuthor().get(domain);
         if (siteSpecificRule != null) {
-           String authorName = document.select(siteSpecificRule).text();
+            String authorName = document.select(siteSpecificRule).text();
 
-           if (StringUtils.isBlank(authorName)) {
-               authorName = document.select(siteSpecificRule).attr("content");
-           }
+            if (StringUtils.isBlank(authorName)) {
+                authorName = document.select(siteSpecificRule).attr("content");
+            }
 
-           if (StringUtils.isNotBlank(authorName)) {
-               System.out.println(authorName);
-               return authorName;
+            if (StringUtils.isNotBlank(authorName)) {
+                System.out.println(authorName);
+                return authorName;
 
-           }
+            }
         }
 
         //Comparator<Element> byWeight = (Element e1, Element e2) -> getWeight(e1).compareTo(getWeight(e2));
@@ -359,5 +355,126 @@ final public class AuthorUtils {
 
     private static boolean sanityCheck(String authorName) {
         return StringUtils.isNotBlank(authorName) && authorName.split(" ").length > 1;
+    }
+
+
+    /**
+     * Extract named entities from the given text
+     *
+     * @param text {@link String}
+     * @return {@link List<NamedEntity>}
+     */
+    public static List<NamedEntity> extractNamedEntities(String text) {
+        logger.info("Extracting named entities from text " + text);
+        EntitiesResponse entitiesResponse = AirPRExtractorApiUtils.getEntities(text);
+
+        if (entitiesResponse == null || entitiesResponse.getEntities().size() == 0) {
+            logger.info("Unable to extract named entities " + text + " in first attempt");
+            logger.info("Retrying named entity extraction with modified text " + text);
+
+            // Retry extracting entities
+            // This time add empty space around the special symbols in the text sometimes it helps
+            String modifiedText = Pattern.compile(AuthorUtils.SPECIAL_SYMBOLS_PATTERN).matcher(text).replaceAll(" $1 ");
+
+            logger.info("Retrying named entity extraction with modified text " + modifiedText);
+            entitiesResponse = AirPRExtractorApiUtils.getEntities(modifiedText);
+        }
+        if (entitiesResponse == null || entitiesResponse.getEntities().size() == 0) {
+            logger.info("Unable to extract named entities for text " + text);
+            return Collections.EMPTY_LIST;
+        }
+        return entitiesResponse.getEntities();
+    }
+
+    public static String cleanUpUsingNER(String text) {
+        if (StringUtils.isBlank(text)) {
+            return StringUtils.EMPTY;
+        }
+
+        if (!Configuration.getInstance().isUseNamedEntityForAuthorExtraction()) {
+            return cleanup(text);
+        }
+
+        List<String> identifiedNamedEntities = Configuration.getInstance().getNerExclusion().parallelStream()
+                .filter(ne -> text.toLowerCase().contains(ne.toLowerCase()))
+                .collect(Collectors.toList());
+
+        if (identifiedNamedEntities.size() > 0) {
+            return StringUtils.join(identifiedNamedEntities, ", ");
+        }
+
+        List<NamedEntity> namedEntities = extractNamedEntities(text);
+        if (namedEntities == null || namedEntities.size() == 0) {
+            return cleanup(text);
+        }
+
+        // Lookup for Person Names
+        TreeMap<Integer, String> sortedByPosition = new TreeMap<>();
+        for (NamedEntity entity : namedEntities) {
+            if (EntityType.PERSON.equals(entity.getType())
+                    && text.contains(entity.getRepresentative())) {
+                sortedByPosition.put(text.indexOf(entity.getRepresentative()), entity.getRepresentative());
+            }
+        }
+
+        if (sortedByPosition.size() > 0) {
+            return StringUtils.join(cleanUpPersonNames(new LinkedList<String>(sortedByPosition.values())),
+                    ", ");
+        }
+
+        // Lookup for Organization Names if no Person Name found
+        for (NamedEntity entity : namedEntities) {
+            if (EntityType.ORGANIZATION.equals(entity.getType())
+                    && text.contains(entity.getRepresentative())) {
+                sortedByPosition.put(text.indexOf(entity.getRepresentative()), entity.getRepresentative());
+            }
+        }
+
+        if (sortedByPosition.size() > 0) {
+            return StringUtils.join(cleanUpOrganizationNames(new LinkedList<String>(sortedByPosition.values())),
+                    ", ");
+        }
+
+        return StringUtils.EMPTY;
+    }
+
+    public static List<String> cleanUpPersonNames(List<String> personNames) {
+
+        // Generally article contains name in well formed case (Title case), so we don't have to do much here
+        // So convert names to title case only if the whole name is in small case or uppercase
+
+        final Pattern INVALID_CHARS = Pattern.compile("[^\\w\\.\\-\\' ]+", Pattern.UNICODE_CHARACTER_CLASS);
+
+        return personNames.stream()
+                .limit(2)
+                .map(name -> INVALID_CHARS.matcher(name).replaceAll(" "))   // Remove unwanted junk chars
+                .map(name -> name.toUpperCase().equals(name) || name.toLowerCase().matches(name) ?
+                        WordUtils.capitalizeFully(name, new char[]{' ', '-', '\''}) :
+                        name)
+                .collect(Collectors.toList());
+    }
+
+    public static List<String> cleanUpOrganizationNames(List<String> organizationNames) {
+
+        // If organization name is single word and in all caps -> Leave as is e.g. CNN, BBC
+        // Else convert it to title case
+        return organizationNames.stream()
+                .limit(1)
+                .map(name -> {
+                            if (name.split("\\s+").length == 1
+                                    && name.toUpperCase().equals(name)) {
+                                return name;
+                            }
+                            return WordUtils.capitalizeFully(name, new char[]{' ', '-'});
+                        }
+                )
+                .collect(Collectors.toList());
+    }
+
+    public static void main(String[] args) {
+
+        //System.out.println(CharMatcher.JAVA_UPPER_CASE.matchesAllOf("ABHISHEKMULAY"));
+        System.out.println(cleanUpUsingNER("***" + "Abhishek Mulay, Mark Luther"));
+        System.out.println(cleanUpUsingNER("*** " + "BBC and Google Inc"));
     }
 }

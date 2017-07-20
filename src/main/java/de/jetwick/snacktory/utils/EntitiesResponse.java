@@ -1,18 +1,13 @@
 package de.jetwick.snacktory.utils;
 
-import javax.swing.text.html.parser.Entity;
 import java.util.List;
 
-enum EntityType {
-    PERSON("Person"), ORGANIZATION("Organization");
-
-    String value;
-    EntityType(String value) {
-        this.value = value;
-    }
-}
-
-public class Entities extends BaseEntity {
+/**
+ * Model class represents a response received from /entities Api
+ *
+ * @author Abhishek Mulay
+ */
+public class EntitiesResponse extends BaseEntity {
 
     List<NamedEntity> entities;
 

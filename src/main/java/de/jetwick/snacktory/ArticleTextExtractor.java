@@ -1,7 +1,7 @@
 package de.jetwick.snacktory;
 
 import com.google.common.net.InternetDomainName;
-import de.jetwick.snacktory.utils.AirPRExtractorUtils;
+import de.jetwick.snacktory.utils.AirPRExtractorApiUtils;
 import de.jetwick.snacktory.utils.AuthorUtils;
 import de.jetwick.snacktory.utils.Configuration;
 import de.jetwick.snacktory.utils.DateUtils;
@@ -450,32 +450,7 @@ public class ArticleTextExtractor {
         // get author information
         String rawAuthorName = AuthorUtils.extractAuthor(doc, res.getTopPrivateDomain());
         res.setRawAuthorName(rawAuthorName);
-        res.setAuthorName(AuthorUtils.cleanup(res.getRawAuthorName()));
-
-        if (Configuration.getInstance().isUseNamedEntityForAuthorExtraction() && StringUtils.isNotBlank(rawAuthorName))  {
-
-            List<String> identifiedNamedEntities = Configuration.getInstance().getNerExclusion().parallelStream()
-                    .filter(ne -> rawAuthorName.toLowerCase().contains(ne.toLowerCase()))
-                    .collect(Collectors.toList());
-
-
-            if (identifiedNamedEntities.size() > 0) {
-                res.setAuthorName(StringUtils.join(identifiedNamedEntities, ", "));
-            } else {
-
-                String cleanedAuthorNames = StringUtils.join(AirPRExtractorUtils.extractEntities(res.getRawAuthorName()), ", ");
-
-                if (StringUtils.isBlank(cleanedAuthorNames)) {
-                    String modifiedAuthorName = Pattern.compile(AuthorUtils.SPECIAL_SYMBOLS_PATTERN).matcher(rawAuthorName).replaceAll(" $1 ");
-                    cleanedAuthorNames = StringUtils.join(AirPRExtractorUtils.extractEntities(modifiedAuthorName), ", ");
-                }
-                if (StringUtils.isBlank(cleanedAuthorNames)) {
-                    res.setAuthorName(AuthorUtils.cleanup(rawAuthorName));
-                } else {
-                    res.setAuthorName(cleanedAuthorNames);
-                }
-            }
-        }
+        res.setAuthorName(AuthorUtils.cleanUpUsingNER(rawAuthorName));
         res.setAuthorDescription(extractAuthorDescription(doc, res.getAuthorName()));
 
         // add extra selection gravity to any element containing author name
