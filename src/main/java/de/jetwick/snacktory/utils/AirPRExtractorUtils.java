@@ -30,29 +30,6 @@ public class AirPRExtractorUtils {
 
     private static final Configuration config = Configuration.getInstance();
 
-//    HttpClient client = HttpClientBuilder.create().build();
-//    HttpGet request = new HttpGet(url);
-//
-//// add request header
-//request.addHeader("User-Agent", USER_AGENT);
-//    HttpResponse response = client.execute(request);
-//
-//System.out.println("Response Code : "
-//        + response.getStatusLine().getStatusCode());
-//
-//    BufferedReader rd = new BufferedReader(
-//            new InputStreamReader(response.getEntity().getContent()));
-//
-//    StringBuffer result = new StringBuffer();
-//    String line = "";
-//while ((line = rd.readLine()) != null) {
-//        result.append(line);
-
-//
-//    HttpClient client = HttpClientBuilder.create()
-//            .setDefaultCredentialsProvider(provider)
-//            .build();
-
     private static String urlBuilder(String baseUrl, String path, String parameters) {
 
         StringBuffer url = new StringBuffer();

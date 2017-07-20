@@ -1,6 +1,7 @@
 package de.jetwick.snacktory.utils;
 
 import de.jetwick.snacktory.SHelper;
+import org.apache.commons.lang.WordUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -209,10 +210,11 @@ final public class AuthorUtils {
     }
 
     private static void cleanUpDocument(Document document) {
-        document.select("*")
-                .parallelStream()
-                .filter(element -> SET_TO_REMOVE.matcher(element.className()).find())
-                .forEach(element -> element.remove());
+        for (Element element : document.select("*")) {
+            if (SET_TO_REMOVE.matcher(element.className()).find()) {
+                element.remove();
+            }
+        }
     }
 
     public static String extractAuthor(Document document, String domain) {
@@ -221,6 +223,10 @@ final public class AuthorUtils {
         String siteSpecificRule = Configuration.getInstance().getBestElementForAuthor().get(domain);
         if (siteSpecificRule != null) {
            String authorName = document.select(siteSpecificRule).text();
+
+           if (StringUtils.isBlank(authorName)) {
+               authorName = document.select(siteSpecificRule).attr("content");
+           }
 
            if (StringUtils.isNotBlank(authorName)) {
                System.out.println(authorName);

@@ -19,6 +19,12 @@ bestElementForAuthor:
   # Need to fix
   marketingprofs.com: 'span[itemprop=author]'
   foxnews.com: 'div.meta > div > span > a'
+  ge.com: 'div > hgroup > h4 > a'
+  globalbankingandfinance.com: 'div.the-content.post-content.clearfix > p:nth-child(1) > strong > em'
+  apnews.com: '#contentArea > div:nth-child(2) > div:nth-child(1) > h6'
+  bloomberg.com: 'body > main > div > article > div.lede-text-only.lede > div.lede-text-only__container > div > address'
+  computerpartner.at: 'meta[name=Author]'
+  cioreview.com: '#namepost > font'
 
   # Not working - Blank Domain
   jdsupra.com: '#followPeopleSection > div.follow-people-list.f6.lh-title > div > div > div:nth-child(2) > a'
