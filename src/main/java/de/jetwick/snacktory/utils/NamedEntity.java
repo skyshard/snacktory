@@ -1,6 +1,8 @@
 package de.jetwick.snacktory.utils;
 
 
+import org.codehaus.jackson.annotate.JsonProperty;
+
 /**
  * @author Abhishek Mulay
  */
@@ -8,6 +10,9 @@ public class NamedEntity extends BaseEntity {
 
     EntityType type;
     String representative;
+
+    @JsonProperty("salience_score")
+    Double salienceScore;
 
     public NamedEntity() {
     }
@@ -26,5 +31,13 @@ public class NamedEntity extends BaseEntity {
 
     public void setRepresentative(String representative) {
         this.representative = representative;
+    }
+
+    public Double getSalienceScore() {
+        return salienceScore;
+    }
+
+    public void setSalienceScore(Double salienceScore) {
+        this.salienceScore = salienceScore;
     }
 }

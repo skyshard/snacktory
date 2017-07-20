@@ -456,7 +456,7 @@ public class ArticleTextExtractorTest {
         JResult article = extractor.extractContent(c.streamToString(getClass().getResourceAsStream("wsj.html")));
         assertTrue(article.getText(), article.getText().startsWith("The Obama administration has paid out less than a third of the nearly $230 billion"));
         assertEquals("http://si.wsj.net/public/resources/images/OB-JO747_stimul_D_20100814113803.jpg", article.getImageUrl());
-        assertEquals("LOUISE RADNOFSKY", article.getAuthorName());
+        assertEquals("Louise Radnofsky", article.getAuthorName());
     }
 
     @Test
@@ -3112,7 +3112,7 @@ public class ArticleTextExtractorTest {
         assertEquals("Playmate tastes shame, ordered to clean up urban grit", res.getTitle());
         assertTrue(res.getText(), res.getText().startsWith("LOS ANGELES (AP) — Dani Mathers earned fame posing as a nude model."));
         assertTrue(res.getText(), res.getText().endsWith("where people might be naked or expect privacy."));
-        assertEquals("BRIAN MELLEY", res.getAuthorName());
+        assertEquals("Brian Melley", res.getAuthorName());
         assertEquals("By BRIAN MELLEY", res.getAuthorDescription());
         compareDates("2017-05-25 00:00:00", res.getDate());
     }

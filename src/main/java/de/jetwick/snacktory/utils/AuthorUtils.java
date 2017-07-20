@@ -410,9 +410,8 @@ final public class AuthorUtils {
 
         // Lookup for Person Names
         TreeMap<Integer, String> sortedByPosition = new TreeMap<>();
-        for (NamedEntity entity : namedEntities) {
-            if (EntityType.PERSON.equals(entity.getType())
-                    && text.contains(entity.getRepresentative())) {
+        for (NamedEntity entity : getTopNEntities(namedEntities, EntityType.PERSON, 2)) {
+            if (text.contains(entity.getRepresentative())) {
                 sortedByPosition.put(text.indexOf(entity.getRepresentative()), entity.getRepresentative());
             }
         }
@@ -423,9 +422,8 @@ final public class AuthorUtils {
         }
 
         // Lookup for Organization Names if no Person Name found
-        for (NamedEntity entity : namedEntities) {
-            if (EntityType.ORGANIZATION.equals(entity.getType())
-                    && text.contains(entity.getRepresentative())) {
+        for (NamedEntity entity : getTopNEntities(namedEntities, EntityType.ORGANIZATION, 1)) {
+            if (text.contains(entity.getRepresentative())) {
                 sortedByPosition.put(text.indexOf(entity.getRepresentative()), entity.getRepresentative());
             }
         }
@@ -468,6 +466,21 @@ final public class AuthorUtils {
                             return WordUtils.capitalizeFully(name, new char[]{' ', '-'});
                         }
                 )
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * Return top `n` entities of type `type` from `entities`
+     * @param entities {@link List<NamedEntity>}
+     * @param type {@link EntityType}
+     * @param n {@link int}
+     * @return {@link List<EntityType>}
+     */
+    public static List<NamedEntity> getTopNEntities(List<NamedEntity> entities, EntityType type, int n) {
+        return entities.stream()
+                .filter(entity -> type.equals(entity.getType()))
+                .sorted(Comparator.comparing(NamedEntity::getSalienceScore).reversed())
+                .limit(n)
                 .collect(Collectors.toList());
     }
 
