@@ -14,11 +14,11 @@ nerExclusion:
 
 bestElementForAuthor:
   reuters.com: ':containsOwn(reporting by), :containsOwn(reported by), :containsOwn(edited by), :containsOwn(editing by)'
-  upi.com: '#px > div.c_p > div.meta.grey'
+  #upi.com: '#px > div.c_p > div.meta.grey'
 
   # Need to fix
-  marketingprofs.com: 'span[itemprop=author]'
-  foxnews.com: 'div.meta > div > span > a'
+  #marketingprofs.com: 'span[itemprop=author]'
+  #foxnews.com: 'div.meta > div > span > a'
   ge.com: 'div > hgroup > h4 > a'
   globalbankingandfinance.com: 'div.the-content.post-content.clearfix > p:nth-child(1) > strong > em'
   apnews.com: '#contentArea > div:nth-child(2) > div:nth-child(1) > h6'

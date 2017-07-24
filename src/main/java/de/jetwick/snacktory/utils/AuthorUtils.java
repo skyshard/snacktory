@@ -58,24 +58,30 @@ final public class AuthorUtils {
     public static final Pattern IGNORE_WORDS = createRegexPattern(
             "Facebook|Pinterest|Twitter|Linkedin"
     );
-    final static Pattern ITEMPROP = createRegexPattern("person|name|author|creator");
+    final static Pattern ITEMPROP = createRegexPattern("author|creator");
+    final static Pattern ITEMPROP_POSITIVE = createRegexPattern("person|name");
     private static final Logger logger = LoggerFactory.getLogger(AuthorUtils.class);
     private static final int MAX_AUTHOR_NAME_LENGTH = 255;
     private static final Pattern HIGHLY_POSITIVE = createRegexPattern(
             "autor|author|author[\\-_]*name|article[\\-_]*author[\\-_]*name|author[\\-_]*card|story[\\-_]*author|" +
                     "author[\\-_]*link|date[\\-_]*author|author[\\-_]*date|byline|byline[\\-_]*name|byLine[\\-_]Tag|" +
-                    "contrib[\\-_]*byline|vcard|profile"
+                    "contrib[\\-_]*byline|vcard"
     );
     private static final Pattern POSITIVE = createRegexPattern(
-            "address|time[\\-_]date|post[\\-_]*date|source|news[\\-_]*post[\\-_]*source|meta[\\-_]*author|" +
+            "address|time[\\-_]*date|post[\\-_]*date|source|news[\\-_]*post[\\-_]*source|meta[\\-_]*author|" +
                     "author[\\-_]*meta|writer|submitted|creator|reporter[\\-_]*name|profile-data|posted|contact"
     );
     private static final Pattern SET_TO_REMOVE = createRegexPattern(
-            "tooltip|no_print|related[\\-_]*post(s)?|sidenav|navigation|feedback[\\-_]*prompt|related[\\-_]*combined[\\-_]*coverage|visually[\\-_]*hidden|page-footer|" +
+            "meettheauthor|join|discuss|thread|tooltip|no_print|related[\\-_]*post(s)?|sidenav|navigation|feedback[\\-_]*prompt|related[\\-_]*combined[\\-_]*coverage|visually[\\-_]*hidden|page-footer|" +
                     "ad[\\-_]*topjobs|slideshow[\\-_]*overlay[\\-_]*data|next[\\-_]*post[\\-_]*thumbnails|video[\\-_]*desc|related[\\-_]*links|widget popular" +
                     "|^widget marketplace$|^widget ad panel$|slideshowOverlay|^share-twitter$|^share-facebook$|dont_miss_container|" +
                     "^share-google-plus-1$|^inline-list tags$|^tag_title$|article_meta comments|^related-news$|^recomended$|" +
-                    "^news_preview$|related--galleries|image-copyright--copyright|^credits$|^photocredit$|^morefromcategory$|^pag-photo-credit$|gallery-viewport-credit|^image-credit$|story-secondary$|carousel-body|slider_container|widget_stories|post-thumbs|^custom-share-links|socialTools|trendingStories|jcarousel-container|module-video-slider|jcarousel-skin-tango|^most-read-content$|^commentBox$|^faqModal$|^widget-area|login-panel|^copyright$|relatedSidebar|shareFooterCntr|most-read-container|email-signup|outbrain|^wnStoryBodyGraphic|articleadditionalcontent|most-popular|shatner-box|form-errors|theme-summary|story-supplement|global-magazine-recent|nocontent|hidden-print|externallinks"
+                    "^news_preview$|related--galleries|image-copyright--copyright|^credits$|^photocredit$|^morefromcategory$|" +
+                    "^pag-photo-credit$|gallery-viewport-credit|^image-credit$|story-secondary$|carousel-body|slider_container|" +
+                    "widget_stories|post-thumbs|^custom-share-links|socialTools|trendingStories|jcarousel-container|module-video-slider|" +
+                    "jcarousel-skin-tango|^most-read-content$|^commentBox$|^faqModal$|^widget-area|login-panel|^copyright$|relatedSidebar|" +
+                    "shareFooterCntr|most-read-container|email-signup|outbrain|^wnStoryBodyGraphic|articleadditionalcontent|most-popular|" +
+                    "shatner-box|form-errors|theme-summary|story-supplement|global-magazine-recent|nocontent|hidden-print|externallinks"
     );
     private static final Pattern META_NAME = createRegexPattern(
             "name|author|creator"
@@ -116,29 +122,9 @@ final public class AuthorUtils {
         return SHelper.innerTrim(cleanAuthorName.toString());
     }
 
-    public static boolean shouldSkip(Element element) {
-
-        if (SET_TO_REMOVE.matcher(element.className()).matches()) {
-            return true;
-        }
-
-        for (Element parent : element.parents()) {
-            if (SET_TO_REMOVE.matcher(parent.className()).matches()) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     private static Integer getWeight(Element element) {
         return (element != null && element.hasAttr("weight")) ?
                 Integer.parseInt(element.attr("weight")) :
-                0;
-    }
-
-    private static Integer getMaxOccurance(Element element) {
-        return (element != null && element.hasAttr("max_occurance")) ?
-                Integer.parseInt(element.attr("max_occurance")) :
                 0;
     }
 
@@ -179,12 +165,16 @@ final public class AuthorUtils {
         Integer weight = 0;
 
         // Highly Positive
-        if (HIGHLY_POSITIVE.matcher(element.className()).find()) {
-            weight += 200;
+        if (HIGHLY_POSITIVE.matcher(element.className()).matches()) {
+            weight += 220;
+        } else if (HIGHLY_POSITIVE.matcher(element.className()).find()) {
+            weight += 180;
         }
 
-        if (HIGHLY_POSITIVE.matcher(element.id()).find()) {
-            weight += 100;
+        if (HIGHLY_POSITIVE.matcher(element.id()).matches()) {
+            weight += 150;
+        } else if (HIGHLY_POSITIVE.matcher(element.id()).find()) {
+            weight += 120;
         }
 
         return weight;
@@ -193,12 +183,15 @@ final public class AuthorUtils {
     public static Integer positiveCases(Element element) {
         Integer weight = 0;
 
-        // Positive
-        if (POSITIVE.matcher(element.id()).find()) {
+        if (POSITIVE.matcher(element.className()).matches()) {
+            weight += 100;
+        } else if (POSITIVE.matcher(element.className()).find()) {
             weight += 80;
         }
 
-        if (POSITIVE.matcher(element.className()).find()) {
+        if (POSITIVE.matcher(element.id()).matches()) {
+            weight += 60;
+        } else if (POSITIVE.matcher(element.id()).find()) {
             weight += 40;
         }
 
@@ -255,13 +248,13 @@ final public class AuthorUtils {
 
         for (Element element : document.select("*")) {
 
-            if (element.tagName().equals("meta")) {
-                continue;
-            }
+//            if (element.tagName().equals("meta")) {
+//                continue;
+//            }
 
-            if (StringUtils.isBlank(element.text())) {
-                continue;
-            }
+//            if (StringUtils.isBlank(element.text())) {
+//                continue;
+//            }
 
             element.attr("weight", Integer.toString(calWeight(element)));
 
@@ -285,12 +278,25 @@ final public class AuthorUtils {
             }
         }
 
-        Elements elements = document.select("meta[property*=author], meta[property*=creator]");
+        Elements elements = document.select("meta[property=author], meta[property=creator], meta[name=creator], meta[name=author]");
         if (elements != null && elements.size() > 0) {
             for (Element element : elements) {
                 authorName = extractText(element);
                 if (sanityCheck(authorName)) {
                     return authorName;
+                }
+            }
+        }
+
+        elements = document.select("[rel]");
+        if (elements != null && elements.size() > 0) {
+            for (Element element : elements) {
+                if (HIGHLY_POSITIVE.matcher(element.attr("rel")).find() ||
+                        POSITIVE.matcher(element.attr("rel")).find()) {
+                    authorName = extractText(element);
+                    if (sanityCheck(authorName)) {
+                        return authorName;
+                    }
                 }
             }
         }
@@ -339,7 +345,7 @@ final public class AuthorUtils {
     }
 
     private static boolean sanityCheck(String authorName) {
-        return StringUtils.isNotBlank(authorName) && authorName.split(" ").length > 1;
+        return StringUtils.isNotBlank(authorName);
     }
 
     /**
@@ -354,14 +360,14 @@ final public class AuthorUtils {
 
         if (entitiesResponse == null || entitiesResponse.getEntities().size() == 0) {
             logger.info("Unable to extract named entities " + text + " in first attempt");
-            logger.info("Retrying named entity extraction with modified text " + text);
 
             // Retry extracting entities
             // This time add empty space around the special symbols in the text sometimes it helps
             String modifiedText = Pattern.compile(AuthorUtils.SPECIAL_SYMBOLS_PATTERN).matcher(text).replaceAll(" $1 ");
-
-            logger.info("Retrying named entity extraction with modified text " + modifiedText);
-            entitiesResponse = AirPRExtractorApiUtils.getEntities(modifiedText);
+            if (!modifiedText.equals(text)) {
+                logger.info("Retrying named entity extraction with modified text " + modifiedText);
+                entitiesResponse = AirPRExtractorApiUtils.getEntities(modifiedText);
+            }
         }
         if (entitiesResponse == null || entitiesResponse.getEntities().size() == 0) {
             logger.info("Unable to extract named entities for text " + text);

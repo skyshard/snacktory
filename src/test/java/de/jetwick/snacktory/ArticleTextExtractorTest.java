@@ -107,6 +107,7 @@ public class ArticleTextExtractorTest {
         // http://daltoncaldwell.com/dear-mark-zuckerberg (html5)
         JResult res = extractor.extractContent(c.streamToString(getClass().getResourceAsStream("daltoncaldwell.html")));
         assertEquals("Dear Mark Zuckerberg by Dalton Caldwell", res.getTitle());
+        assertEquals("", res.getAuthorName());
         assertTrue("daltoncaldwell:" + res.getText(), res.getText().startsWith("On June 13, 2012, at 4:30 p.m., I attended a meeting at Facebook HQ in Menlo Park, California."));
     }
 
@@ -116,6 +117,7 @@ public class ArticleTextExtractorTest {
         JResult res = extractor.extractContent(c.streamToString(getClass().getResourceAsStream("wordpress.html")));
         assertEquals("Twitter API and Me « Find Time for the Karussell", res.getTitle());
         assertTrue("wordpress:" + res.getText(), res.getText().startsWith("I have a love hate relationship with Twitter. As a user I see "));
+        assertEquals("karussell", res.getAuthorName());
     }
 
     @Test
@@ -136,7 +138,6 @@ public class ArticleTextExtractorTest {
         assertEquals(Arrays.asList("読売新聞", "地域"), res.getKeywords());
     }
 
-    @Ignore
     @Test
     public void testFAZ() throws Exception {
         // http://www.faz.net/s/Rub469C43057F8C437CACC2DE9ED41B7950/Doc~EBA775DE7201E46E0B0C5AD9619BD56E9~ATpl~Ecommon~Scontent.html
@@ -900,7 +901,6 @@ public class ArticleTextExtractorTest {
         assertEquals(res.getAuthorName(), res.getAuthorDescription());
     }
 
-    @Ignore
     @Test
     public void testAdweek1() throws Exception {
         // http://www.adweek.com/digital/3-avenues-of-influence-beyond-media-coverage/?red=pr
@@ -1034,7 +1034,6 @@ public class ArticleTextExtractorTest {
         compareDates("2015-03-10 05:27:01", res.getDate());
     }
 
-    @Ignore
     @Test
     public void testPRnewswireAuthorDesc() throws Exception {
         // http://www.prnewswire.com/news-releases/tableau-to-present-at-upcoming-investor-conferences-300039248.html
@@ -1414,7 +1413,6 @@ public class ArticleTextExtractorTest {
         //compareDates("2015-10-23", res.getDate());
     }
 
-    @Ignore
     @Test
     public void testJdsupra() throws Exception {
         // http://www.jdsupra.com/legalnews/defending-the-sec-s-choice-of-the-69927/
@@ -2769,7 +2767,6 @@ public class ArticleTextExtractorTest {
         //assertTrue(res.getAuthorDescription(), res.getAuthorDescription().startsWith("Enrique Nuñez ist seit mehr als 20 Jahren im Internet tätig und hat in dieser Zeit drei Startup-Unternehmen gegründet."));
     }
 
-    @Ignore
     @Test
     public void testBulldogReporter() throws Exception {
         // https://www.bulldogreporter.com/are-you-guilty-of-pr-data-bias-what-why-and-how-to-check/
@@ -2824,7 +2821,6 @@ public class ArticleTextExtractorTest {
         assertEquals("DAVID HONIG, Vice President Strategy, Corporate Partnerships, Dynamic Signal", res.getAuthorDescription());
     }
 
-    @Ignore
     @Test
     public void testChiefMarketer() throws Exception {
         // http://www.chiefmarketer.com/ways-data-and-martech-can-help-communications-leaders/
@@ -3010,7 +3006,6 @@ public class ArticleTextExtractorTest {
         compareDates("2017-05-08 04:08:00", res.getDate());
     }
 
-    @Ignore
     @Test
     public void testAirpr() throws Exception {
         // http://blog.airpr.com/media-monitoring/
@@ -3056,7 +3051,6 @@ public class ArticleTextExtractorTest {
         compareDates("2016-07-02 05:01:58", res.getDate());
     }
 
-    @Ignore
     @Test
     public void testWayFair() throws Exception {
         // https://www.wayfair.com/ideas-and-advice/top-10-kitchen-dining-tables-S4709.html
@@ -3357,7 +3351,6 @@ public class ArticleTextExtractorTest {
         compareDates("2017-06-14 03:00:32", res.getDate());
     }
 
-    @Ignore
     @Test
     public void testSdnCioReview() throws Exception {
         // http://sdn.cioreview.com/cxoinsight/sdn-do-you-really-need-it-nid-24422-cid-147.html
@@ -3523,7 +3516,6 @@ public class ArticleTextExtractorTest {
         compareDates("2017-06-19 13:49:20 -05:00", res.getDate());
     }
 
-    @Ignore
     @Test
     public void testCbc() throws Exception {
         // http://www.cbc.ca/news/canada/calgary/sled-island-preview-1.4167762
@@ -3615,7 +3607,6 @@ public class ArticleTextExtractorTest {
         assertEquals("Norah Trent | wiseguyreports | +1 646 845 9349 / +44 208 133 9349 | email us here", res.getRawAuthorName());
     }
 
-    @Ignore
     @Test
     public void testRawAuthorName1() throws Exception {
         // https://www.bulldogreporter.com/are-you-guilty-of-pr-data-bias-what-why-and-how-to-check/
@@ -3624,7 +3615,6 @@ public class ArticleTextExtractorTest {
         assertEquals("By Kelly Byrd, PR Engineer,", res.getRawAuthorName());
     }
 
-    @Ignore
     @Test
     public void testBusinessinsider() throws Exception {
         // http://markets.businessinsider.com/news/stocks/Why-Ambarella-Inc--Stock-Fell-17-1percent-in-June-5560734
