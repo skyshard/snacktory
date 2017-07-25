@@ -2738,7 +2738,7 @@ public class ArticleTextExtractorTest {
         assertEquals( "DevOps: No Royal in This Use of “We”", res.getTitle());
         assertTrue(res.getText(), res.getText().startsWith("This is the first in a series of posts from the technical staff that GE Software had on the ground at Cloud Foundry Summit."));
         compareDates("2015-07-13 00:00:00 -04:00", res.getDate());
-        assertEquals("Denny Bulcao", res.getAuthorName());
+        assertEquals("Denny Bulcao, Jr", res.getAuthorName());
         assertEquals("Senior Technical Writer at GE", res.getAuthorDescription());
     }
 
@@ -3562,7 +3562,7 @@ public class ArticleTextExtractorTest {
         assertEquals("NT4Admins : Cloud-Networking in einer Hybrid-IT-Welt", res.getTitle());
         assertTrue(res.getText(), res.getText().startsWith("Aktuell setzen Microsoft und Amazon ihren Kampf um Preis"));
         assertTrue(res.getText(), res.getText().endsWith("können sie diesen Innovationen immer einen Schritt voraus sein."));
-        assertEquals("Patrick Hubbard, HeadGeek bei SolarWinds", res.getAuthorName());
+        assertEquals("Patrick Hubbard", res.getAuthorName());
         assertEquals("Patrick Hubbard, HeadGeek bei SolarWinds (Quelle: SolarWinds)", res.getAuthorDescription());
         compareDates("2017-06-23 00:00:00", res.getDate());
     }

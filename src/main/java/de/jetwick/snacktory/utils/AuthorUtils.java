@@ -11,6 +11,8 @@ import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.text.DateFormat;
+import java.text.DateFormatSymbols;
 import java.util.*;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -41,7 +43,7 @@ final public class AuthorUtils {
             Pattern.compile("((http(s)?://)?(www\\.)?facebook.com/)"),
 
 //            // Remove the Prefixes
-            Pattern.compile("(?<![\\w])(a|an|and|are|as|at|be|but|by|for|if|in|into|is|it|no|not|of|on|or|such|that|the|their|then|there|these|they|this|to|was|will|with|about the|from|Door|Über|by|name|author|posted|twitter|handle|news|locally researched|report(ing|ed)?( by)?|edit(ing|ed)( by)?)(?![\\w])", Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CHARACTER_CLASS),
+            Pattern.compile("(?<![\\w])(a|an|are|as|at|be|but|by|for|if|in|into|is|it|no|not|of|on|or|such|that|their|then|there|these|they|this|to|was|will|with|about the|from|Door|Über|by|name|author|posted|twitter|handle|news|locally researched|report(ing|ed)?( by)?|edit(ing|ed)( by)?)(?![\\w])", Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CHARACTER_CLASS),
             // Remove month names if any
             Pattern.compile("\\s+" + DateUtils.MMM_PATTERN + "\\s+"),
             // Remove the Suffixes
@@ -125,6 +127,53 @@ final public class AuthorUtils {
         }
 
         return SHelper.innerTrim(cleanAuthorName.toString());
+    }
+
+    public static String cleanUp1(String authorName) {
+
+        Pattern facebookProfileUrl = Pattern.compile("((http(s)?://)?(www\\.)?facebook.com/)");
+        authorName = facebookProfileUrl.matcher(authorName).replaceAll(StringUtils.EMPTY);
+
+        Pattern stopWords = createRegexPattern("(?<![\\w])(a|an|are|as|at|be|but|by|for|if|in|into|is|it|no|not|of|on|or|such|that|their|then|there|these|they|this|to|was|will|with|about the|from|Door|Über|by|name|author|posted|twitter|handle|locally researched|report(ing|ed)?|edit(ing|ed)|publish(ed)?|read)(?![\\w])");
+        authorName = stopWords.matcher(authorName).replaceAll(StringUtils.EMPTY);
+
+        // Remove date patterns if any
+        for (Pattern pattern : DateUtils.DATE_PATTERNS) {
+            authorName = pattern.matcher(authorName).replaceAll("");
+        }
+
+        Pattern months = createRegexPattern("(?<![\\w])(January|February|March|April|May|June|July|August|September|October|November|December|Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)(?![\\w])");
+        authorName = months.matcher(authorName).replaceAll("");
+
+        Pattern weekdays =  createRegexPattern("(?<![\\w])(Sunday|Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sun|Mon|Tue|Wed|Thu|Fri|Sat)(?![\\w])");
+        authorName = weekdays.matcher(authorName).replaceAll("");
+
+        Pattern numbers = createRegexPattern("\\d*");
+        authorName = numbers.matcher(authorName).replaceAll("");
+
+        String[] SPECIAL_SYMBOLS = new String[]{
+                //"\\.",
+                "\\+",
+                //"-",
+                "@",
+                ":",
+                "\\(",
+                "\\)",
+                "\\/",
+                "\\.\\.\\.",    // Ellipsis
+                "…",            // Ellipsis
+        };
+        Pattern specialSymbols = createRegexPattern("(" + StringUtils.strip( StringUtils.join(SPECIAL_SYMBOLS, "|"), "|"  ) + ")");
+
+        authorName = specialSymbols.matcher(authorName)
+                .replaceAll(" ")
+                .replaceAll("(\\|(\\s)*\\|)+", "|")
+                .replaceAll("^[^\\w]+", "")
+                .replaceAll("[^\\w]+$", "")
+                .replaceAll("\\s+", " ")
+                .trim();
+
+        return authorName;
     }
 
     private static Integer getWeight(Element element) {
@@ -361,7 +410,7 @@ final public class AuthorUtils {
     }
 
     private static Pattern createRegexPattern(String regex) {
-        return Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
+        return Pattern.compile(regex, Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CHARACTER_CLASS);
     }
 
     private static boolean sanityCheck(String authorName) {
@@ -375,10 +424,12 @@ final public class AuthorUtils {
      * @return {@link List<NamedEntity>}
      */
     public static List<NamedEntity> extractNamedEntities(String text) {
+        text = cleanUp1(text);
+        logger.info("Pre Entity Extractio Clean Up: " + text);
         logger.info("Extracting named entities from text " + text);
 
-        text = IGNORE_WORDS.matcher(text).replaceAll("");
-        text = Pattern.compile(SPECIAL_SYMBOLS_PATTERN).matcher(text).replaceAll(" $1 ");
+//        text = IGNORE_WORDS.matcher(text).replaceAll("");
+//        text = Pattern.compile(SPECIAL_SYMBOLS_PATTERN).matcher(text).replaceAll(" $1 ");
 
         EntitiesResponse entitiesResponse = AirPRExtractorApiUtils.getEntities(text);
 
@@ -534,5 +585,41 @@ final public class AuthorUtils {
                 .sorted(Comparator.comparing(NamedEntity::getSalienceScore).reversed())
                 .limit(n)
                 .collect(Collectors.toList());
+    }
+
+
+    public static void main(String[] args) {
+
+
+
+        DateFormatSymbols dfs = new DateFormatSymbols();
+
+        String monthNames =  StringUtils.join(dfs.getWeekdays(), "|") + StringUtils.join(dfs.getShortWeekdays(), "|");
+        monthNames = StringUtils.strip(monthNames, "|");
+        //System.out.printf(monthNames);
+
+        Pattern pattern = createRegexPattern("(?<![\\w])(January|February|March|April|May|June|July|August|September|October|November|December|Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)(?![\\w])");
+
+        Pattern pattern1 =  createRegexPattern("(?<![\\w])(Sunday|Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sun|Mon|Tue|Wed|Thu|Fri|Sat)(?![\\w])");
+
+        System.out.println(pattern.matcher("jul,Abhishek Mulay,jul, 3rd, joined in aug").replaceAll(""));
+
+        String[] SPECIAL_SYMBOLS = new String[]{
+                "\\.",
+                "\\+",
+                "-",
+                "@",
+                ":",
+                "\\(",
+                "\\)",
+                "/",
+                "\\.\\.\\.",    // Ellipsis
+                "…",            // Ellipsis
+        };
+        Pattern specialSymbols = createRegexPattern("(?<![\\w])(" + StringUtils.strip( StringUtils.join(SPECIAL_SYMBOLS, "|"), "|"  ) + ")(?![\\w])");
+
+
+        System.out.println(specialSymbols.matcher("||(...|...|..., Abhishek Mulay-Velotio, )").replaceAll("").replaceAll("\\|+", "|").replaceAll("^[^\\w]+", "").replaceAll("[^\\w]+$", ""));
+
     }
 }
