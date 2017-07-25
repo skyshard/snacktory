@@ -1416,7 +1416,9 @@ public class ArticleTextExtractorTest {
     @Test
     public void testJdsupra() throws Exception {
         // http://www.jdsupra.com/legalnews/defending-the-sec-s-choice-of-the-69927/
-        JResult res = extractor.extractContent(c.streamToString(getClass().getResourceAsStream("jdsupra.html")));
+        JResult res = new JResult();
+        res.setUrl("http://www.jdsupra.com/legalnews/defending-the-sec-s-choice-of-the-69927/");
+        res = extractor.extractContent(res, c.streamToString(getClass().getResourceAsStream("jdsupra.html")));
         assertTrue(res.getTitle(), res.getTitle().startsWith("Defending"));
         assertTrue(res.getText(), res.getText().startsWith("Wharton Associate Professor"));
         assertEquals("Keith Paul Bishop", res.getAuthorName());

@@ -40,8 +40,8 @@ final public class AuthorUtils {
             // Extract author-name from facebook profile urls
             Pattern.compile("((http(s)?://)?(www\\.)?facebook.com/)"),
 
-            // Remove the Prefixes
-            Pattern.compile("(?<![\\w])(about the|from|Door|Über|by|name|author|posted|twitter|handle|news|locally researched|report(ing|ed)?( by)?|edit(ing|ed)( by)?)(?![\\w])", Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CHARACTER_CLASS),
+//            // Remove the Prefixes
+            Pattern.compile("(?<![\\w])(a|an|and|are|as|at|be|but|by|for|if|in|into|is|it|no|not|of|on|or|such|that|the|their|then|there|these|they|this|to|was|will|with|about the|from|Door|Über|by|name|author|posted|twitter|handle|news|locally researched|report(ing|ed)?( by)?|edit(ing|ed)( by)?)(?![\\w])", Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CHARACTER_CLASS),
             // Remove month names if any
             Pattern.compile("\\s+" + DateUtils.MMM_PATTERN + "\\s+"),
             // Remove the Suffixes
@@ -56,7 +56,8 @@ final public class AuthorUtils {
             Pattern.compile(SPECIAL_SYMBOLS_PATTERN + "[\\s]*$"),
     };
     public static final Pattern IGNORE_WORDS = createRegexPattern(
-            "Facebook|Pinterest|Twitter|Linkedin"
+            //"Facebook|Pinterest|Twitter|Linkedin"
+            "(?<![\\w])(a|an|and|are|as|at|be|but|by|for|if|in|into|is|it|no|not|of|on|or|such|that|their|then|there|these|they|this|to|was|will|with|publish(ed)?|report(ing|ed)?|read)(?![\\w])"
     );
     final static Pattern ITEMPROP = createRegexPattern("author|creator");
     final static Pattern ITEMPROP_POSITIVE = createRegexPattern("person|name");
@@ -71,17 +72,21 @@ final public class AuthorUtils {
             "address|time[\\-_]*date|post[\\-_]*date|source|news[\\-_]*post[\\-_]*source|meta[\\-_]*author|" +
                     "author[\\-_]*meta|writer|submitted|creator|reporter[\\-_]*name|profile-data|posted|contact"
     );
+//    private static final Pattern SET_TO_REMOVE = createRegexPattern(
+//            "navigation|widget|sidebar|comment[\\-_]*holder|meettheauthor|join|discuss|thread|tooltip|no_print|related[\\-_]*post(s)?|sidenav|navigation|feedback[\\-_]*prompt|related[\\-_]*combined[\\-_]*coverage|visually[\\-_]*hidden|page-footer|" +
+//                    "ad[\\-_]*topjobs|slideshow[\\-_]*overlay[\\-_]*data|next[\\-_]*post[\\-_]*thumbnails|video[\\-_]*desc|related[\\-_]*links|widget popular" +
+//                    "|^widget marketplace$|^widget ad panel$|slideshowOverlay|^share-twitter$|^share-facebook$|dont_miss_container|" +
+//                    "^share-google-plus-1$|^inline-list tags$|^tag_title$|article_meta comments|^related-news$|^recomended$|" +
+//                    "^news_preview$|related--galleries|image-copyright--copyright|^credits$|^photocredit$|^morefromcategory$|" +
+//                    "^pag-photo-credit$|gallery-viewport-credit|^image-credit$|story-secondary$|carousel-body|slider_container|" +
+//                    "widget_stories|post-thumbs|^custom-share-links|socialTools|trendingStories|jcarousel-container|module-video-slider|" +
+//                    "jcarousel-skin-tango|^most-read-content$|^commentBox$|^faqModal$|^widget-area|login-panel|^copyright$|relatedSidebar|" +
+//                    "shareFooterCntr|most-read-container|email-signup|outbrain|^wnStoryBodyGraphic|articleadditionalcontent|most-popular|" +
+//                    "shatner-box|form-errors|theme-summary|story-supplement|global-magazine-recent|nocontent|hidden-print|externallinks"
+//    );
+
     private static final Pattern SET_TO_REMOVE = createRegexPattern(
-            "meettheauthor|join|discuss|thread|tooltip|no_print|related[\\-_]*post(s)?|sidenav|navigation|feedback[\\-_]*prompt|related[\\-_]*combined[\\-_]*coverage|visually[\\-_]*hidden|page-footer|" +
-                    "ad[\\-_]*topjobs|slideshow[\\-_]*overlay[\\-_]*data|next[\\-_]*post[\\-_]*thumbnails|video[\\-_]*desc|related[\\-_]*links|widget popular" +
-                    "|^widget marketplace$|^widget ad panel$|slideshowOverlay|^share-twitter$|^share-facebook$|dont_miss_container|" +
-                    "^share-google-plus-1$|^inline-list tags$|^tag_title$|article_meta comments|^related-news$|^recomended$|" +
-                    "^news_preview$|related--galleries|image-copyright--copyright|^credits$|^photocredit$|^morefromcategory$|" +
-                    "^pag-photo-credit$|gallery-viewport-credit|^image-credit$|story-secondary$|carousel-body|slider_container|" +
-                    "widget_stories|post-thumbs|^custom-share-links|socialTools|trendingStories|jcarousel-container|module-video-slider|" +
-                    "jcarousel-skin-tango|^most-read-content$|^commentBox$|^faqModal$|^widget-area|login-panel|^copyright$|relatedSidebar|" +
-                    "shareFooterCntr|most-read-container|email-signup|outbrain|^wnStoryBodyGraphic|articleadditionalcontent|most-popular|" +
-                    "shatner-box|form-errors|theme-summary|story-supplement|global-magazine-recent|nocontent|hidden-print|externallinks"
+            "meettheauthor|navigation|sidenav|join|discuss|thread|tooltip|no[\\-_]*print|hidden|related[\\-_]*article|popular|feedback|slideshow|thumbnail|share|additional|dont[\\-_]miss"
     );
     private static final Pattern META_NAME = createRegexPattern(
             "name|author|creator"
@@ -128,6 +133,12 @@ final public class AuthorUtils {
                 0;
     }
 
+    private static Integer getChildrenWeight(Element element) {
+        return element.select("*").stream()
+                .map(child -> getWeight(child))
+                .collect(Collectors.summingInt(Integer::intValue));
+    }
+
     public static Integer specialCases(Element element) {
         Integer weight = getWeight(element);
 
@@ -154,7 +165,7 @@ final public class AuthorUtils {
 
 
         if (element.tagName().equals("a") &&
-                (element.attr("href").contains("/author") || element.attr("href").contains("/profile") || element.attr("href").contains("/report"))) {
+                ((element.attr("href").contains("/author") || element.attr("href").contains("/profile") || element.attr("href").contains("/report")))) {
             weight += 30;
         }
 
@@ -200,7 +211,10 @@ final public class AuthorUtils {
 
     private static void cleanUpDocument(Document document) {
         for (Element element : document.select("*")) {
-            if (SET_TO_REMOVE.matcher(element.className()).find()) {
+            if (SET_TO_REMOVE.matcher(element.className()).find() ||
+                    SET_TO_REMOVE.matcher(element.id()).find() ||
+                    StringUtils.isBlank(element.text())) {
+                logger.trace("Removing element: " + element.toString());
                 element.remove();
             }
         }
@@ -220,7 +234,6 @@ final public class AuthorUtils {
             if (StringUtils.isNotBlank(authorName)) {
                 System.out.println(authorName);
                 return authorName;
-
             }
         }
 
@@ -236,8 +249,10 @@ final public class AuthorUtils {
                     return -1;
                 }
 
-                // @Todo: As of now don't know how to chose better element if weight is equal
-                return 0;
+                if (getChildrenWeight(e1) < getChildrenWeight(e2)) {
+                    return 1;
+                }
+                return -1;
             }
         };
 
@@ -246,29 +261,34 @@ final public class AuthorUtils {
 
         TreeSet<Element> sortedResultByWeight = new TreeSet<>(byWeight);
 
+        // Remove the elements having the same body
+        Map<String, Element> uniqueElementsByBody = new HashMap<>();
+
+
         for (Element element : document.select("*")) {
-
-//            if (element.tagName().equals("meta")) {
-//                continue;
-//            }
-
-//            if (StringUtils.isBlank(element.text())) {
-//                continue;
-//            }
 
             element.attr("weight", Integer.toString(calWeight(element)));
 
             if (getWeight(element) <= 0) {
                 continue;
             }
-            sortedResultByWeight.add(element);
+            uniqueElementsByBody.put(element.toString(), element);
+            // weightedElements.add(element);
         }
 
+        // Array by descending order of weight
+        sortedResultByWeight.addAll(uniqueElementsByBody.values());
+
+
+
+
+
+        // Clean up
         int iterations = 0;
         String authorName;
         for (Element element : sortedResultByWeight) {
             authorName = extractText(element);
-            authorName = IGNORE_WORDS.matcher(authorName).replaceAll("");
+            //authorName = IGNORE_WORDS.matcher(authorName).replaceAll("");
             if (sanityCheck(authorName)) {
                 return authorName.replaceAll("\\s+", " ").trim();
             }
@@ -356,19 +376,23 @@ final public class AuthorUtils {
      */
     public static List<NamedEntity> extractNamedEntities(String text) {
         logger.info("Extracting named entities from text " + text);
+
+        text = IGNORE_WORDS.matcher(text).replaceAll("");
+        text = Pattern.compile(SPECIAL_SYMBOLS_PATTERN).matcher(text).replaceAll(" $1 ");
+
         EntitiesResponse entitiesResponse = AirPRExtractorApiUtils.getEntities(text);
 
-        if (entitiesResponse == null || entitiesResponse.getEntities().size() == 0) {
-            logger.info("Unable to extract named entities " + text + " in first attempt");
-
-            // Retry extracting entities
-            // This time add empty space around the special symbols in the text sometimes it helps
-            String modifiedText = Pattern.compile(AuthorUtils.SPECIAL_SYMBOLS_PATTERN).matcher(text).replaceAll(" $1 ");
-            if (!modifiedText.equals(text)) {
-                logger.info("Retrying named entity extraction with modified text " + modifiedText);
-                entitiesResponse = AirPRExtractorApiUtils.getEntities(modifiedText);
-            }
-        }
+//        if (entitiesResponse == null || entitiesResponse.getEntities().size() == 0) {
+//            logger.info("Unable to extract named entities " + text + " in first attempt");
+//
+//            // Retry extracting entities
+//            // This time add empty space around the special symbols in the text sometimes it helps
+//            String modifiedText = Pattern.compile(AuthorUtils.SPECIAL_SYMBOLS_PATTERN).matcher(text).replaceAll(" $1 ");
+//            if (!modifiedText.equals(text)) {
+//                logger.info("Retrying named entity extraction with modified text " + modifiedText);
+//                entitiesResponse = AirPRExtractorApiUtils.getEntities(modifiedText);
+//            }
+//        }
         if (entitiesResponse == null || entitiesResponse.getEntities().size() == 0) {
             logger.info("Unable to extract named entities for text " + text);
             return Collections.EMPTY_LIST;
