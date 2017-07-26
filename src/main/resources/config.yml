@@ -3,14 +3,15 @@ defaultTimezone: UTC
 useNamedEntityForAuthorExtraction: true
 
 # AirPR Extractor Configuration
-#extractorBaseUrl: http://extractor.airpr.com/api/
-extractorBaseUrl: http://localhost:8080/api/
+extractorBaseUrl: http://extractor.airpr.com/api/
+#extractorBaseUrl: http://localhost:8080/api/
 extractorEntityPath: entities
 extractorUserName: extractor
 extractorPassword: Hc7kvADwxxsJFvKCtqnm6byWaNRgUrzd
 
 nerExclusion:
   - Destiny Bertucci
+  - Olivia Beavers
 
 bestElementForAuthor:
   reuters.com: ':containsOwn(reporting by), :containsOwn(reported by), :containsOwn(edited by), :containsOwn(editing by)'
@@ -23,8 +24,9 @@ bestElementForAuthor:
   bloomberg.com: 'body > main > div > article > div.lede-text-only.lede > div.lede-text-only__container > div > address'
   computerpartner.at: 'meta[name=Author]'
   cioreview.com: '#namepost > font'
-  einnews.com: 'p:contains(Media Contact)'
+  einnews.com: 'p:contains(Media Contact), p.contact'
   nt4admins.de: 'dl > dd'
+  bulldogreporter.com: 'div.single_post > div > p:nth-child(1) > em'
 
 
 

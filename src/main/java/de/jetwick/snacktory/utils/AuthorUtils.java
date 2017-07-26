@@ -11,9 +11,9 @@ import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.text.DateFormat;
 import java.text.DateFormatSymbols;
 import java.util.*;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -88,7 +88,7 @@ final public class AuthorUtils {
 //    );
 
     private static final Pattern SET_TO_REMOVE = createRegexPattern(
-            "meettheauthor|navigation|sidenav|join|discuss|thread|tooltip|no[\\-_]*print|hidden|related[\\-_]*article|popular|feedback|slideshow|thumbnail|share|additional|dont[\\-_]miss"
+            "without[\\-_]?author|post-list|(twitter|fb|facebook|pinterest|linkedin)[\\-_]?share|entry-user|widget widget_tabs|article[\\-_]*comment(s)?|comment(s)?[\\-_]*article|reply|listen|related[\\-_]*(story|article|content)|(story|article|content)[\\-_]*related|meettheauthor|navigation|sidenav|join|discuss|thread|tooltip|no[\\-_]*print|hidden|related[\\-_]*article|popular|feedback|slideshow|additional|dont[\\-_]miss|comment[\\-_]*author"
     );
     private static final Pattern META_NAME = createRegexPattern(
             "name|author|creator"
@@ -134,7 +134,7 @@ final public class AuthorUtils {
         Pattern facebookProfileUrl = Pattern.compile("((http(s)?://)?(www\\.)?facebook.com/)");
         authorName = facebookProfileUrl.matcher(authorName).replaceAll(StringUtils.EMPTY);
 
-        Pattern stopWords = createRegexPattern("(?<![\\w])(a|an|are|as|at|be|but|by|for|if|in|into|is|it|no|not|of|on|or|such|that|their|then|there|these|they|this|to|was|will|with|about the|from|Door|Über|by|name|author|posted|twitter|handle|locally researched|report(ing|ed)?|edit(ing|ed)|publish(ed)?|read)(?![\\w])");
+        Pattern stopWords = createRegexPattern("(?<![\\w])(true|false|a|an|are|as|at|be|but|by|for|if|in|into|is|it|no|not|of|on|or|such|that|their|then|there|these|they|this|to|was|will|with|about the|from|Door|Über|by|name|author|posted|twitter|handle|locally researched|report(ing|ed)?|edit(ing|ed)|publish(ed)?|read)(?![\\w])|autor|redakteur|facebook|linkedin|pinterest");
         authorName = stopWords.matcher(authorName).replaceAll(StringUtils.EMPTY);
 
         // Remove date patterns if any
@@ -145,7 +145,7 @@ final public class AuthorUtils {
         Pattern months = createRegexPattern("(?<![\\w])(January|February|March|April|May|June|July|August|September|October|November|December|Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)(?![\\w])");
         authorName = months.matcher(authorName).replaceAll("");
 
-        Pattern weekdays =  createRegexPattern("(?<![\\w])(Sunday|Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sun|Mon|Tue|Wed|Thu|Fri|Sat)(?![\\w])");
+        Pattern weekdays = createRegexPattern("(?<![\\w])(Sunday|Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sun|Mon|Tue|Wed|Thu|Fri|Sat)(?![\\w])");
         authorName = weekdays.matcher(authorName).replaceAll("");
 
         Pattern numbers = createRegexPattern("\\d*");
@@ -163,7 +163,7 @@ final public class AuthorUtils {
                 "\\.\\.\\.",    // Ellipsis
                 "…",            // Ellipsis
         };
-        Pattern specialSymbols = createRegexPattern("(" + StringUtils.strip( StringUtils.join(SPECIAL_SYMBOLS, "|"), "|"  ) + ")");
+        Pattern specialSymbols = createRegexPattern("(" + StringUtils.strip(StringUtils.join(SPECIAL_SYMBOLS, "|"), "|") + ")");
 
         authorName = specialSymbols.matcher(authorName)
                 .replaceAll(" ")
@@ -197,7 +197,7 @@ final public class AuthorUtils {
 
                 for (Element childElement : element.select("*")) {
                     if (childElement.hasAttr("itemprop") && ITEMPROP.matcher(childElement.attr("itemprop")).find()) {
-                        childElement.attr("weight", "300");
+                        childElement.attr("weight", Integer.toString(highlyPositiveCases(childElement) + positiveCases(element) + negativeCases(childElement) + 300));
                         weight += 200;
                     }
                 }
@@ -212,9 +212,8 @@ final public class AuthorUtils {
             }
         }
 
-
         if (element.tagName().equals("a") &&
-                ((element.attr("href").contains("/author") || element.attr("href").contains("/profile") || element.attr("href").contains("/report")))) {
+                ((element.attr("href").contains("/author") || element.attr("href").contains("/profile")))) {
             weight += 30;
         }
 
@@ -223,6 +222,9 @@ final public class AuthorUtils {
 
     public static Integer highlyPositiveCases(Element element) {
         Integer weight = 0;
+//        if (element.tagName().equals("meta") && HIGHLY_POSITIVE.matcher(element.attr("name")).find()) {
+//            weight += 200;
+//        }
 
         // Highly Positive
         if (HIGHLY_POSITIVE.matcher(element.className()).matches()) {
@@ -260,10 +262,15 @@ final public class AuthorUtils {
 
     private static void cleanUpDocument(Document document) {
         for (Element element : document.select("*")) {
+            if (element.className().equals("main-content post-586142 post type-post status-publish format-standard hentry category-social-pro-daily tag-prnewser vertical-digital contributor-Guest inset-hero")) {
+                Matcher matcher = SET_TO_REMOVE.matcher(element.className());
+                System.out.printf("Test");;
+            }
             if (SET_TO_REMOVE.matcher(element.className()).find() ||
-                    SET_TO_REMOVE.matcher(element.id()).find() ||
-                    StringUtils.isBlank(element.text())) {
-                logger.trace("Removing element: " + element.toString());
+                    SET_TO_REMOVE.matcher(element.id()).find()) {
+                logger.trace("Removing element because of : " + element.toString());
+                element.remove();
+            } else if ((!element.tagName().equals("meta")) && StringUtils.isBlank(element.text())) {
                 element.remove();
             }
         }
@@ -274,7 +281,16 @@ final public class AuthorUtils {
 
         String siteSpecificRule = Configuration.getInstance().getBestElementForAuthor().get(domain);
         if (siteSpecificRule != null) {
-            String authorName = document.select(siteSpecificRule).text();
+
+
+            Element probableElement = document.select(siteSpecificRule).first();
+
+            String authorName = null;
+            if (probableElement != null) {
+                authorName = probableElement.text();
+            }
+
+
 
             if (StringUtils.isBlank(authorName)) {
                 authorName = document.select(siteSpecificRule).attr("content");
@@ -329,7 +345,42 @@ final public class AuthorUtils {
         sortedResultByWeight.addAll(uniqueElementsByBody.values());
 
 
+        int sameWeightedElements = 0;
 
+        if (sortedResultByWeight.size() > 0) {
+            int weightTopElement = getWeight(sortedResultByWeight.first());
+            String classTopElement = sortedResultByWeight.first().className();
+//            String textTopElement = sortedResultByWeight.first().text();
+//            Element topElement = sortedResultByWeight.first();
+            int iteration = 0;
+            for (Element element : sortedResultByWeight) {
+
+                if (iteration == 0) {
+                    iteration++;
+                    continue;
+
+                }
+                iteration++;
+                if (getWeight(element) == weightTopElement && classTopElement.equals(element.className())) {
+                    sameWeightedElements++;
+                } else {
+                    break;
+                }
+            }
+            if (sameWeightedElements > 2) {
+
+                List<Element> temp = new LinkedList<>();
+
+                for (Element element : sortedResultByWeight) {
+                    if (weightTopElement != getWeight(element)) {
+                        temp.add(element);
+                    }
+                }
+
+                sortedResultByWeight.clear();
+                sortedResultByWeight.addAll(temp);
+            }
+        }
 
 
         // Clean up
@@ -342,12 +393,12 @@ final public class AuthorUtils {
                 return authorName.replaceAll("\\s+", " ").trim();
             }
 
-            if (iterations == 3) {
+            if (iterations == 2) {
                 break;
             }
         }
 
-        Elements elements = document.select("meta[property=author], meta[property=creator], meta[name=creator], meta[name=author]");
+        Elements elements = document.select("meta[property=author], meta[property=creator], meta[name=creator], meta[name=author], meta[name=dcterms.creator]");
         if (elements != null && elements.size() > 0) {
             for (Element element : elements) {
                 authorName = extractText(element);
@@ -375,7 +426,22 @@ final public class AuthorUtils {
     private static Integer calWeight(Element element) {
         return specialCases(element)
                 + highlyPositiveCases(element)
-                + positiveCases(element);
+                + positiveCases(element)
+                + negativeCases(element);
+
+    }
+
+    private static Integer negativeCases(Element element) {
+
+        int weight = 0;
+        if (SET_TO_REMOVE.matcher(element.className()).find() ||
+                SET_TO_REMOVE.matcher(element.id()).find()) {
+            weight -= 200;
+
+        } else if ((!element.tagName().equals("meta")) && StringUtils.isBlank(element.text())) {
+            weight -= 100;
+        }
+        return weight;
     }
 
     private static void nodeToText(Node node, StringBuffer text) {
@@ -414,7 +480,11 @@ final public class AuthorUtils {
     }
 
     private static boolean sanityCheck(String authorName) {
-        return StringUtils.isNotBlank(authorName);
+        String cleanedUpAuthorName = cleanUp1(authorName);
+        if (cleanedUpAuthorName.length() < 3 || cleanedUpAuthorName.length() > 150) {
+            return false;
+        }
+        return true;
     }
 
     /**
@@ -574,9 +644,10 @@ final public class AuthorUtils {
 
     /**
      * Return top `n` entities of type `type` from `entities`
+     *
      * @param entities {@link List<NamedEntity>}
-     * @param type {@link EntityType}
-     * @param n {@link int}
+     * @param type     {@link EntityType}
+     * @param n        {@link int}
      * @return {@link List<EntityType>}
      */
     public static List<NamedEntity> getTopNEntities(List<NamedEntity> entities, EntityType type, int n) {
@@ -591,16 +662,15 @@ final public class AuthorUtils {
     public static void main(String[] args) {
 
 
-
         DateFormatSymbols dfs = new DateFormatSymbols();
 
-        String monthNames =  StringUtils.join(dfs.getWeekdays(), "|") + StringUtils.join(dfs.getShortWeekdays(), "|");
+        String monthNames = StringUtils.join(dfs.getWeekdays(), "|") + StringUtils.join(dfs.getShortWeekdays(), "|");
         monthNames = StringUtils.strip(monthNames, "|");
         //System.out.printf(monthNames);
 
         Pattern pattern = createRegexPattern("(?<![\\w])(January|February|March|April|May|June|July|August|September|October|November|December|Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)(?![\\w])");
 
-        Pattern pattern1 =  createRegexPattern("(?<![\\w])(Sunday|Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sun|Mon|Tue|Wed|Thu|Fri|Sat)(?![\\w])");
+        Pattern pattern1 = createRegexPattern("(?<![\\w])(Sunday|Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sun|Mon|Tue|Wed|Thu|Fri|Sat)(?![\\w])");
 
         System.out.println(pattern.matcher("jul,Abhishek Mulay,jul, 3rd, joined in aug").replaceAll(""));
 
@@ -616,10 +686,12 @@ final public class AuthorUtils {
                 "\\.\\.\\.",    // Ellipsis
                 "…",            // Ellipsis
         };
-        Pattern specialSymbols = createRegexPattern("(?<![\\w])(" + StringUtils.strip( StringUtils.join(SPECIAL_SYMBOLS, "|"), "|"  ) + ")(?![\\w])");
+        Pattern specialSymbols = createRegexPattern("(?<![\\w])(" + StringUtils.strip(StringUtils.join(SPECIAL_SYMBOLS, "|"), "|") + ")(?![\\w])");
 
 
         System.out.println(specialSymbols.matcher("||(...|...|..., Abhishek Mulay-Velotio, )").replaceAll("").replaceAll("\\|+", "|").replaceAll("^[^\\w]+", "").replaceAll("[^\\w]+$", ""));
+
+        System.out.println();
 
     }
 }

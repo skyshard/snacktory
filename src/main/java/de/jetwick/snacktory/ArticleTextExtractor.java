@@ -205,6 +205,9 @@ public class ArticleTextExtractor {
         aMap.put("foxnews.com", Arrays.asList(
                 "p:contains(RELATED:) ~ ul"
             ));
+        aMap.put("thehill.com", Arrays.asList(
+                "span.rollover-people-block"
+        ));
 
         NODES_TO_REMOVE_PER_DOMAIN = Collections.unmodifiableMap(aMap);
     }
@@ -256,6 +259,9 @@ public class ArticleTextExtractor {
         ));
         aMap.put("popsugar.com", Arrays.asList(
                 ".shoppable-container"
+        ));
+        aMap.put("thehill.com", Arrays.asList(
+                "article"
         ));
 
         BEST_ELEMENT_PER_DOMAIN = Collections.unmodifiableMap(aMap);

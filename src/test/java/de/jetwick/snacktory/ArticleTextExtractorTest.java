@@ -427,7 +427,7 @@ public class ArticleTextExtractorTest {
         JResult article = extractor.extractContent(c.streamToString(getClass().getResourceAsStream("foxnews.html")));
         assertTrue("Foxnews:" + article.getText(), article.getText().startsWith("Apr. 8: President Obama signs the New START treaty with Russian President Dmitry Medvedev at the Prague Castle. Russia's announcement "));
         assertEquals("http://a57.foxnews.com/static/managed/img/Politics/397/224/startsign.jpg", article.getImageUrl());
-        assertEquals("", article.getAuthorName());
+        assertEquals("FoxNews.com", article.getAuthorName());
     }
 
     @Test
@@ -2474,7 +2474,7 @@ public class ArticleTextExtractorTest {
         assertTrue(res.getText(), res.getText().startsWith("On one level, the key to improving customer retention rates"));
         assertTrue(res.getText(), res.getText().endsWith("represent a useful alternative."));
         compareDates("2016-05-13 10:46:27 +0100", res.getDate());
-        assertEquals("Neil Capel, Sailthru", res.getAuthorName());
+        assertEquals("Neil Capel", res.getAuthorName());
         assertEquals("Neil’s successful track record of working on large-scale, high-demand web systems led him to develop Sailthru's unique Smart Data™ capabilities. Prior to...", res.getAuthorDescription());
     }
 
@@ -2751,8 +2751,8 @@ public class ArticleTextExtractorTest {
         assertEquals("http://www.enterpriseinnovation.net/article/big-data-survive-intensifying-squeeze-regulatory-compliance-1955902423?nopaging=1", res.getCanonicalUrl());
         assertEquals( "Big Data to survive the intensifying squeeze of regulatory compliance", res.getTitle());
         assertTrue(res.getText(), res.getText().startsWith("Today’s financial industry is experiencing immense amounts of pressure on all sides."));
-        assertEquals("Jason Demby", res.getAuthorName());
-        assertEquals("By Jason Demby, \u200Edirector of Business Development of Financial Services, Datameer | 2016-05-10", res.getAuthorDescription());
+        assertEquals("Jason Demby, Datameer", res.getAuthorName());
+        assertEquals("", res.getAuthorDescription());
     }
 
     @Test
@@ -3363,7 +3363,7 @@ public class ArticleTextExtractorTest {
         assertEquals("SDN: Do You Really Need It?", res.getTitle());
         assertTrue(res.getText(), res.getText().startsWith("Until recently, Software-defined networking SDN was both a buzzword and the subject of some discord in the IT community."));
         assertTrue(res.getText(), res.getText().endsWith("and cloud technology increase in usage and demand network software actuation for success."));
-        assertEquals("Patrick Hubbard", res.getAuthorName());
+        assertEquals("Patrick Hubbard, Head Geek", res.getAuthorName());
         assertEquals("Patrick Hubbard, Head Geek, SolarWinds", res.getAuthorDescription());
         compareDates("2017-05-10 00:00:00", res.getDate());
     }
@@ -3605,14 +3605,16 @@ public class ArticleTextExtractorTest {
     public void testRawAuthorName() throws Exception {
         // http://www.einnews.com/pr_news/336348008/hybrid-cloud-computing-industry-global-market-to-grow-at-cagr-34-4-between-2016-2022
         JResult res = new JResult();
+        res.setUrl("http://www.einnews.com/pr_news/336348008/hybrid-cloud-computing-industry-global-market-to-grow-at-cagr-34-4-between-2016-2022");
         res = extractor.extractContent(res, c.streamToString(getClass().getResourceAsStream("einnews_1.html")));
-        assertEquals("Norah Trent | wiseguyreports | +1 646 845 9349 / +44 208 133 9349 | email us here", res.getRawAuthorName());
+        assertEquals("Norah Trent wiseguyreports +1 646 845 9349 / +44 208 133 9349 email us here", res.getRawAuthorName());
     }
 
     @Test
     public void testRawAuthorName1() throws Exception {
         // https://www.bulldogreporter.com/are-you-guilty-of-pr-data-bias-what-why-and-how-to-check/
         JResult res = new JResult();
+        res.setUrl("https://www.bulldogreporter.com/are-you-guilty-of-pr-data-bias-what-why-and-how-to-check/");
         res = extractor.extractContent(res, c.streamToString(getClass().getResourceAsStream("bulldogreporter.html")));
         assertEquals("By Kelly Byrd, PR Engineer,", res.getRawAuthorName());
     }
@@ -3650,6 +3652,36 @@ public class ArticleTextExtractorTest {
         assertEquals("Emma Sarran Webster", res.getAuthorName());
         assertEquals(res.getAuthorName(), res.getAuthorDescription());
         compareDates("2017-06-06 05:35:00", res.getDate());
+    }
+
+    @Test
+    public void testTheHill1() throws Exception {
+        // http://thehill.com/homenews/senate/334439-rubio-on-whether-russia-probe-is-a-witch-hunt-i-wouldnt-use-the-term-witch
+        JResult res = new JResult();
+        res.setUrl("http://thehill.com/homenews/senate/334439-rubio-on-whether-russia-probe-is-a-witch-hunt-i-wouldnt-use-the-term-witch");
+        res = extractor.extractContent(res, c.streamToString(getClass().getResourceAsStream("thehill1.html")));
+        assertEquals("http://thehill.com/homenews/senate/334439-rubio-on-whether-russia-probe-is-a-witch-hunt-i-wouldnt-use-the-term-witch", res.getCanonicalUrl());
+        assertEquals("Rubio on Russia probe: 'I wouldn't use the term witch hunt'", res.getTitle());
+        assertTrue(res.getText(), res.getText().startsWith("Sen. Marco Rubio (R-Fla.) on Sunday said he wouldn't use the phrase \"witch hunt\""));
+        assertTrue(res.getText(), res.getText().endsWith("\"We need an intelligence committee report that people have confidence in,\" he said."));
+        assertEquals("Rebecca Savransky", res.getAuthorName());
+        assertEquals(res.getAuthorName(), res.getAuthorDescription());
+        compareDates("2017-05-21 09:37:48 -04:00", res.getDate());
+    }
+
+    @Test
+    public void testTheHill2() throws Exception {
+        // http://thehill.com/homenews/senate/343825-warren-entire-country-must-speak-up-on-gop-healthcare-bill
+        JResult res = new JResult();
+        res.setUrl("http://thehill.com/homenews/senate/343825-warren-entire-country-must-speak-up-on-gop-healthcare-bill");
+        res = extractor.extractContent(res, c.streamToString(getClass().getResourceAsStream("thehill2.html")));
+        assertEquals("http://thehill.com/homenews/senate/343825-warren-entire-country-must-speak-up-on-gop-healthcare-bill", res.getCanonicalUrl());
+        assertEquals("Warren: Entire country must speak up on GOP healthcare bill", res.getTitle());
+        assertTrue(res.getText(), res.getText().startsWith("Sen. Elizabeth Warren (D-Mass.) on Tuesday said the Senate GOP's efforts to put a healthcare bill that repeals ObamaCare to a vote should be a rallying cry for the whole country."));
+        assertTrue(res.getText(), res.getText().endsWith("the progressive senator added."));
+        assertEquals("Olivia Beavers", res.getAuthorName());
+        assertEquals("By Olivia Beavers - 07/25/17 10:49 PM EDT", res.getAuthorDescription());
+        compareDates("2017-07-25 22:49:42 -04:00", res.getDate());
     }
 
     public static void compareDates(String expectedDateString, Date actual) {
