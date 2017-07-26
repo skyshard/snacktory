@@ -3650,6 +3650,36 @@ public class ArticleTextExtractorTest {
         compareDates("2017-06-06 05:35:00", res.getDate());
     }
 
+    @Test
+    public void testTheHill1() throws Exception {
+        // http://thehill.com/homenews/senate/334439-rubio-on-whether-russia-probe-is-a-witch-hunt-i-wouldnt-use-the-term-witch
+        JResult res = new JResult();
+        res.setUrl("http://thehill.com/homenews/senate/334439-rubio-on-whether-russia-probe-is-a-witch-hunt-i-wouldnt-use-the-term-witch");
+        res = extractor.extractContent(res, c.streamToString(getClass().getResourceAsStream("thehill1.html")));
+        assertEquals("http://thehill.com/homenews/senate/334439-rubio-on-whether-russia-probe-is-a-witch-hunt-i-wouldnt-use-the-term-witch", res.getCanonicalUrl());
+        assertEquals("Rubio on Russia probe: 'I wouldn't use the term witch hunt'", res.getTitle());
+        assertTrue(res.getText(), res.getText().startsWith("Sen. Marco Rubio (R-Fla.) on Sunday said he wouldn't use the phrase \"witch hunt\""));
+        assertTrue(res.getText(), res.getText().endsWith("\"We need an intelligence committee report that people have confidence in,\" he said."));
+        assertEquals("Rebecca Savransky", res.getAuthorName());
+        assertEquals(res.getAuthorName(), res.getAuthorDescription());
+        compareDates("2017-05-21 09:37:48 -04:00", res.getDate());
+    }
+
+    @Test
+    public void testTheHill2() throws Exception {
+        // http://thehill.com/homenews/senate/343825-warren-entire-country-must-speak-up-on-gop-healthcare-bill
+        JResult res = new JResult();
+        res.setUrl("http://thehill.com/homenews/senate/343825-warren-entire-country-must-speak-up-on-gop-healthcare-bill");
+        res = extractor.extractContent(res, c.streamToString(getClass().getResourceAsStream("thehill2.html")));
+        assertEquals("http://thehill.com/homenews/senate/343825-warren-entire-country-must-speak-up-on-gop-healthcare-bill", res.getCanonicalUrl());
+        assertEquals("Warren: Entire country must speak up on GOP healthcare bill", res.getTitle());
+        assertTrue(res.getText(), res.getText().startsWith("Sen. Elizabeth Warren (D-Mass.) on Tuesday said the Senate GOP's efforts to put a healthcare bill that repeals ObamaCare to a vote should be a rallying cry for the whole country."));
+        assertTrue(res.getText(), res.getText().endsWith("the progressive senator added."));
+        assertEquals("Olivia Beavers", res.getAuthorName());
+        assertEquals("By Olivia Beavers - 07/25/17 10:49 PM EDT", res.getAuthorDescription());
+        compareDates("2017-07-25 22:49:42 -04:00", res.getDate());
+    }
+
     public static void compareDates(String expectedDateString, Date actual) {
         String[] patterns = {
                 "yyyy-MM-dd",
