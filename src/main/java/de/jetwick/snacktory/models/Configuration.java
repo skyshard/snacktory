@@ -38,7 +38,8 @@ final public class Configuration {
 
     private boolean useNamedEntityForAuthorExtraction;
 
-    private List<String> nerExclusion;
+    // Entity Name --> Entity Type
+    private Map<String, String> nerExclusion;
 
     private Map<String, String> bestElementForAuthor;
 
@@ -97,11 +98,11 @@ final public class Configuration {
         this.useNamedEntityForAuthorExtraction = useNamedEntityForAuthorExtraction;
     }
 
-    public List<String> getNerExclusion() {
+    public Map<String, String> getNerExclusion() {
         return nerExclusion;
     }
 
-    public void setNerExclusion(List<String> nerExclusion) {
+    public void setNerExclusion(Map<String, String> nerExclusion) {
         this.nerExclusion = nerExclusion;
     }
 

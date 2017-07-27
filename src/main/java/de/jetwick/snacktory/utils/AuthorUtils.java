@@ -1,11 +1,9 @@
 package de.jetwick.snacktory.utils;
 
-import de.jetwick.snacktory.models.Configuration;
-import de.jetwick.snacktory.models.EntitiesResponse;
-import de.jetwick.snacktory.models.EntityType;
-import de.jetwick.snacktory.models.NamedEntity;
+import de.jetwick.snacktory.models.*;
 import org.apache.commons.lang.WordUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.http.auth.AUTH;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
@@ -496,41 +494,41 @@ final public class AuthorUtils {
      * @param text {@link String}
      * @return {@link String}
      */
-    public static String cleanUpUsingNER(String text) {
-        String authorName;
+    public static AuthorInfo cleanUpUsingNER(String text) {
+        AuthorInfo authorInfo = new AuthorInfo();
+
         if (StringUtils.isBlank(text)) {
             logger.info("Found empty text. No further processing required.");
-            return StringUtils.EMPTY;
+            return authorInfo;
         }
 
         if (!Configuration.getInstance().isUseNamedEntityForAuthorExtraction()) {
             logger.info("Use of NER for author extraction is disabled.");
-            authorName = cleanup(text);
-            logger.info("Cleaned up author name: " + authorName);
-            return authorName;
+            authorInfo.setNames(new String[]{cleanup(text)});
+            logger.info("Cleaned up author name: " + authorInfo.getNamesAsString());
+            return authorInfo;
         }
 
         logger.info("Looking if text has whitelisted named entities.");
-        List<String> identifiedNamedEntities = Configuration.getInstance().getNerExclusion().parallelStream()
-                .filter(ne -> text.toLowerCase().contains(ne.toLowerCase()))
-                .collect(Collectors.toList());
+        Map<String, String> identifiedNamedEntities = Configuration.getInstance().getNerExclusion().entrySet().stream()
+                .filter(e -> StringUtils.containsIgnoreCase(text, e.getKey()))
+                .collect(Collectors.toMap(e -> e.getKey(), e -> e.getValue()));
 
         if (identifiedNamedEntities.size() > 0) {
-            authorName = StringUtils.join(identifiedNamedEntities, ", ");
-            logger.info("Found whitelisted named entities. Cleaned up author name: " + authorName);
-            return authorName;
+            authorInfo.setNames(identifiedNamedEntities.keySet());
+            authorInfo.setEntityType(EntityType.forValue(identifiedNamedEntities.values().iterator().next()));
+            logger.info("Found whitelisted named entities. Cleaned up author name: " + authorInfo.getNamesAsString());
+            return authorInfo;
         }
 
         List<NamedEntity> namedEntities = extractNamedEntities(text);
         if (namedEntities == null || namedEntities.size() == 0) {
-            authorName = cleanup(text);
-            logger.info("Cleaned up author name: " + authorName);
-            return authorName;
+            authorInfo.setNames(new String[]{cleanup(text)});
+            logger.info("Cleaned up author name: " + authorInfo.getNamesAsString());
+            return authorInfo;
         }
 
         TreeMap<Integer, String> sortedByPosition = new TreeMap<>();
-
-
 
         // Lookup for Person Names
         getTopNEntities(namedEntities, EntityType.PERSON,  MAX_NO_OF_PERSON_NAMES_TO_USE).stream()
@@ -539,9 +537,10 @@ final public class AuthorUtils {
                 .forEach(name -> sortedByPosition.put(StringUtils.indexOfIgnoreCase(text, name), name));
 
         if (sortedByPosition.size() > 0) {
-            authorName = StringUtils.join(sortedByPosition.values(), ", ");
-            logger.info("Cleaned up author name: " + authorName);
-            return authorName;
+            authorInfo.setNames(sortedByPosition.values());
+            authorInfo.setEntityType(EntityType.PERSON);
+            logger.info("Cleaned up author name: " + authorInfo.getNamesAsString());
+            return authorInfo;
         }
 
         getTopNEntities(namedEntities, EntityType.ORGANIZATION, MAX_NO_OF_ORGANIZATION_NAMES_TO_USE).stream()
@@ -550,13 +549,15 @@ final public class AuthorUtils {
                 .forEach(name -> sortedByPosition.put(StringUtils.indexOfIgnoreCase(text, name), name));
 
         if (sortedByPosition.size() > 0) {
-            authorName = StringUtils.join(sortedByPosition.values(), ", ");
-            logger.info("Cleaned up author name: " + authorName);
-            return authorName;
+            authorInfo.setNames(sortedByPosition.values());
+            authorInfo.setEntityType(EntityType.ORGANIZATION);
+            logger.info("Cleaned up author name: " + authorInfo.getNamesAsString());
+            return authorInfo;
         }
 
         logger.info("Unable to clean up text : " + text);
-        return text;
+        authorInfo.setNames(new String[]{cleanup(text)});
+        return authorInfo;
     }
 
     /**

@@ -454,7 +454,8 @@ public class ArticleTextExtractor {
         // get author information
         String rawAuthorName = AuthorUtils.extractAuthor(doc, res.getTopPrivateDomain());
         res.setRawAuthorName(rawAuthorName);
-        res.setAuthorName(AuthorUtils.cleanUpUsingNER(rawAuthorName));
+        res.setAuthorInfo(AuthorUtils.cleanUpUsingNER(rawAuthorName));
+        res.setAuthorName(res.getAuthorInfo().getNamesAsString());
         res.setAuthorDescription(extractAuthorDescription(doc, res.getAuthorName()));
 
         // add extra selection gravity to any element containing author name
