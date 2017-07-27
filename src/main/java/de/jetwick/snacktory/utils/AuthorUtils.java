@@ -1,6 +1,9 @@
 package de.jetwick.snacktory.utils;
 
-import de.jetwick.snacktory.SHelper;
+import de.jetwick.snacktory.models.Configuration;
+import de.jetwick.snacktory.models.EntitiesResponse;
+import de.jetwick.snacktory.models.EntityType;
+import de.jetwick.snacktory.models.NamedEntity;
 import org.apache.commons.lang.WordUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.nodes.Document;
@@ -11,9 +14,7 @@ import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.text.DateFormatSymbols;
 import java.util.*;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -22,45 +23,6 @@ import java.util.stream.Collectors;
  */
 final public class AuthorUtils {
 
-    public static final String[] SPECIAL_SYMBOLS = new String[]{
-            "\\.",
-            "\\+",
-            "-",
-            "@",
-            ":",
-            "\\(",
-            "\\)",
-            "/",
-            "\\.\\.\\.",    // Ellipsis
-            "…",            // Ellipsis
-            "\\|"
-    };
-    public static final String SPECIAL_SYMBOLS_PATTERN = "(" + StringUtils.join(SPECIAL_SYMBOLS, "|") + ")";
-    public static final Pattern[] IGNORE_AUTHOR_PARTS = new Pattern[]{
-            // Deliberately keeping patterns separate to make is more readable and maintainable
-
-            // Extract author-name from facebook profile urls
-            Pattern.compile("((http(s)?://)?(www\\.)?facebook.com/)"),
-
-//            // Remove the Prefixes
-            Pattern.compile("(?<![\\w])(a|an|are|as|at|be|but|by|for|if|in|into|is|it|no|not|of|on|or|such|that|their|then|there|these|they|this|to|was|will|with|about the|from|Door|Über|by|name|author|posted|twitter|handle|news|locally researched|report(ing|ed)?( by)?|edit(ing|ed)( by)?)(?![\\w])", Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CHARACTER_CLASS),
-            // Remove month names if any
-            Pattern.compile("\\s+" + DateUtils.MMM_PATTERN + "\\s+"),
-            // Remove the Suffixes
-            //Pattern.compile("((\\|| - |, ).*)"),
-            // Remove any sequence of numbers
-            Pattern.compile("(\\d+)"),
-            // Remove any arbitrary special symbol "whitespace followed by special symbol followed by whitespace"
-            Pattern.compile("(?<![\\w])" + SPECIAL_SYMBOLS_PATTERN + "(?![\\w])", Pattern.UNICODE_CHARACTER_CLASS),
-            // Remove any starting special symbols
-            Pattern.compile("^[\\s]*" + SPECIAL_SYMBOLS_PATTERN),
-            // Remove any ending special symbols
-            Pattern.compile(SPECIAL_SYMBOLS_PATTERN + "[\\s]*$"),
-    };
-    public static final Pattern IGNORE_WORDS = createRegexPattern(
-            //"Facebook|Pinterest|Twitter|Linkedin"
-            "(?<![\\w])(a|an|and|are|as|at|be|but|by|for|if|in|into|is|it|no|not|of|on|or|such|that|their|then|there|these|they|this|to|was|will|with|publish(ed)?|report(ing|ed)?|read)(?![\\w])"
-    );
     final static Pattern ITEMPROP = createRegexPattern("author|creator");
     final static Pattern ITEMPROP_POSITIVE = createRegexPattern("person|name");
     private static final Logger logger = LoggerFactory.getLogger(AuthorUtils.class);
@@ -74,29 +36,28 @@ final public class AuthorUtils {
             "address|time[\\-_]*date|post[\\-_]*date|source|news[\\-_]*post[\\-_]*source|meta[\\-_]*author|" +
                     "author[\\-_]*meta|writer|submitted|creator|reporter[\\-_]*name|profile-data|posted|contact"
     );
-//    private static final Pattern SET_TO_REMOVE = createRegexPattern(
-//            "navigation|widget|sidebar|comment[\\-_]*holder|meettheauthor|join|discuss|thread|tooltip|no_print|related[\\-_]*post(s)?|sidenav|navigation|feedback[\\-_]*prompt|related[\\-_]*combined[\\-_]*coverage|visually[\\-_]*hidden|page-footer|" +
-//                    "ad[\\-_]*topjobs|slideshow[\\-_]*overlay[\\-_]*data|next[\\-_]*post[\\-_]*thumbnails|video[\\-_]*desc|related[\\-_]*links|widget popular" +
-//                    "|^widget marketplace$|^widget ad panel$|slideshowOverlay|^share-twitter$|^share-facebook$|dont_miss_container|" +
-//                    "^share-google-plus-1$|^inline-list tags$|^tag_title$|article_meta comments|^related-news$|^recomended$|" +
-//                    "^news_preview$|related--galleries|image-copyright--copyright|^credits$|^photocredit$|^morefromcategory$|" +
-//                    "^pag-photo-credit$|gallery-viewport-credit|^image-credit$|story-secondary$|carousel-body|slider_container|" +
-//                    "widget_stories|post-thumbs|^custom-share-links|socialTools|trendingStories|jcarousel-container|module-video-slider|" +
-//                    "jcarousel-skin-tango|^most-read-content$|^commentBox$|^faqModal$|^widget-area|login-panel|^copyright$|relatedSidebar|" +
-//                    "shareFooterCntr|most-read-container|email-signup|outbrain|^wnStoryBodyGraphic|articleadditionalcontent|most-popular|" +
-//                    "shatner-box|form-errors|theme-summary|story-supplement|global-magazine-recent|nocontent|hidden-print|externallinks"
-//    );
 
     private static final Pattern SET_TO_REMOVE = createRegexPattern(
             "without[\\-_]?author|post-list|(twitter|fb|facebook|pinterest|linkedin)[\\-_]?share|entry-user|widget widget_tabs|article[\\-_]*comment(s)?|comment(s)?[\\-_]*article|reply|listen|related[\\-_]*(story|article|content)|(story|article|content)[\\-_]*related|meettheauthor|navigation|sidenav|join|discuss|thread|tooltip|no[\\-_]*print|hidden|related[\\-_]*article|popular|feedback|slideshow|additional|dont[\\-_]miss|comment[\\-_]*author"
     );
+
     private static final Pattern META_NAME = createRegexPattern(
             "name|author|creator"
     );
-    private static Integer HIGHLY_POSITIVE_CLASS_WEIGHT = 300;
-    private static Integer HIGHLY_POSITIVE_ID_WEIGHT = 200;
-    private static Integer POSITIVE_WEIGHT = 200;
+    private static final Pattern FACEBOOK_PROFILE_URL_PATTERN = createRegexPattern("((http(s)?://)?(www\\.)?facebook.com/)");
+    private static final Pattern STOPWORDS_PATTERN = createRegexPattern("(?<![\\w])(true|false|a|an|are|as|at|be|but|by|for|if|in|into|is|it|no|not|of|on|or|such|that|their|then|there|these|they|this|to|was|will|with|about the|from|Door|Über|by|name|author|posted|twitter|handle|locally researched|report(ing|ed)?|edit(ing|ed)|publish(ed)?|read)(?![\\w])|autor|redakteur|facebook|linkedin|pinterest");
+    private static final Pattern MONTHS_PATTERN = createRegexPattern("(?<![\\w])(January|February|March|April|May|June|July|August|September|October|November|December|Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)(?![\\w])");
+    private static final Pattern WEEKDAYS_PATTERN = createRegexPattern("(?<![\\w])(Sunday|Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sun|Mon|Tue|Wed|Thu|Fri|Sat)(?![\\w])");
+    private static final Pattern INVALID_CHARS_IN_NAMED_ENTITY = createRegexPattern("[^\\w\\.\\-\\' ]+");
 
+    private static final String SPECIAL_SYMBOLS_TO_REMOVE = "\\+|^@|:|\\(|\\)|\\/|\\.\\.\\.|…|\"";
+    private static final String ADDITIONAL_SYMBOLS_TO_REMOVE = ",|\\||-|'";     // Can be present as part of name
+    private static final String ALL_SYMBOLS = String.format("(%s|%s)", SPECIAL_SYMBOLS_TO_REMOVE, ADDITIONAL_SYMBOLS_TO_REMOVE);
+
+    private static final int MAX_NO_OF_PERSON_NAMES_TO_USE = 2;
+    private static final int MAX_NO_OF_ORGANIZATION_NAMES_TO_USE = 1;
+
+    // Private constructor since this is an utility class
     private AuthorUtils() {
     }
 
@@ -107,73 +68,87 @@ final public class AuthorUtils {
      * @return {@link String}
      */
     public static String cleanup(String authorName) {
-
-        StringBuffer cleanAuthorName = new StringBuffer(authorName);
-
-        // Remove date patterns if any
-        for (Pattern pattern : DateUtils.DATE_PATTERNS) {
-            cleanAuthorName = new StringBuffer(pattern.matcher(cleanAuthorName.toString()).replaceAll(""));
-        }
-        cleanAuthorName = new StringBuffer(Pattern.compile("(\\s|^)+" + DateUtils.MMM_PATTERN + "(\\s|$)+").matcher(cleanAuthorName).replaceAll(" "));
-
-        // Remove common prefixes, suffixes, symbols, etc
-        for (Pattern pattern : IGNORE_AUTHOR_PARTS) {
-            cleanAuthorName = new StringBuffer(pattern.matcher(cleanAuthorName.toString()).replaceAll(" "));
-        }
-
-        // Limit the max size
-        if (cleanAuthorName.length() > MAX_AUTHOR_NAME_LENGTH) {
-            cleanAuthorName = new StringBuffer(SHelper.utf8truncate(cleanAuthorName.toString(), MAX_AUTHOR_NAME_LENGTH));
-        }
-
-        return SHelper.innerTrim(cleanAuthorName.toString());
+        return preExtractionCleanup(authorName);
     }
 
-    public static String cleanUp1(String authorName) {
+    /**
+     * This method helps to remove junk text from the author name
+     * - Remove date patterns
+     * - Remove unwanted symbols
+     * - Remove unwanted urls
+     *
+     * @param authorName {@link String}
+     * @return {@link String}
+     */
+    public static String preExtractionCleanup(String authorName) {
+        CharSequence cleanAuthorName = removeFacebookProfileUrl(authorName);
+        cleanAuthorName = removeStopWords(cleanAuthorName);
+        cleanAuthorName = removeDateTime(cleanAuthorName);
+        cleanAuthorName = cleanAuthorName.toString().replaceAll("\\d+", StringUtils.EMPTY); // Remove digits
+        cleanAuthorName = removeSpecialSymbols(cleanAuthorName);
 
-        Pattern facebookProfileUrl = Pattern.compile("((http(s)?://)?(www\\.)?facebook.com/)");
-        authorName = facebookProfileUrl.matcher(authorName).replaceAll(StringUtils.EMPTY);
+        return cleanAuthorName.toString();
+    }
 
-        Pattern stopWords = createRegexPattern("(?<![\\w])(true|false|a|an|are|as|at|be|but|by|for|if|in|into|is|it|no|not|of|on|or|such|that|their|then|there|these|they|this|to|was|will|with|about the|from|Door|Über|by|name|author|posted|twitter|handle|locally researched|report(ing|ed)?|edit(ing|ed)|publish(ed)?|read)(?![\\w])|autor|redakteur|facebook|linkedin|pinterest");
-        authorName = stopWords.matcher(authorName).replaceAll(StringUtils.EMPTY);
+    /**
+     * Clean up text by applying sequence of rules
+     * - Remove unwanted symbols
+     * - Remove extra whitespaces
+     *
+     * @param text {@link String}
+     * @return {@link CharSequence}
+     */
+    public static CharSequence removeSpecialSymbols(CharSequence text) {
+        return text.toString()
+                .replaceAll(SPECIAL_SYMBOLS_TO_REMOVE, " ")                           // Remove Special Symbols
+                .replaceAll(ALL_SYMBOLS + "+\\s*" + ALL_SYMBOLS + "+", " | ")   // Squeeze consecutive Symbols
+                .replaceAll("^\\W+|\\W+$", "")                                  // Remove starting and trailing non-word characters
+                .replaceAll("\\s+", " ")                                        // Squeeze consecutive Symbols
+                .trim();
+    }
 
-        // Remove date patterns if any
+    /**
+     * Remove date / time / days pattern from the text
+     *
+     * @param text {@link String}
+     * @return {@link CharSequence}
+     */
+    public static CharSequence removeDateTime(CharSequence text) {
+
+        StringBuffer cleanText = new StringBuffer(text);
+
+        // Remove Date patterns if any
         for (Pattern pattern : DateUtils.DATE_PATTERNS) {
-            authorName = pattern.matcher(authorName).replaceAll("");
+            cleanText = new StringBuffer(pattern.matcher(cleanText).replaceAll(StringUtils.EMPTY));
         }
 
-        Pattern months = createRegexPattern("(?<![\\w])(January|February|March|April|May|June|July|August|September|October|November|December|Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)(?![\\w])");
-        authorName = months.matcher(authorName).replaceAll("");
+        // Remove Month Name Patterns
+        cleanText = new StringBuffer(MONTHS_PATTERN.matcher(cleanText).replaceAll(StringUtils.EMPTY));
 
-        Pattern weekdays = createRegexPattern("(?<![\\w])(Sunday|Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sun|Mon|Tue|Wed|Thu|Fri|Sat)(?![\\w])");
-        authorName = weekdays.matcher(authorName).replaceAll("");
+        // Remove Weekdays Names
+        cleanText = new StringBuffer(WEEKDAYS_PATTERN.matcher(cleanText).replaceAll(StringUtils.EMPTY));
 
-        Pattern numbers = createRegexPattern("\\d*");
-        authorName = numbers.matcher(authorName).replaceAll("");
+        return cleanText.toString();
+    }
 
-        String[] SPECIAL_SYMBOLS = new String[]{
-                //"\\.",
-                "\\+",
-                //"-",
-                "@",
-                ":",
-                "\\(",
-                "\\)",
-                "\\/",
-                "\\.\\.\\.",    // Ellipsis
-                "…",            // Ellipsis
-        };
-        Pattern specialSymbols = createRegexPattern("(" + StringUtils.strip(StringUtils.join(SPECIAL_SYMBOLS, "|"), "|") + ")");
+    /**
+     * Remove stop words from the text
+     *
+     * @param text {@link String}
+     * @return {@link CharSequence}
+     */
+    public static CharSequence removeStopWords(CharSequence text) {
+        return STOPWORDS_PATTERN.matcher(text).replaceAll(StringUtils.EMPTY);
+    }
 
-        authorName = specialSymbols.matcher(authorName)
-                .replaceAll(" ")
-                .replaceAll("(\\|(\\s)*\\|)+", "|")
-                .replaceAll("^[^\\w]+", "")
-                .replaceAll("[^\\w]+$", "")
-                .replaceAll("\\s+", " ")
-                .trim();
-
-        return authorName;
+    /**
+     * Clean up facebook url and get profile name
+     *
+     * @param text {@link String}
+     * @return {@link CharSequence}
+     */
+    public static CharSequence removeFacebookProfileUrl(String text) {
+        return FACEBOOK_PROFILE_URL_PATTERN.matcher(text).replaceAll(StringUtils.EMPTY);
     }
 
     private static Integer getWeight(Element element) {
@@ -262,10 +237,6 @@ final public class AuthorUtils {
 
     private static void cleanUpDocument(Document document) {
         for (Element element : document.select("*")) {
-            if (element.className().equals("main-content post-586142 post type-post status-publish format-standard hentry category-social-pro-daily tag-prnewser vertical-digital contributor-Guest inset-hero")) {
-                Matcher matcher = SET_TO_REMOVE.matcher(element.className());
-                System.out.printf("Test");;
-            }
             if (SET_TO_REMOVE.matcher(element.className()).find() ||
                     SET_TO_REMOVE.matcher(element.id()).find()) {
                 logger.trace("Removing element because of : " + element.toString());
@@ -289,7 +260,6 @@ final public class AuthorUtils {
             if (probableElement != null) {
                 authorName = probableElement.text();
             }
-
 
 
             if (StringUtils.isBlank(authorName)) {
@@ -324,8 +294,6 @@ final public class AuthorUtils {
         document = document.clone();
         cleanUpDocument(document);
 
-        TreeSet<Element> sortedResultByWeight = new TreeSet<>(byWeight);
-
         // Remove the elements having the same body
         Map<String, Element> uniqueElementsByBody = new HashMap<>();
 
@@ -338,10 +306,10 @@ final public class AuthorUtils {
                 continue;
             }
             uniqueElementsByBody.put(element.toString(), element);
-            // weightedElements.add(element);
         }
 
         // Array by descending order of weight
+        TreeSet<Element> sortedResultByWeight = new TreeSet<>(byWeight);
         sortedResultByWeight.addAll(uniqueElementsByBody.values());
 
 
@@ -350,8 +318,6 @@ final public class AuthorUtils {
         if (sortedResultByWeight.size() > 0) {
             int weightTopElement = getWeight(sortedResultByWeight.first());
             String classTopElement = sortedResultByWeight.first().className();
-//            String textTopElement = sortedResultByWeight.first().text();
-//            Element topElement = sortedResultByWeight.first();
             int iteration = 0;
             for (Element element : sortedResultByWeight) {
 
@@ -480,7 +446,7 @@ final public class AuthorUtils {
     }
 
     private static boolean sanityCheck(String authorName) {
-        String cleanedUpAuthorName = cleanUp1(authorName);
+        String cleanedUpAuthorName = preExtractionCleanup(authorName);
         if (cleanedUpAuthorName.length() < 3 || cleanedUpAuthorName.length() > 150) {
             return false;
         }
@@ -491,10 +457,10 @@ final public class AuthorUtils {
      * Extract named entities from the given text
      *
      * @param text {@link String}
-     * @return {@link List<NamedEntity>}
+     * @return {@link List< NamedEntity >}
      */
     public static List<NamedEntity> extractNamedEntities(String text) {
-        text = cleanUp1(text);
+        text = preExtractionCleanup(text);
         logger.info("Pre Entity Extractio Clean Up: " + text);
         logger.info("Extracting named entities from text " + text);
 
@@ -564,30 +530,27 @@ final public class AuthorUtils {
 
         TreeMap<Integer, String> sortedByPosition = new TreeMap<>();
 
+
+
         // Lookup for Person Names
-        for (NamedEntity entity : getTopNEntities(namedEntities, EntityType.PERSON, 2)) {
-            if (text.contains(entity.getRepresentative())) {
-                sortedByPosition.put(text.indexOf(entity.getRepresentative()), entity.getRepresentative());
-            }
-        }
+        getTopNEntities(namedEntities, EntityType.PERSON,  MAX_NO_OF_PERSON_NAMES_TO_USE).stream()
+                .filter(e -> StringUtils.containsIgnoreCase(text, e.getRepresentative()))
+                .map(e -> cleanUpPersonName(e.getRepresentative()))
+                .forEach(name -> sortedByPosition.put(StringUtils.indexOfIgnoreCase(text, name), name));
 
         if (sortedByPosition.size() > 0) {
-            authorName = StringUtils.join(cleanUpPersonNames(new LinkedList<String>(sortedByPosition.values())),
-                    ", ");
+            authorName = StringUtils.join(sortedByPosition.values(), ", ");
             logger.info("Cleaned up author name: " + authorName);
             return authorName;
         }
 
-        // Lookup for Organization Names if no Person Name is found
-        for (NamedEntity entity : getTopNEntities(namedEntities, EntityType.ORGANIZATION, 1)) {
-            if (text.contains(entity.getRepresentative())) {
-                sortedByPosition.put(text.indexOf(entity.getRepresentative()), entity.getRepresentative());
-            }
-        }
+        getTopNEntities(namedEntities, EntityType.ORGANIZATION, MAX_NO_OF_ORGANIZATION_NAMES_TO_USE).stream()
+                .filter(e -> StringUtils.containsIgnoreCase(text, e.getRepresentative()))
+                .map(e -> cleanUpOrganizationName(e.getRepresentative()))
+                .forEach(name -> sortedByPosition.put(StringUtils.indexOfIgnoreCase(text, name), name));
 
         if (sortedByPosition.size() > 0) {
-            authorName = StringUtils.join(cleanUpOrganizationNames(new LinkedList<String>(sortedByPosition.values())),
-                    ", ");
+            authorName = StringUtils.join(sortedByPosition.values(), ", ");
             logger.info("Cleaned up author name: " + authorName);
             return authorName;
         }
@@ -597,53 +560,44 @@ final public class AuthorUtils {
     }
 
     /**
-     * Clean up Person Names with some pre-defined rules
+     * Clean up Person Name with pre-defined rules
      * - Convert case (Title case) appropriately
      * - Remove unwanted text
      *
-     * @param personNames {@link List<String>}
-     * @return {@link List<String>} - Cleaned up name
+     * @param personName {@link String}
+     * @return {@link String} - Cleaned up name
      */
-
-    public static List<String> cleanUpPersonNames(List<String> personNames) {
+    public static String cleanUpPersonName(String personName) {
+        // Remove unwanted junk chars
+        personName = INVALID_CHARS_IN_NAMED_ENTITY.matcher(personName).replaceAll(" ");
 
         // Generally article contains name in well formed case (Title case), so we don't have to do much here
         // So convert names to title case only if the whole name is in small case or uppercase
-        final Pattern INVALID_CHARS = Pattern.compile("[^\\w\\.\\-\\' ]+", Pattern.UNICODE_CHARACTER_CLASS);
-
-        return personNames.stream()
-                .map(name -> INVALID_CHARS.matcher(name).replaceAll(" "))   // Remove unwanted junk chars
-                .map(name -> name.toUpperCase().equals(name) || name.toLowerCase().matches(name) ?
-                        WordUtils.capitalizeFully(name, new char[]{' ', '-', '\''}) :
-                        name)
-                .collect(Collectors.toList());
+        return personName.toUpperCase().equals(personName) || personName.toLowerCase().matches(personName) ?
+                WordUtils.capitalizeFully(personName, new char[]{' ', '-', '\''}) :
+                personName;
     }
 
     /**
-     * Clean up Person Names with some pre-defined rules
+     * Clean up Organization Name with pre-defined rules
      * - Convert case (Title case) appropriately
      *
-     * @param organizationNames {@link List<String>}
-     * @return {@link List<String>} - Cleaned up name
+     * @param organizationName {@link String}
+     * @return {@link String} - Cleaned up name
      */
-    public static List<String> cleanUpOrganizationNames(List<String> organizationNames) {
+    public static String cleanUpOrganizationName(String organizationName) {
 
         // If organization name is single word and in all caps -> Leave as is e.g. CNN, BBC
         // Else convert it to title case
-        return organizationNames.stream()
-                .map(name -> {
-                            if (name.split("\\s+").length == 1
-                                    && name.toUpperCase().equals(name)) {
-                                return name;
-                            }
-                            return WordUtils.capitalizeFully(name, new char[]{' ', '-'});
-                        }
-                )
-                .collect(Collectors.toList());
+        if (organizationName.split("\\s+").length == 1
+                && organizationName.toUpperCase().equals(organizationName)) {
+            return organizationName;
+        }
+        return WordUtils.capitalizeFully(organizationName, new char[]{' ', '-'});
     }
 
     /**
-     * Return top `n` entities of type `type` from `entities`
+     * Return top `n` entities of type `type` from `entities` based on salience score
      *
      * @param entities {@link List<NamedEntity>}
      * @param type     {@link EntityType}
@@ -656,42 +610,5 @@ final public class AuthorUtils {
                 .sorted(Comparator.comparing(NamedEntity::getSalienceScore).reversed())
                 .limit(n)
                 .collect(Collectors.toList());
-    }
-
-
-    public static void main(String[] args) {
-
-
-        DateFormatSymbols dfs = new DateFormatSymbols();
-
-        String monthNames = StringUtils.join(dfs.getWeekdays(), "|") + StringUtils.join(dfs.getShortWeekdays(), "|");
-        monthNames = StringUtils.strip(monthNames, "|");
-        //System.out.printf(monthNames);
-
-        Pattern pattern = createRegexPattern("(?<![\\w])(January|February|March|April|May|June|July|August|September|October|November|December|Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)(?![\\w])");
-
-        Pattern pattern1 = createRegexPattern("(?<![\\w])(Sunday|Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sun|Mon|Tue|Wed|Thu|Fri|Sat)(?![\\w])");
-
-        System.out.println(pattern.matcher("jul,Abhishek Mulay,jul, 3rd, joined in aug").replaceAll(""));
-
-        String[] SPECIAL_SYMBOLS = new String[]{
-                "\\.",
-                "\\+",
-                "-",
-                "@",
-                ":",
-                "\\(",
-                "\\)",
-                "/",
-                "\\.\\.\\.",    // Ellipsis
-                "…",            // Ellipsis
-        };
-        Pattern specialSymbols = createRegexPattern("(?<![\\w])(" + StringUtils.strip(StringUtils.join(SPECIAL_SYMBOLS, "|"), "|") + ")(?![\\w])");
-
-
-        System.out.println(specialSymbols.matcher("||(...|...|..., Abhishek Mulay-Velotio, )").replaceAll("").replaceAll("\\|+", "|").replaceAll("^[^\\w]+", "").replaceAll("[^\\w]+$", ""));
-
-        System.out.println();
-
     }
 }

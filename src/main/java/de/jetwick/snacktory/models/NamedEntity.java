@@ -1,4 +1,4 @@
-package de.jetwick.snacktory.utils;
+package de.jetwick.snacktory.models;
 
 
 import org.codehaus.jackson.annotate.JsonProperty;
@@ -8,8 +8,8 @@ import org.codehaus.jackson.annotate.JsonProperty;
  */
 public class NamedEntity extends BaseEntity {
 
-    EntityType type;
-    String representative;
+    private EntityType type;
+    private String representative;
 
     @JsonProperty("salience_score")
     Double salienceScore;

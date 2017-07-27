@@ -1,5 +1,7 @@
 package de.jetwick.snacktory.utils;
 
+import de.jetwick.snacktory.models.Configuration;
+import de.jetwick.snacktory.models.EntitiesResponse;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;

@@ -1,6 +1,6 @@
 package de.jetwick.snacktory;
 
-import de.jetwick.snacktory.utils.Configuration;
+import de.jetwick.snacktory.models.Configuration;
 import de.jetwick.snacktory.utils.DateUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Before;
@@ -389,7 +389,7 @@ public class ArticleTextExtractorTest {
         assertTrue(res.getText(), res.getText().startsWith("A top regional Federal Reserve official sharply"));
         assertEquals("http://i.huffpost.com/gen/157611/thumbs/s-FED-large.jpg", res.getImageUrl());
         // @Todo: Extract specific author name
-        assertEquals("Shahien Nasiripour shahien@huffingtonpost.com HuffPost", res.getAuthorName());
+        assertEquals("Shahien Nasiripour | shahien@huffingtonpost.com | HuffPost", res.getAuthorName());
     }
 
     @Test

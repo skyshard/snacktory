@@ -1,4 +1,4 @@
-package de.jetwick.snacktory.utils;
+package de.jetwick.snacktory.models;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

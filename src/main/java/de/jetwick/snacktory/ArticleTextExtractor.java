@@ -1,9 +1,8 @@
 package de.jetwick.snacktory;
 
 import com.google.common.net.InternetDomainName;
-import de.jetwick.snacktory.utils.AirPRExtractorApiUtils;
 import de.jetwick.snacktory.utils.AuthorUtils;
-import de.jetwick.snacktory.utils.Configuration;
+import de.jetwick.snacktory.models.Configuration;
 import de.jetwick.snacktory.utils.DateUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.htmlcleaner.CleanerProperties;
@@ -22,7 +21,6 @@ import java.net.URISyntaxException;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 /**
  * This class is thread safe.

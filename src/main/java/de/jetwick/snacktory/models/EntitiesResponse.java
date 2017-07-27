@@ -1,4 +1,4 @@
-package de.jetwick.snacktory.utils;
+package de.jetwick.snacktory.models;
 
 import java.util.List;
 
