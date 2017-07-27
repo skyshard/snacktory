@@ -248,7 +248,7 @@ public class ArticleTextExtractorTest {
         assertEquals("http://tctechcrunch2011.files.wordpress.com/2011/04/screen-shot-2011-04-04-at-12-11-36-pm.png?w=285&h=85", res.getImageUrl());
         assertEquals("Twitter Finally Brings Advanced Search Out Of Purgatory; Updates Discovery Algorithms", res.getTitle());
         assertTrue(res.getText(), res.getText().startsWith("A couple weeks ago, we wrote a post wishing Twitter a happy fifth birthday, but also noting "));
-        assertEquals("Siegler", res.getAuthorName());
+        assertEquals("MG Siegler", res.getAuthorName());
     }
 
     @Test

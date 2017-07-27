@@ -3,7 +3,6 @@ package de.jetwick.snacktory.utils;
 import de.jetwick.snacktory.models.*;
 import org.apache.commons.lang.WordUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.http.auth.AUTH;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
@@ -22,9 +21,8 @@ import java.util.stream.Collectors;
 final public class AuthorUtils {
 
     final static Pattern ITEMPROP = createRegexPattern("author|creator");
-    final static Pattern ITEMPROP_POSITIVE = createRegexPattern("person|name");
     private static final Logger logger = LoggerFactory.getLogger(AuthorUtils.class);
-    private static final int MAX_AUTHOR_NAME_LENGTH = 255;
+    private static final int MAX_AUTHOR_NAME_LENGTH = 150;
     private static final Pattern HIGHLY_POSITIVE = createRegexPattern(
             "autor|author|author[\\-_]*name|article[\\-_]*author[\\-_]*name|author[\\-_]*card|story[\\-_]*author|" +
                     "author[\\-_]*link|date[\\-_]*author|author[\\-_]*date|byline|byline[\\-_]*name|byLine[\\-_]Tag|" +
@@ -39,21 +37,22 @@ final public class AuthorUtils {
             "without[\\-_]?author|post-list|(twitter|fb|facebook|pinterest|linkedin)[\\-_]?share|entry-user|widget widget_tabs|article[\\-_]*comment(s)?|comment(s)?[\\-_]*article|reply|listen|related[\\-_]*(story|article|content)|(story|article|content)[\\-_]*related|meettheauthor|navigation|sidenav|join|discuss|thread|tooltip|no[\\-_]*print|hidden|related[\\-_]*article|popular|feedback|slideshow|additional|dont[\\-_]miss|comment[\\-_]*author"
     );
 
-    private static final Pattern META_NAME = createRegexPattern(
-            "name|author|creator"
-    );
+    private static final int MAX_NO_OF_PERSON_NAMES_TO_USE = 2;
+    private static final int MAX_NO_OF_ORGANIZATION_NAMES_TO_USE = 1;
+
+    private static final String SPECIAL_SYMBOLS_TO_REMOVE = "\\+|^@|:|\\(|\\)|/|\\.\\.\\.|…|\"";
+    private static final String ADDITIONAL_SYMBOLS_TO_REMOVE = ",|\\||-|'|\\.";     // Can be present as part of name
+    private static final String ALL_SYMBOLS = String.format("(%s|%s)", SPECIAL_SYMBOLS_TO_REMOVE, ADDITIONAL_SYMBOLS_TO_REMOVE);
+
     private static final Pattern FACEBOOK_PROFILE_URL_PATTERN = createRegexPattern("((http(s)?://)?(www\\.)?facebook.com/)");
-    private static final Pattern STOPWORDS_PATTERN = createRegexPattern("(?<![\\w])(true|false|a|an|are|as|at|be|but|by|for|if|in|into|is|it|no|not|of|on|or|such|that|their|then|there|these|they|this|to|was|will|with|about the|from|Door|Über|by|name|author|posted|twitter|handle|locally researched|report(ing|ed)?|edit(ing|ed)|publish(ed)?|read)(?![\\w])|autor|redakteur|facebook|linkedin|pinterest");
+    private static final Pattern STOPWORDS_PATTERN = createRegexPattern("(?<![\\w])(true|false|a|an|are|as|at|be|but|by|for|if|in|into|is|it|no|not|of|on|or|such|that|their|then|there|these|they|this|to|was|will|with|about the|from|Door|Über|by|name|author|posted|twitter|handle|locally researched|report(ing|ed)?|edit(ing|ed)|publish(ed)?|read|autor|redakteur|facebook|linkedin|pinterest|author(s)|contact\\s*(us)?|call\\s*(us)?|AM|PM)(?![\\w])");
     private static final Pattern MONTHS_PATTERN = createRegexPattern("(?<![\\w])(January|February|March|April|May|June|July|August|September|October|November|December|Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)(?![\\w])");
     private static final Pattern WEEKDAYS_PATTERN = createRegexPattern("(?<![\\w])(Sunday|Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sun|Mon|Tue|Wed|Thu|Fri|Sat)(?![\\w])");
     private static final Pattern INVALID_CHARS_IN_NAMED_ENTITY = createRegexPattern("[^\\w\\.\\-\\' ]+");
-
-    private static final String SPECIAL_SYMBOLS_TO_REMOVE = "\\+|^@|:|\\(|\\)|\\/|\\.\\.\\.|…|\"";
-    private static final String ADDITIONAL_SYMBOLS_TO_REMOVE = ",|\\||-|'";     // Can be present as part of name
-    private static final String ALL_SYMBOLS = String.format("(%s|%s)", SPECIAL_SYMBOLS_TO_REMOVE, ADDITIONAL_SYMBOLS_TO_REMOVE);
-
-    private static final int MAX_NO_OF_PERSON_NAMES_TO_USE = 2;
-    private static final int MAX_NO_OF_ORGANIZATION_NAMES_TO_USE = 1;
+    private static final Pattern SPECIAL_SYMBOLS_TO_REMOVE_PATTERN = createRegexPattern(SPECIAL_SYMBOLS_TO_REMOVE);
+    private static final Pattern SQUEEZE_SPECIAL_SYMBOLS_PATTERN = createRegexPattern(String.format("%s+\\s*%s+", ALL_SYMBOLS, ALL_SYMBOLS));
+    private static final Pattern STRIP_NON_WORD_CHAR_PATTERN = createRegexPattern("^\\W+|\\W+$");
+    private static final Pattern SQUEEZE_WHITESPACES_PATTERN = createRegexPattern("\\s+");
 
     // Private constructor since this is an utility class
     private AuthorUtils() {
@@ -97,12 +96,20 @@ final public class AuthorUtils {
      * @return {@link CharSequence}
      */
     public static CharSequence removeSpecialSymbols(CharSequence text) {
-        return text.toString()
-                .replaceAll(SPECIAL_SYMBOLS_TO_REMOVE, " ")                           // Remove Special Symbols
-                .replaceAll(ALL_SYMBOLS + "+\\s*" + ALL_SYMBOLS + "+", " | ")   // Squeeze consecutive Symbols
-                .replaceAll("^\\W+|\\W+$", "")                                  // Remove starting and trailing non-word characters
-                .replaceAll("\\s+", " ")                                        // Squeeze consecutive Symbols
-                .trim();
+        text = SPECIAL_SYMBOLS_TO_REMOVE_PATTERN.matcher(text).replaceAll(" "); // Remove Special Symbols
+
+        // Squeeze consecutive Symbols
+        while (true) {
+            String squeezedSpecialSymbols = SQUEEZE_SPECIAL_SYMBOLS_PATTERN.matcher(text).replaceAll(" | ");
+            if (squeezedSpecialSymbols.equals(text)) {
+                break;
+            }
+            text = squeezedSpecialSymbols;
+        }
+        text = STRIP_NON_WORD_CHAR_PATTERN.matcher(text).replaceAll("");    // Strip starting and trailing non-word chars
+        text = SQUEEZE_WHITESPACES_PATTERN.matcher(text).replaceAll(" ");   // Squeeze consecutive Symbols
+
+        return text;
     }
 
     /**
@@ -149,39 +156,54 @@ final public class AuthorUtils {
         return FACEBOOK_PROFILE_URL_PATTERN.matcher(text).replaceAll(StringUtils.EMPTY);
     }
 
+    /**
+     * Returns the weight of {@link Element}; Returns 0 if weight attribute is not available
+     *
+     * @param element {@link Element}
+     * @return {@link Integer}
+     */
     private static Integer getWeight(Element element) {
         return (element != null && element.hasAttr("weight")) ?
                 Integer.parseInt(element.attr("weight")) :
                 0;
     }
 
+    /**
+     * Returns the total weight of all children of {@link Element}
+     *
+     * @param element {@link Element}
+     * @return {@link Integer}
+     */
     private static Integer getChildrenWeight(Element element) {
         return element.select("*").stream()
                 .map(child -> getWeight(child))
                 .collect(Collectors.summingInt(Integer::intValue));
     }
 
-    public static Integer specialCases(Element element) {
-        Integer weight = getWeight(element);
+    /**
+     * Computes weight of the {@link Element} based on special cases rules
+     * - Element has itemprop info (schema.org)
+     * - Element has href pointing to author profile
+     *
+     * @param element
+     * @return int
+     */
+    public static int specialCases(Element element) {
+        Integer weight = 0;
 
-        if (element.hasAttr("itemprop") && weight == 0) {
-            if (ITEMPROP.matcher(element.attr("itemprop")).find()) {
-                weight = 250;
-
-                for (Element childElement : element.select("*")) {
-                    if (childElement.hasAttr("itemprop") && ITEMPROP.matcher(childElement.attr("itemprop")).find()) {
-                        childElement.attr("weight", Integer.toString(highlyPositiveCases(childElement) + positiveCases(element) + negativeCases(childElement) + 300));
-                        weight += 200;
-                    }
-                }
-            }
-        } else {
-            long count = element.childNodes().stream()
-                    .filter(childNode -> childNode.hasAttr("itemprop") && ITEMPROP.matcher(childNode.attr("itemprop")).find())
+        if (ITEMPROP.matcher(element.attr("itemprop")).find()) {
+            long countOdItemPropElements = element.select("*").stream()
+                    .filter(childNode -> ITEMPROP.matcher(childNode.attr("itemprop")).find())
                     .collect(Collectors.counting());
 
-            if (count > 1) {
-                weight = ((int) count) * 200 + 450;
+            weight = ((int) countOdItemPropElements) * 200 + 250;
+        } else {
+            long countOdItemPropElements = element.childNodes().stream()
+                    .filter(childNode -> ITEMPROP.matcher(childNode.attr("itemprop")).find())
+                    .collect(Collectors.counting());
+
+            if (countOdItemPropElements > 1) {
+                weight = ((int) countOdItemPropElements) * 200 + 250;
             }
         }
 
@@ -193,41 +215,45 @@ final public class AuthorUtils {
         return weight;
     }
 
-    public static Integer highlyPositiveCases(Element element) {
-        Integer weight = 0;
-//        if (element.tagName().equals("meta") && HIGHLY_POSITIVE.matcher(element.attr("name")).find()) {
-//            weight += 200;
-//        }
+    /**
+     * Computes weight of the {@link Element} considering element has highly positive classname id
+     *
+     * @param element
+     * @return int
+     */
+    public static int highlyPositiveCases(Element element) {
+        int weight = 0;
 
-        // Highly Positive
-        if (HIGHLY_POSITIVE.matcher(element.className()).matches()) {
+        if (HIGHLY_POSITIVE.matcher(element.className()).find()) {
             weight += 220;
-        } else if (HIGHLY_POSITIVE.matcher(element.className()).find()) {
-            weight += 180;
         }
 
-        if (HIGHLY_POSITIVE.matcher(element.id()).matches()) {
-            weight += 150;
-        } else if (HIGHLY_POSITIVE.matcher(element.id()).find()) {
-            weight += 120;
+        if (HIGHLY_POSITIVE.matcher(element.id()).find()) {
+            weight += 200;
+        }
+
+        if (HIGHLY_POSITIVE.matcher(element.attr("rel")).find()) {
+            weight += 100;
         }
 
         return weight;
     }
 
-    public static Integer positiveCases(Element element) {
-        Integer weight = 0;
+    /**
+     * Computes weight of the {@link Element} considering element has *positive* classname id
+     *
+     * @param element
+     * @return int
+     */
+    public static int positiveCases(Element element) {
+        int weight = 0;
 
-        if (POSITIVE.matcher(element.className()).matches()) {
-            weight += 100;
-        } else if (POSITIVE.matcher(element.className()).find()) {
-            weight += 80;
+        if (POSITIVE.matcher(element.className()).find()) {
+            weight += 180;
         }
 
-        if (POSITIVE.matcher(element.id()).matches()) {
-            weight += 60;
-        } else if (POSITIVE.matcher(element.id()).find()) {
-            weight += 40;
+        if (POSITIVE.matcher(element.id()).find()) {
+            weight += 160;
         }
 
         return weight;
@@ -237,20 +263,18 @@ final public class AuthorUtils {
         for (Element element : document.select("*")) {
             if (SET_TO_REMOVE.matcher(element.className()).find() ||
                     SET_TO_REMOVE.matcher(element.id()).find()) {
-                logger.trace("Removing element because of : " + element.toString());
+                logger.trace("=========== Removing element: " + element.toString());
                 element.remove();
             } else if ((!element.tagName().equals("meta")) && StringUtils.isBlank(element.text())) {
+                logger.trace("=========== Removing element: " + element.toString());
                 element.remove();
             }
         }
     }
 
     public static String extractAuthor(Document document, String domain) {
-
-
         String siteSpecificRule = Configuration.getInstance().getBestElementForAuthor().get(domain);
         if (siteSpecificRule != null) {
-
 
             Element probableElement = document.select(siteSpecificRule).first();
 
@@ -270,6 +294,54 @@ final public class AuthorUtils {
             }
         }
 
+        // Clone the original doc and apply cleanup rules
+        document = document.clone();
+        cleanUpDocument(document);
+
+        // Assign weight to elements
+        Collection<Element> weightedElements = getWeightedElements(document);
+
+        // Get probable list of elements for author extraction
+        TreeSet<Element> sortedResultByWeight = discardJunkElements(weightedElements);
+
+        // Extract authorName
+        int iterations = 0;
+        String authorName;
+        for (Element element : sortedResultByWeight) {
+            authorName = extractText(element);
+            if (sanityCheck(authorName)) {
+                return authorName;
+            }
+
+            if (iterations == 2) {
+                break;
+            }
+        }
+
+        Elements elements = document.select("meta[property=author], meta[property=creator], meta[name=creator], meta[name=author], meta[name=dcterms.creator]");
+        if (elements != null && elements.size() > 0) {
+            for (Element element : elements) {
+                authorName = extractText(element);
+                if (sanityCheck(authorName)) {
+                    return authorName;
+                }
+            }
+        }
+
+        return StringUtils.EMPTY;
+    }
+
+    /**
+     * This method removes junk elements. Criteria is if there are 3 or more elements with same tag, classname and weight
+     * then they are most likely not the valid ones. These similar looking elements are generally from related /
+     * trending / popular section
+     * <p>
+     * This method returns valid, unique elements in the descending order of their weight
+     *
+     * @param weightedElements {@link Collection}
+     * @return {@link TreeSet<Element}
+     */
+    public static TreeSet<Element> discardJunkElements(Collection<Element> weightedElements) {
         Comparator byWeight = new Comparator<Element>() {
             @Override
             public int compare(Element e1, Element e2) {
@@ -289,123 +361,40 @@ final public class AuthorUtils {
             }
         };
 
-        document = document.clone();
-        cleanUpDocument(document);
+        TreeSet<Element> sortedElementsByWeight = new TreeSet<>(byWeight);
+        weightedElements.stream()
+                .collect(Collectors.groupingBy(e -> e.tagName() + "|" + e.className() + "|" + getWeight(e)))    // Group similar looking elements (tagName, className, weight)
+                .values().stream()
+                .filter(list -> list.size() <= 2)   // Ignore similar looking elements if they are more than 2
+                .forEach(list -> sortedElementsByWeight.addAll(list));
 
-        // Remove the elements having the same body
-        Map<String, Element> uniqueElementsByBody = new HashMap<>();
+        return sortedElementsByWeight;
+    }
 
+    /**
+     * Iterate over all the elements in the document and return unique elements
+     * - Computes and assign weight to all elements
+     * - Ignores duplicate (similar html body) elements
+     *
+     * @param document {@link Document}
+     * @return {@link Collection}
+     */
+    public static Collection<Element> getWeightedElements(Document document) {
+        return document.select("*").stream()
+                .map(e -> e.attr("weight", Integer.toString(calWeight(e))))
+                .filter(e -> getWeight(e) > 0)                                              // Discard elements with 0 weight
+                .collect(Collectors.toMap(e -> e.toString(), e -> e, (e1, e2) -> {          // Discard duplicate elements
+                    logger.debug("Similar HTML Elements found: " + e1.toString());  // (based on html body of element)
+                    return e1;
+                }))
+                .values();
 
-        for (Element element : document.select("*")) {
-
-            element.attr("weight", Integer.toString(calWeight(element)));
-
-            if (getWeight(element) <= 0) {
-                continue;
-            }
-            uniqueElementsByBody.put(element.toString(), element);
-        }
-
-        // Array by descending order of weight
-        TreeSet<Element> sortedResultByWeight = new TreeSet<>(byWeight);
-        sortedResultByWeight.addAll(uniqueElementsByBody.values());
-
-
-        int sameWeightedElements = 0;
-
-        if (sortedResultByWeight.size() > 0) {
-            int weightTopElement = getWeight(sortedResultByWeight.first());
-            String classTopElement = sortedResultByWeight.first().className();
-            int iteration = 0;
-            for (Element element : sortedResultByWeight) {
-
-                if (iteration == 0) {
-                    iteration++;
-                    continue;
-
-                }
-                iteration++;
-                if (getWeight(element) == weightTopElement && classTopElement.equals(element.className())) {
-                    sameWeightedElements++;
-                } else {
-                    break;
-                }
-            }
-            if (sameWeightedElements > 2) {
-
-                List<Element> temp = new LinkedList<>();
-
-                for (Element element : sortedResultByWeight) {
-                    if (weightTopElement != getWeight(element)) {
-                        temp.add(element);
-                    }
-                }
-
-                sortedResultByWeight.clear();
-                sortedResultByWeight.addAll(temp);
-            }
-        }
-
-
-        // Clean up
-        int iterations = 0;
-        String authorName;
-        for (Element element : sortedResultByWeight) {
-            authorName = extractText(element);
-            //authorName = IGNORE_WORDS.matcher(authorName).replaceAll("");
-            if (sanityCheck(authorName)) {
-                return authorName.replaceAll("\\s+", " ").trim();
-            }
-
-            if (iterations == 2) {
-                break;
-            }
-        }
-
-        Elements elements = document.select("meta[property=author], meta[property=creator], meta[name=creator], meta[name=author], meta[name=dcterms.creator]");
-        if (elements != null && elements.size() > 0) {
-            for (Element element : elements) {
-                authorName = extractText(element);
-                if (sanityCheck(authorName)) {
-                    return authorName;
-                }
-            }
-        }
-
-        elements = document.select("[rel]");
-        if (elements != null && elements.size() > 0) {
-            for (Element element : elements) {
-                if (HIGHLY_POSITIVE.matcher(element.attr("rel")).find() ||
-                        POSITIVE.matcher(element.attr("rel")).find()) {
-                    authorName = extractText(element);
-                    if (sanityCheck(authorName)) {
-                        return authorName;
-                    }
-                }
-            }
-        }
-        return StringUtils.EMPTY;
     }
 
     private static Integer calWeight(Element element) {
         return specialCases(element)
                 + highlyPositiveCases(element)
-                + positiveCases(element)
-                + negativeCases(element);
-
-    }
-
-    private static Integer negativeCases(Element element) {
-
-        int weight = 0;
-        if (SET_TO_REMOVE.matcher(element.className()).find() ||
-                SET_TO_REMOVE.matcher(element.id()).find()) {
-            weight -= 200;
-
-        } else if ((!element.tagName().equals("meta")) && StringUtils.isBlank(element.text())) {
-            weight -= 100;
-        }
-        return weight;
+                + positiveCases(element);
     }
 
     private static void nodeToText(Node node, StringBuffer text) {
@@ -445,7 +434,7 @@ final public class AuthorUtils {
 
     private static boolean sanityCheck(String authorName) {
         String cleanedUpAuthorName = preExtractionCleanup(authorName);
-        if (cleanedUpAuthorName.length() < 3 || cleanedUpAuthorName.length() > 150) {
+        if (cleanedUpAuthorName.length() < 3 || cleanedUpAuthorName.length() > MAX_AUTHOR_NAME_LENGTH) {
             return false;
         }
         return true;
@@ -462,22 +451,8 @@ final public class AuthorUtils {
         logger.info("Pre Entity Extractio Clean Up: " + text);
         logger.info("Extracting named entities from text " + text);
 
-//        text = IGNORE_WORDS.matcher(text).replaceAll("");
-//        text = Pattern.compile(SPECIAL_SYMBOLS_PATTERN).matcher(text).replaceAll(" $1 ");
-
         EntitiesResponse entitiesResponse = AirPRExtractorApiUtils.getEntities(text);
 
-//        if (entitiesResponse == null || entitiesResponse.getEntities().size() == 0) {
-//            logger.info("Unable to extract named entities " + text + " in first attempt");
-//
-//            // Retry extracting entities
-//            // This time add empty space around the special symbols in the text sometimes it helps
-//            String modifiedText = Pattern.compile(AuthorUtils.SPECIAL_SYMBOLS_PATTERN).matcher(text).replaceAll(" $1 ");
-//            if (!modifiedText.equals(text)) {
-//                logger.info("Retrying named entity extraction with modified text " + modifiedText);
-//                entitiesResponse = AirPRExtractorApiUtils.getEntities(modifiedText);
-//            }
-//        }
         if (entitiesResponse == null || entitiesResponse.getEntities().size() == 0) {
             logger.info("Unable to extract named entities for text " + text);
             return Collections.EMPTY_LIST;
@@ -531,7 +506,7 @@ final public class AuthorUtils {
         TreeMap<Integer, String> sortedByPosition = new TreeMap<>();
 
         // Lookup for Person Names
-        getTopNEntities(namedEntities, EntityType.PERSON,  MAX_NO_OF_PERSON_NAMES_TO_USE).stream()
+        getTopNEntities(namedEntities, EntityType.PERSON, MAX_NO_OF_PERSON_NAMES_TO_USE).stream()
                 .filter(e -> StringUtils.containsIgnoreCase(text, e.getRepresentative()))
                 .map(e -> cleanUpPersonName(e.getRepresentative()))
                 .forEach(name -> sortedByPosition.put(StringUtils.indexOfIgnoreCase(text, name), name));
