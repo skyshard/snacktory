@@ -458,16 +458,6 @@ public class ArticleTextExtractor {
         res.setAuthorName(res.getAuthorInfo().getNamesAsString());
         res.setAuthorDescription(extractAuthorDescription(doc, res.getAuthorName()));
 
-        // add extra selection gravity to any element containing author name
-        // wasn't useful in the case I implemented it for, but might be later
-        /*
-        Elements authelems = doc.select(":containsOwn(" + res.getAuthorName() + ")");
-        for (Element elem : authelems) {
-            elem.attr("extragravityscore", Integer.toString(100));
-            System.out.println("modified element " + elem.toString());
-        }
-        */
-
         // Extract date from document using css selectors
         Date extractedDate = extractDate(doc);
         if (extractedDate == null) {

@@ -16,7 +16,7 @@ public class AuthorUtilsTest {
     public void cleanupFacebookProfileUrl() throws Exception {
 
         // ============= Prepare =============
-        final String EXPECTED_AUTHOR_NAME = "bbcnews";
+        final String EXPECTED_AUTHOR_NAME = "Bbcnews";
 
         HashMap<String, String> fixtures = new LinkedHashMap() {{
             put("https://www.facebook.com/bbcnews", EXPECTED_AUTHOR_NAME);
@@ -28,7 +28,7 @@ public class AuthorUtilsTest {
 
         // ============= Execute and verify =============
         for (Map.Entry<String, String> entry : fixtures.entrySet()) {
-            Assert.assertEquals(AuthorUtils.cleanup(entry.getKey()), entry.getValue());
+            Assert.assertEquals(entry.getValue(), AuthorUtils.cleanup(entry.getKey()));
         }
     }
 }

@@ -1,6 +1,7 @@
 package de.jetwick.snacktory.models;
 
 import org.apache.commons.lang3.StringUtils;
+import org.codehaus.jackson.annotate.JsonProperty;
 
 import java.util.Collection;
 

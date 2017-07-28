@@ -7,7 +7,6 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 import org.jsoup.nodes.TextNode;
-import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,33 +18,32 @@ import java.util.stream.Collectors;
  * @author Abhishek Mulay
  */
 final public class AuthorUtils {
-
-    final static Pattern ITEMPROP = createRegexPattern("author|creator");
     private static final Logger logger = LoggerFactory.getLogger(AuthorUtils.class);
-    private static final int MAX_AUTHOR_NAME_LENGTH = 150;
+
+    private static final Pattern ITEMPROP = createRegexPattern("author|creator");
+    private static final Pattern META_PROPERTY_PATTERN = createRegexPattern("author|creator");
     private static final Pattern HIGHLY_POSITIVE = createRegexPattern(
-            "autor|author|author[\\-_]*name|article[\\-_]*author[\\-_]*name|author[\\-_]*card|story[\\-_]*author|" +
-                    "author[\\-_]*link|date[\\-_]*author|author[\\-_]*date|byline|byline[\\-_]*name|byLine[\\-_]Tag|" +
-                    "contrib[\\-_]*byline|vcard"
+            "autor|author|author[\\-_]*name|article[\\-_]*author[\\-_]*name|author[\\-_]*card|story[\\-_]*author|author[\\-_]*link|date[\\-_]*author|author[\\-_]*date|byline|byline[\\-_]*name|byLine[\\-_]Tag|contrib[\\-_]*byline|vcard"
     );
     private static final Pattern POSITIVE = createRegexPattern(
-            "address|time[\\-_]*date|post[\\-_]*date|source|news[\\-_]*post[\\-_]*source|meta[\\-_]*author|" +
-                    "author[\\-_]*meta|writer|submitted|creator|reporter[\\-_]*name|profile-data|posted|contact"
+            "address|time[\\-_]*date|post[\\-_]*date|news[\\-_]*post[\\-_]*source|meta[\\-_]*author|author[\\-_]*meta|writer|submitted|creator|reporter[\\-_]*name|profile-data|posted|contact"
     );
-
     private static final Pattern SET_TO_REMOVE = createRegexPattern(
             "without[\\-_]?author|post-list|(twitter|fb|facebook|pinterest|linkedin)[\\-_]?share|entry-user|widget widget_tabs|article[\\-_]*comment(s)?|comment(s)?[\\-_]*article|reply|listen|related[\\-_]*(story|article|content)|(story|article|content)[\\-_]*related|meettheauthor|navigation|sidenav|join|discuss|thread|tooltip|no[\\-_]*print|hidden|related[\\-_]*article|popular|feedback|slideshow|additional|dont[\\-_]miss|comment[\\-_]*author"
     );
 
+    private static final int MAX_AUTHOR_NAME_LENGTH = 150;
     private static final int MAX_NO_OF_PERSON_NAMES_TO_USE = 2;
     private static final int MAX_NO_OF_ORGANIZATION_NAMES_TO_USE = 1;
 
-    private static final String SPECIAL_SYMBOLS_TO_REMOVE = "\\+|^@|:|\\(|\\)|/|\\.\\.\\.|…|\"";
-    private static final String ADDITIONAL_SYMBOLS_TO_REMOVE = ",|\\||-|'|\\.";     // Can be present as part of name
+    private static final String NODES_TO_EXTRACT = "div, p, span, em, h1, h2, h3, h4, a, li, td, b, strong";
+    private static final String SPECIAL_SYMBOLS_TO_REMOVE = "\\+|^@|:|\\(|\\)|/|\\.\\.\\.|…|\"|\\|";
+    private static final String ADDITIONAL_SYMBOLS_TO_REMOVE = ",|-|'|\\.";     // Can be present as part of person / organization name
     private static final String ALL_SYMBOLS = String.format("(%s|%s)", SPECIAL_SYMBOLS_TO_REMOVE, ADDITIONAL_SYMBOLS_TO_REMOVE);
 
     private static final Pattern FACEBOOK_PROFILE_URL_PATTERN = createRegexPattern("((http(s)?://)?(www\\.)?facebook.com/)");
-    private static final Pattern STOPWORDS_PATTERN = createRegexPattern("(?<![\\w])(true|false|a|an|are|as|at|be|but|by|for|if|in|into|is|it|no|not|of|on|or|such|that|their|then|there|these|they|this|to|was|will|with|about the|from|Door|Über|by|name|author|posted|twitter|handle|locally researched|report(ing|ed)?|edit(ing|ed)|publish(ed)?|read|autor|redakteur|facebook|linkedin|pinterest|author(s)|contact\\s*(us)?|call\\s*(us)?|AM|PM)(?![\\w])");
+    private static final Pattern URL_PATTERN = createRegexPattern("http(s)?://(www)?\\S+");
+    private static final Pattern STOPWORDS_PATTERN = createRegexPattern("(?<![\\w])(true|false|a|an|are|as|at|be|but|by|for|if|in|into|is|it|no|not|of|on|or|such|that|their|then|there|these|they|this|to|was|will|with|about the|from|Door|Über|by|name|author|posted|twitter|handle|locally researched|report(ing|ed)?|edit(ing|ed)|publish(ed)?|read|autor|redakteur|facebook|linkedin|pinterest|author(s)|contact\\s*(us)?|call\\s*(us)?|AM|PM|Edit\\s*My\\s*Profile|My\\s*Account)(?![\\w])");
     private static final Pattern MONTHS_PATTERN = createRegexPattern("(?<![\\w])(January|February|March|April|May|June|July|August|September|October|November|December|Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)(?![\\w])");
     private static final Pattern WEEKDAYS_PATTERN = createRegexPattern("(?<![\\w])(Sunday|Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sun|Mon|Tue|Wed|Thu|Fri|Sat)(?![\\w])");
     private static final Pattern INVALID_CHARS_IN_NAMED_ENTITY = createRegexPattern("[^\\w\\.\\-\\' ]+");
@@ -65,7 +63,8 @@ final public class AuthorUtils {
      * @return {@link String}
      */
     public static String cleanup(String authorName) {
-        return preExtractionCleanup(authorName);
+        authorName = preExtractionCleanup(authorName);
+        return WordUtils.capitalizeFully(authorName, new char[]{' ', ',', '-', '\''});
     }
 
     /**
@@ -79,6 +78,7 @@ final public class AuthorUtils {
      */
     public static String preExtractionCleanup(String authorName) {
         CharSequence cleanAuthorName = removeFacebookProfileUrl(authorName);
+        cleanAuthorName = removeUrl(cleanAuthorName);
         cleanAuthorName = removeStopWords(cleanAuthorName);
         cleanAuthorName = removeDateTime(cleanAuthorName);
         cleanAuthorName = cleanAuthorName.toString().replaceAll("\\d+", StringUtils.EMPTY); // Remove digits
@@ -96,11 +96,11 @@ final public class AuthorUtils {
      * @return {@link CharSequence}
      */
     public static CharSequence removeSpecialSymbols(CharSequence text) {
-        text = SPECIAL_SYMBOLS_TO_REMOVE_PATTERN.matcher(text).replaceAll(" "); // Remove Special Symbols
+        text = SPECIAL_SYMBOLS_TO_REMOVE_PATTERN.matcher(text).replaceAll(", "); // Remove Special Symbols
 
         // Squeeze consecutive Symbols
         while (true) {
-            String squeezedSpecialSymbols = SQUEEZE_SPECIAL_SYMBOLS_PATTERN.matcher(text).replaceAll(" | ");
+            String squeezedSpecialSymbols = SQUEEZE_SPECIAL_SYMBOLS_PATTERN.matcher(text).replaceAll(" , ");
             if (squeezedSpecialSymbols.equals(text)) {
                 break;
             }
@@ -154,6 +154,16 @@ final public class AuthorUtils {
      */
     public static CharSequence removeFacebookProfileUrl(String text) {
         return FACEBOOK_PROFILE_URL_PATTERN.matcher(text).replaceAll(StringUtils.EMPTY);
+    }
+
+    /**
+     * Clean up url pattern
+     *
+     * @param text {@link CharSequence}
+     * @return {@link CharSequence}
+     */
+    public static CharSequence removeUrl(CharSequence text) {
+        return URL_PATTERN.matcher(text).replaceAll(StringUtils.EMPTY);
     }
 
     /**
@@ -212,6 +222,11 @@ final public class AuthorUtils {
             weight += 30;
         }
 
+        if (element.tagName().equals("meta") &&
+                (META_PROPERTY_PATTERN.matcher(element.attr("name")).find() || META_PROPERTY_PATTERN.matcher(element.attr("property")).find())) {
+            weight += 100;
+        }
+
         return weight;
     }
 
@@ -259,6 +274,11 @@ final public class AuthorUtils {
         return weight;
     }
 
+    /**
+     * Remove less likely / junk / empty html elements from the document
+     *
+     * @param document {@link Document}
+     */
     private static void cleanUpDocument(Document document) {
         for (Element element : document.select("*")) {
             if (SET_TO_REMOVE.matcher(element.className()).find() ||
@@ -283,13 +303,11 @@ final public class AuthorUtils {
                 authorName = probableElement.text();
             }
 
-
             if (StringUtils.isBlank(authorName)) {
                 authorName = document.select(siteSpecificRule).attr("content");
             }
 
             if (StringUtils.isNotBlank(authorName)) {
-                System.out.println(authorName);
                 return authorName;
             }
         }
@@ -303,28 +321,27 @@ final public class AuthorUtils {
 
         // Get probable list of elements for author extraction
         TreeSet<Element> sortedResultByWeight = discardJunkElements(weightedElements);
+        return extractAuthorName(document, sortedResultByWeight);
+    }
 
-        // Extract authorName
+    /**
+     * Extract author name from probable set of elements
+     *
+     * @param document             {@link Document}
+     * @param sortedResultByWeight {@link TreeSet<Element>}
+     * @return {@link String}
+     */
+    public static String extractAuthorName(Document document, TreeSet<Element> sortedResultByWeight) {
         int iterations = 0;
+
         String authorName;
-        for (Element element : sortedResultByWeight) {
-            authorName = extractText(element);
+
+        Iterator<Element> iterator = sortedResultByWeight.iterator();
+        while (iterations < 3 && iterator.hasNext()) {
+            authorName = extractText(iterator.next());
+            iterations++;
             if (sanityCheck(authorName)) {
                 return authorName;
-            }
-
-            if (iterations == 2) {
-                break;
-            }
-        }
-
-        Elements elements = document.select("meta[property=author], meta[property=creator], meta[name=creator], meta[name=author], meta[name=dcterms.creator]");
-        if (elements != null && elements.size() > 0) {
-            for (Element element : elements) {
-                authorName = extractText(element);
-                if (sanityCheck(authorName)) {
-                    return authorName;
-                }
             }
         }
 
@@ -335,7 +352,7 @@ final public class AuthorUtils {
      * This method removes junk elements. Criteria is if there are 3 or more elements with same tag, classname and weight
      * then they are most likely not the valid ones. These similar looking elements are generally from related /
      * trending / popular section
-     * <p>
+     * 
      * This method returns valid, unique elements in the descending order of their weight
      *
      * @param weightedElements {@link Collection}
@@ -362,8 +379,8 @@ final public class AuthorUtils {
         };
 
         TreeSet<Element> sortedElementsByWeight = new TreeSet<>(byWeight);
-        weightedElements.stream()
-                .collect(Collectors.groupingBy(e -> e.tagName() + "|" + e.className() + "|" + getWeight(e)))    // Group similar looking elements (tagName, className, weight)
+        weightedElements.stream()   // Group similar looking elements (tagName, className, weight)
+                .collect(Collectors.groupingBy(e -> e.tagName() + "|" + e.className() + "|" + getWeight(e)))
                 .values().stream()
                 .filter(list -> list.size() <= 2)   // Ignore similar looking elements if they are more than 2
                 .forEach(list -> sortedElementsByWeight.addAll(list));
@@ -391,47 +408,74 @@ final public class AuthorUtils {
 
     }
 
-    private static Integer calWeight(Element element) {
+    /**
+     * Computes the weight of the element using matching classname / id, etc.
+     *
+     * @param element {@link Element} Element to compute weight for
+     * @return int
+     */
+    private static int calWeight(Element element) {
         return specialCases(element)
                 + highlyPositiveCases(element)
                 + positiveCases(element);
     }
 
-    private static void nodeToText(Node node, StringBuffer text) {
+    /**
+     * Extract text from relevant nodes recursively
+     *
+     * @param node {@link Node} Node to extract text from
+     * @param textBuffer {@link StringBuffer} Container to gather extracted text
+     */
+    private static void nodeToText(Node node, StringBuffer textBuffer) {
 
-        String nodesToExtract = "div, p, span, em, h1, h2, h3, h4, a, li, td, b, strong";
         Set<String> nodesToExtractSet = new HashSet<>();
-        nodesToExtractSet.addAll(Arrays.asList(nodesToExtract.split(", ")));
+        nodesToExtractSet.addAll(Arrays.asList(NODES_TO_EXTRACT.split(", ")));
 
         for (Node childNode : node.childNodes()) {
-            if (childNode instanceof TextNode && nodesToExtract.contains(childNode.parent().nodeName())) {
-                if (text.length() != 0 && !text.toString().endsWith(" | ")) {
-                    text.append(" | ");
-                }
+            if (childNode instanceof TextNode && NODES_TO_EXTRACT.contains(childNode.parent().nodeName())) {
                 if (StringUtils.isNotBlank(((TextNode) childNode).text())) {
-                    text.append(((TextNode) childNode).text().trim());
+                    if (textBuffer.length() != 0) {
+                        textBuffer.append(", ");
+                    }
+                    textBuffer.append(((TextNode) childNode).text().trim());
                 }
             } else {
-                nodeToText(childNode, text);
+                nodeToText(childNode, textBuffer);
             }
         }
     }
 
+    /**
+     * Extract text from the node and child nodes
+     *
+     * @param element {@link Element} Element to extract text from
+     * @return {@link String} Text containing authorName
+     */
     private static String extractText(Element element) {
-
         if (element.tagName() == "meta") {
             return element.attr("content");
         }
-
         StringBuffer textBuffer = new StringBuffer();
         nodeToText(element, textBuffer);
-        return StringUtils.strip(textBuffer.toString().trim(), "|").trim();
+        return StringUtils.join(", ", textBuffer) .toString();
     }
 
+    /**
+     * Compile a REGEX and return {@link Pattern}
+     * @param regex {@link String}
+     * @return {@link Pattern}
+     */
     private static Pattern createRegexPattern(String regex) {
         return Pattern.compile(regex, Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CHARACTER_CLASS);
     }
 
+    /**
+     * Primary check to validate author name
+     * - Name is not too long or too short
+     *
+     * @param authorName {@link String}
+     * @return boolean
+     */
     private static boolean sanityCheck(String authorName) {
         String cleanedUpAuthorName = preExtractionCleanup(authorName);
         if (cleanedUpAuthorName.length() < 3 || cleanedUpAuthorName.length() > MAX_AUTHOR_NAME_LENGTH) {
@@ -444,7 +488,7 @@ final public class AuthorUtils {
      * Extract named entities from the given text
      *
      * @param text {@link String}
-     * @return {@link List< NamedEntity >}
+     * @return {@link List<NamedEntity>}
      */
     public static List<NamedEntity> extractNamedEntities(String text) {
         text = preExtractionCleanup(text);
