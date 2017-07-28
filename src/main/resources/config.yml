@@ -1,1 +1,27 @@
 defaultTimezone: UTC
+
+useNamedEntityForAuthorExtraction: true
+
+# AirPR Extractor Configuration
+extractorBaseUrl: http://extractor.airpr.com/api/
+#extractorBaseUrl: http://localhost:8080/api/
+extractorEntityPath: entities
+extractorUserName: extractor
+extractorPassword: Hc7kvADwxxsJFvKCtqnm6byWaNRgUrzd
+
+# These entities are not detected as NamedEntities
+nerExclusion:
+  Destiny Bertucci: Person
+
+bestElementForAuthor:
+  reuters.com: ':containsOwn(reporting by), :containsOwn(reported by), :containsOwn(edited by), :containsOwn(editing by)'
+  upi.com: '#px > div.c_p > div.meta.grey'
+  ge.com: 'div > hgroup > h4 > a'
+  globalbankingandfinance.com: 'div.the-content.post-content.clearfix > p:nth-child(1) > strong > em'
+  apnews.com: '#contentArea > div:nth-child(2) > div:nth-child(1) > h6'
+  bloomberg.com: 'body > main > div > article > div.lede-text-only.lede > div.lede-text-only__container > div > address'
+  computerpartner.at: 'meta[name=Author]'
+  cioreview.com: '#namepost > font'
+  einnews.com: 'p:contains(Media Contact), p.contact'
+  nt4admins.de: 'dl > dd'
+  bulldogreporter.com: 'div.single_post > div > p:nth-child(1) > em'

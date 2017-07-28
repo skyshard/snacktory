@@ -5,3 +5,4 @@ nbactions.xml
 deploy-*.sh
 .idea
 *.iml
+config.yml

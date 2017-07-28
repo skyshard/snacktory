@@ -2,7 +2,7 @@ package de.jetwick.snacktory;
 
 import com.google.common.net.InternetDomainName;
 import de.jetwick.snacktory.utils.AuthorUtils;
-import de.jetwick.snacktory.utils.Configuration;
+import de.jetwick.snacktory.models.Configuration;
 import de.jetwick.snacktory.utils.DateUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.htmlcleaner.CleanerProperties;
@@ -452,19 +452,11 @@ public class ArticleTextExtractor {
         res.setLanguage(extractLanguage(doc));
 
         // get author information
-        res.setRawAuthorName(extractAuthorName(doc));
-        res.setAuthorName(AuthorUtils.cleanup(res.getRawAuthorName()));
+        String rawAuthorName = AuthorUtils.extractAuthor(doc, res.getTopPrivateDomain());
+        res.setRawAuthorName(rawAuthorName);
+        res.setAuthorInfo(AuthorUtils.cleanUpUsingNER(rawAuthorName));
+        res.setAuthorName(res.getAuthorInfo().getNamesAsString());
         res.setAuthorDescription(extractAuthorDescription(doc, res.getAuthorName()));
-
-        // add extra selection gravity to any element containing author name
-        // wasn't useful in the case I implemented it for, but might be later
-        /*
-        Elements authelems = doc.select(":containsOwn(" + res.getAuthorName() + ")");
-        for (Element elem : authelems) {
-            elem.attr("extragravityscore", Integer.toString(100));
-            System.out.println("modified element " + elem.toString());
-        }
-        */
 
         // Extract date from document using css selectors
         Date extractedDate = extractDate(doc);

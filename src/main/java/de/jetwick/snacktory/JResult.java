@@ -15,6 +15,8 @@
  */
 package de.jetwick.snacktory;
 
+import de.jetwick.snacktory.models.AuthorInfo;
+
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Collections;
@@ -54,6 +56,7 @@ public class JResult implements Serializable {
     private String language;
     private String domain;
     private String topPrivateDomain;
+    private AuthorInfo authorInfo;
 
     public JResult() {
     }
@@ -120,12 +123,14 @@ public class JResult implements Serializable {
         return this;
     }
 
+    @Deprecated
     public String getAuthorName() {
         if (authorName == null)
             return "";
         return authorName;
     }
 
+    @Deprecated
     public JResult setAuthorName(String authorName) {
         this.authorName = authorName;
         return this;
@@ -295,6 +300,14 @@ public class JResult implements Serializable {
 
     public void setTopPrivateDomain(String topPrivateDomain) {
         this.topPrivateDomain = topPrivateDomain;
+    }
+
+    public AuthorInfo getAuthorInfo() {
+        return authorInfo;
+    }
+
+    public void setAuthorInfo(AuthorInfo authorInfo) {
+        this.authorInfo = authorInfo;
     }
 
     @Override
